@@ -1,0 +1,78 @@
+{% load socialaccount %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/login.css' %}">
+</head>
+<body>
+    <header class="header">
+        <nav>
+            <div class="logo">
+                <a href="{% url 'home:home' %}">
+                    <span class="first-word">Py</span> Academia
+                </a>
+            </div>
+        </nav>
+    </header>
+    <div class="parent-section">
+        
+        <div class="register-title">
+            <h1>Make the most of your learning life</h1>
+        </div>
+        <div class="register-card">
+            <form action="" method="post">
+                {% csrf_token %}
+                <label>Email</label>
+                    {{form.username}}
+                    <label>Password</label>
+                    {{form.password}}
+                   
+                    <p class="register-terms-para">By clicking Agree & Join, you agree to the LinkedIn <a href="">User Agreement,  Privacy Policy</a>, and <a href="">Cookie Policy.</a></p>
+                    
+                    <button class="logbtn" type="submit">Agree & Join</button>
+            </form>
+            
+            <div class="horizontal-line">
+                <p>or</p>
+            </div>
+                <!--  -->
+            <div class="partylogin-auth">
+                <div class="partylogin ">
+                    <a href="">
+                        <div class="party-title">
+                            <p>Continue with Google</p>
+                        </div>
+                        <!-- <div class="glogin-icon"> -->
+                            <img src="{% static 'accounts/images/google-icon40.png' %}" alt="google-login-icon">
+                        <!-- </div> -->
+                    </a>
+                </div>
+    
+                <div class="partylogin githublogin">
+                    <a href="">
+                        <div class="party-title">
+                            <p>Continue with GitHub</p>
+                        </div>
+                        <!-- <div class="glogin-icon"> -->
+                            <img src="{% static 'accounts/images/github-icon45.png' %}" alt="github-login-icon">
+                        <!-- </div> -->
+                    </a>
+                </div>
+            </div>
+
+            <div class="login">
+                <p>New to PyAcademia?<a href="{% url 'account_signup' %}">Join Now</a></p>
+            </div>
+
+
+            
+        </div>
+        
+    </div>
+    
+</body>
+</html>

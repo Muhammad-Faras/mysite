@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mypost</title>
+</head>
+<body>
+    
+
+    {% for post in my_posts %}
+        <a href="{% url 'posts:detail-post' slug=post.slug %}">{{post.title}}</a>
+     <hr>
+
+    {% endfor %}
+</body>
+</html>

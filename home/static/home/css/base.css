@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&family=Poppins:wght@700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Baloo Bhai 2', sans-serif;
+}
+body{
+    background-color: #F5F6FA;
+}
+
+                    /* ------------------- */
+                    /* Header starts here */
+                    /* --------------------- */
+header{
+    /* background-color: #F5F6FA; Background color of the navbar */
+    /* background-color: #EDF3F4; */
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+nav{
+    margin: 20px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 8%;
+}
+/* logo here */
+nav > .logo a{
+    font-size: 36px;
+    font-family: 'Poppins', sans-serif;
+    color: #6D42FF;
+    text-decoration: none;
+}
+nav > .logo a > span{
+    color: #b24020;
+}
+
+/* menu starts here */
+nav .menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid red; */
+}
+.menu>a{
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 0px;
+    font-weight: 600;
+    display: block;
+    /* color: #6D42FF; */
+    color: rgba(0, 0, 0, 0.6);
+
+}
+.menu>a:hover{
+    color: rgba(0, 0, 0, 1);
+    
+}
+
+/* signup here */
+nav .register > a{
+    font-weight: 570;
+    font-size: 20px;
+    color: #0a66c2;
+    text-decoration: none;
+    border-radius: 34px;
+    border: 1px solid #0a66c2;
+    padding: 7px 15px;
+    /* background-color: #F5F6FA; */
+    
+}
+nav .register > a:hover{
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #F0F7FE;
+    color: #C4C8DA;
+    color: #0a66c2;
+}

@@ -1,0 +1,79 @@
+{% extends "account/base_entrance.html" %}
+{% load allauth i18n %}
+{% load socialaccount %}
+{% load static %}
+{% block head_title %}
+    Signup
+{% endblock head_title %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'account/css/signup.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+<div class="parent-section">
+        
+    <div class="register-title">
+        <h1>Make the most of your learning life</h1>
+        
+    </div>
+
+   
+
+
+    <div class="register-card">
+        <form method="post" action="{% url 'account_signup' %}" >
+            {% csrf_token %}
+            <label>Username</label>
+            {{form.username}}
+            <label>First Name</label>
+            {{form.first_name}}
+            <label>Last Name</label>
+            {{form.last_name}}
+            <label>Email</label>
+            {{form.email}}
+            <label>Password</label>
+            {{form.password1}}
+            <label>Confirm Password</label>
+            {{form.password2}}
+            <p class="register-terms-para">By clicking Agree & Join, you agree to the PyAcademia <a href="">User Agreement,  Privacy Policy</a>, and <a href="">Cookie Policy.</a></p>
+                
+            <button class="joinbtn" type="submit">Agree & Join</button>
+        </form>
+
+        <div class="horizontal-line">
+            <p>or</p>
+        </div>
+            <!--  -->
+        <div class="partylogin-auth">
+            <div class="partylogin ">
+                <a href="{% provider_login_url 'google' action='reauthenticate' %}">
+                    <div class="party-title">
+                        <p>Continue with Google</p>
+                    </div>
+                    <!-- <div class="glogin-icon"> -->
+                        <img src="{% static 'account/images/google-icon40.png' %}" alt="google-login-icon">
+                    <!-- </div> -->
+                </a>
+            </div>
+
+           
+        </div>
+
+        <div class="login">
+            <p>Already on PyAcademia? <a href="{{ login_url }}">Sign in</a></p>
+        </div>
+
+
+        
+    </div>
+</div>
+
+
+
+
+
+   
+    {% comment %} {% if SOCIALACCOUNT_ENABLED %}
+        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+    {% endif %} {% endcomment %}
+{% endblock content %}

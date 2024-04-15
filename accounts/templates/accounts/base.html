@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+    <title>profile</title>
+    
+    <link rel="stylesheet" href="{% static '/accounts/css/base.css' %}">
+    
+    {% block extra_css %}
+    {% endblock %}
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="">
+                <span class="first-word">Py</span> Academia
+            </a>
+            <input type="text" placeholder="Search PyAcademia">
+        </div>
+       <nav>
+            <ul>
+                <li>
+                   
+                    <a href="{% url 'feed:feed' %}">
+                        <i class="fa-solid fa-house inactive"></i>
+                    </a>
+                        
+                    <a href="{% url 'network:network' %}">
+                        <i class="fa-solid fa-user-group inactive"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa-solid fa-comment inactive"></i>
+                    </a>
+                    <a href="">
+                        <i class="fa-solid fa-bell inactive"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="profile">
+            <nav>
+                <ul>
+                    <li>
+                        {% with url=request.path %}
+    <a href="{% url 'accounts:profile' %}"  class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
+        {% if user.profile.profile_img %}
+            <!-- Display the profile image -->
+            <img class="{% if request.path == url %} active {% else %} inactive {% endif %}" src="{{ user.profile.profile_img.url }}" alt="Profile Image" class="avatar">
+        {% else %}
+            <!-- Display a default icon if no profile image -->
+            <i class="fa-solid fa-user {% if request.path == url %} active {% else %} inactive {% endif %}"></i>
+        {% endif %}
+    </a>
+{% endwith %}
+
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    {% block content %}
+    
+    {% endblock %}
+
+
+    {% block extra_javascript %}
+            
+    {% endblock %}
+    
+</body>
+</html>

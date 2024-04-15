@@ -1,0 +1,43 @@
+{% extends "account/base_manage.html" %}
+{% load allauth i18n static %}  <!-- Added {% load static %} to load static template tags -->
+
+{% block head_title %}
+    {% trans "Sign Out" %}
+{% endblock head_title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'account/css/logout.css' %}">
+{% endblock extra_head %}
+
+{% block content %}
+
+    <section class="section">
+        <div class="container">
+            <div class="title">
+                <div class="logo">
+                    <p>
+                        <span class="first-word">Py</span> Academia
+                    </p>
+                </div>
+                <div class="bottom-bar">
+
+                </div>
+            </div>
+
+            <div class="container-content">
+
+                <div style="margin-bottom: 40px;" class="content-text">
+                    <p>Are you sure you want to sign out?</p>  <!-- Fixed typo in this line -->
+                </div>
+                
+
+                <div class="form">
+                    <form action="{% url 'account_logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Logout Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

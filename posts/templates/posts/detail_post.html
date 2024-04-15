@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>detail post</title>
+</head>
+<body>
+    <div class="user-post-card">
+        <div style="display: flex; justify-content:space-between; align-items:center" >
+            <a href="{% url 'accounts:profile' %}" style="font-size: 30px; color:rgb(34, 32, 32)">{{ post.author.get_full_name }}</a>
+        <p>Created at: {{ post.created_at }}</p> 
+        </div>
+        <p>{{ post.author.email }}</p>
+    
+        <a style="color: black;" href="{% url 'posts:detail-post' slug=post.slug %}">{{post.title}}</a>
+        {% if post.description %}
+        <a href="{% url 'posts:detail-post' slug=post.slug %}">{{ post.description}}</a>
+    {% endif %}
+        {% if post.post_img %}
+            <!-- {{post.post_img}} -->
+            <img src="{{ post.post_img.url }}" alt="Post Image">
+        {% endif %}
+
+        {% if request.user == post.author %}
+        <a href="{% url 'posts:update-post' slug=post.slug %}">update</a>
+        <a href="{% url 'posts:delete-post' slug=post.slug %}">delete</a>
+        {% endif %}
+    </div>
+    
+</body>
+</html>

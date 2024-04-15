@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+    <title>network</title>
+    
+    <link rel="stylesheet" href="{% static 'network/css/base.css' %}">
+    
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="">
+                <span class="first-word">Py</span> Academia
+            </a>
+            <input type="text" placeholder="Search PyAcademia">
+        </div>
+       <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'feed:feed' %}">
+                        <i class="fa-solid fa-house inactive" ></i></a>
+                    {% with url=request.path %}
+                        <a href="{% url 'network:network' %}"  class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
+                        <i class="fa-solid fa-user-group {% if request.path == url %} active {% else %} inactive {% endif %}"></i></a>
+                    {% endwith %}
+
+                        <a href="">
+                        <i class="fa-solid fa-comment inactive"></i></a>
+                    <a href="">
+                        <i class="fa-solid fa-bell inactive"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul>
+                <li>
+                    {% with url=request.path %}
+        <a href="{% url 'accounts:profile' %}">
+            <i class="fa-solid fa-user inactive"></i>
+        </a>
+        {% endwith %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    {% block content %}
+    
+    {% endblock %}
+
+
+    {% block extra_javascript %}
+            
+    {% endblock %}
+    
+</body>
+</html>

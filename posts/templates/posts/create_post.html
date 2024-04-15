@@ -1,0 +1,36 @@
+{% extends 'accounts/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'posts/css/create_post.css' %}">
+{% endblock %}
+
+{% block content %}  
+<section class="parent-section">
+    <div class="child-sec2">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Create Profile</h1>
+            <div>
+                <label for="">Title</label>
+                    {{ form.title }}
+            </div>
+
+            <div>
+                <label for="">Description</label>
+                    {{ form.description}}
+            </div>
+
+            <div>
+                <label for="">Image</label>
+                {{ form.post_img }}
+            </div>
+
+            <div>
+                <button type="submit">Create Post</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
