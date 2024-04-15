@@ -1,0 +1,54 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            
+            {% comment %} {% block head_title %}
+            {% endblock head_title %} {% endcomment %}
+        </title>
+        {% block extra_head %}
+        {% endblock extra_head %}
+    </head>
+    <body>
+        {% block body %}
+            
+
+            <!-- <header class="header">
+                <nav>
+                    <div class="logo">
+                        <a href="{% url 'home:home' %}">
+                            <span class="first-word">Py</span> Academia
+                        </a>
+                    </div>
+                </nav>
+            </header> -->
+            {% comment %} <div>
+                <strong>{% trans "chedasdsadck:" %}</strong>
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'account_email' %}">{% trans "Change Email" %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div> {% endcomment %}
+            {% block content %}
+            {% endblock content %}
+        {% endblock body %}
+        {% block extra_body %}
+        {% endblock extra_body %}
+    </body>
+</html>

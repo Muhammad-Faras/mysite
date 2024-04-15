@@ -1,0 +1,125 @@
+{% extends 'accounts/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}  
+<section class="parent-section">
+    <div class="child-sec1">
+        <div class="child-child1">
+            
+            <div>
+                {% if user.profile.profile_img %}
+            
+                    <img width="40px" src="{{ user.profile.profile_img.url }}" alt="">
+                {% else %}
+                    <i class="fa-solid fa-user" style="color: #a0b4b7; font-size: 40px;"></i>
+                {% endif %}
+            </div>
+        </div>
+        <div class="name-title">
+            <h1>{{ user.first_name }} {{ user.last_name }} &nbsp; &nbsp; &nbsp; ({{ user.username }})</h1>
+            <p>{{ request.user }}</p>
+        </div>
+        <div style="display: flex;">
+            <a href="{% url 'posts:my_posts' %}">Mypsots</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'account_logout' %}">logout</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+
+    <div class="child-sec2">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+        <h1>Personal Information</h1>
+            <div>
+                <label for="">Profile Picture</label>
+                {% if user == request.user %}
+                    {{ form.profile_img }}
+                {% else %}
+                    <input type="text" value="{{ form.profile_img.value }}" readonly>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="">University</label>
+                {% if user == request.user %}
+                    {{ form.university }}
+                {% else %}
+                    <input type="text" value="{{ form.university.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">Skill</label>
+                {% if user == request.user %}
+                    {{ form.skill }}
+                {% else %}
+                    <input type="text" value="{{ form.skill.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">Gender</label>
+                {% if user == request.user %}
+                    {{ form.gender }}
+                {% else %}
+                    <input type="text" value="{{ form.gender.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">Age</label>
+                {% if user == request.user %}
+                    {{ form.age }}
+                {% else %}
+                    <input type="number" value="{{ form.age.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">Date Of Birth</label>
+                {% if user == request.user %}
+                    {{ form.birthday }}
+                {% else %}
+                    <input type="date" value="{{ form.birthday.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">About</label>
+                {% if user == request.user %}
+                    {{ form.bio }}
+                {% else %}
+                    <textarea readonly>{{ form.bio.value }}</textarea>
+                {% endif %}
+            </div>
+            <h1>Social Media Links </h1>
+            <div>
+                <label for="">Twitter</label>
+                {% if user == request.user %}
+                    {{ form.twitter_link }}
+                {% else %}
+                    <input type="text" value="{{ form.twitter_link.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">Facebook</label>
+                {% if user == request.user %}
+                    {{ form.facebook_link }}
+                {% else %}
+                    <input type="text" value="{{ form.facebook_link.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <label for="">Github</label>
+                {% if user == request.user %}
+                    {{ form.github_link }}
+                {% else %}
+                    <input type="text" value="{{ form.github_link.value }}" readonly>
+                {% endif %}
+            </div>
+            <div>
+                <button type="submit" {% if user != request.user %} disabled {% endif %}>Save</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

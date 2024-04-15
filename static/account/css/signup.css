@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&family=Poppins:wght@700&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Baloo Bhai 2', sans-serif;
+}
+body{
+    background-color: #F3F2F0;
+}
+
+                    /* ------------------- */
+                    /* Header starts here */
+                    /* --------------------- */
+header{
+    background-color: #F3F2F0;
+    /* position: fixed;
+    top: 0; */
+    width: 100%;
+    /* border: 1px solid red; */
+}
+nav{
+    margin: 10px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 8%;
+    /* border: 1px solid red; */
+
+}
+
+/* logo here */
+nav > .logo a{
+    /* border: 1px solid red; */
+
+    font-size: 36px;
+    font-family: 'Poppins', sans-serif;
+    color: #6D42FF;
+    text-decoration: none;
+}
+nav > .logo a > span{
+    color: #b24020;
+}
+
+.parent-section{
+    margin:25px 32%;
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.parent-section .register-title{
+    margin-bottom: 10px;
+}
+
+.parent-section .register-card{
+    /* border: 1px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* padding: 5px 0px; */
+    margin: 5px 50px;
+    background-color: white;
+}
+
+
+.register-card form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 5px 20px;
+    /* align-items: center; */
+    /* justify-content: center; */
+    margin-bottom: 20px;
+}
+
+.register-card form label{
+    margin-bottom: 5px;
+    /* color: rgba(0, 0, 0, 0.75); */
+}
+
+.register-card form input{
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 4px 8px;
+    /* width: 90%; */
+
+  
+}
+
+.register-card form input:hover{
+    background-color: rgba(0, 0, 0, 0.04);
+    border: 2px solid black;
+    cursor: pointer;
+
+}
+
+
+.register-card .register-terms-para{
+    margin-bottom: 20px;
+}
+.register-card .register-terms-para a{
+    color: #0A66C2;
+    text-decoration: none;
+    text-align: center;
+    
+}
+
+.register-card form button{
+    font-size: 20px;
+    padding: 5px 20px;
+    background-color: #0A66C2;
+    cursor: pointer;
+    color: white;
+    border-radius: 25px;
+    border: 1px #0A66C2;
+    margin-bottom: 5px;
+    /* align-self: center; */
+}
+
+.register-card form button:hover{
+    background-color: #004182;
+}
+
+.register-card .horizontal-line{
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.register-card .partylogin-auth{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    width: 100%;
+    padding: 0px 30px;
+}
+.register-card .partylogin{
+    width: 100%;
+    /* padding: 0px 30px; */
+    margin-bottom: 10px;
+
+}
+
+.register-card .partylogin a{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 15px;
+    color: black;
+    text-decoration: none;
+    border: 1px solid #666666;
+    border-radius: 30px;
+}
+
+.register-card .partylogin a:hover{
+    background-color: #eff1f3;
+    /* border: 1px solid #666666; */
+
+}
+
+
+.register-card .login p{
+    font-size: 20px;
+}
+
+.register-card .login a{
+    text-decoration: underline;
+    color: #0A66C2;
+}
+
+
+
+
+
+
+
+
+

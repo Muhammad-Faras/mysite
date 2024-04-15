@@ -1,0 +1,72 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'feed/css/feed.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="parent-section">
+    <div class="create-post-card">
+        <div class="profile-logo">
+            <a href="{% url 'accounts:profile' %}"  class="ainactive ">
+                {% if user.profile.profile_img %}
+                    <!-- Display the profile image -->
+                    <img class="active" src="{{ user.profile.profile_img.url }}" alt="Profile Image">
+                {% else %}
+                    <!-- Display a default icon if no profile image -->
+                    <i class="fa-solid fa-user inactive "></i>
+                {% endif %}
+            </a>
+        </div>
+            <a class="create-bar" href="{% url 'posts:create-post' %}">What's on your mind ? {{user.username}}</a>
+
+
+        
+        
+    </div>
+    <a class="related-posts-link"  href="{% url 'posts:related_posts' %}">related posts</a> <br>
+
+    {% for post in posts_list %}
+        <div class="user-post-card">
+            <div style="display: flex; justify-content:space-between; align-items:center" >
+                <a href="{% url 'accounts:profile' %}" style="font-size: 30px; color:rgb(34, 32, 32)">{{ post.author.get_full_name }}</a>
+            <p>Created at: {{ post.created_at }}</p> 
+            </div>
+            <p>{{ post.author.email }}</p>
+        
+            <a style="color: black;" href="{% url 'posts:detail-post' slug=post.slug %}">{{post.title}}</a>
+            {% if post.description %}
+            <p>{{ post.description|truncatechars:300 }}{% if post.description|length > 300 %} <a href="{% url 'posts:detail-post' slug=post.slug %}">more</a>{% endif %}</p>
+        {% endif %}
+            {% if post.post_img %}
+                <!-- {{post.post_img}} -->
+                <img src="{{ post.post_img.url }}" alt="Post Image">
+            {% endif %}
+
+            <div>
+                <form action="{% url 'posts:like_post' pk=post.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">{{ post.number_of_likes }}Like  {{request.user}}</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %} 
+</div>
+
+
+<!-- <h1>{{user.username}}</h1>
+
+    <a href="{% url 'accounts:profile' %}">profile</a> <br>
+    <a href="{% url 'posts:create-post' %}">Create Post</a> <br>
+    <hr>
+    
+    {% for post in posts_list %}
+        <a href="{% url 'posts:detail-post' slug=post.slug %}">{{post.author}}</a>
+        
+        <hr>
+
+    {% endfor %} -->
+
+    {% endblock %}

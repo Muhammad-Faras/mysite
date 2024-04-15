@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+    <title>feed</title>
+    
+    <link rel="stylesheet" href="{% static 'feed/css/base.css' %}">
+    {% block extra_css %}
+    <!-- css links here -->
+    {% endblock %}
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="">
+                <span class="first-word">Py</span> Academia
+            </a>
+            <input type="text" placeholder="Search PyAcademia">
+        </div>
+       <nav>
+            <ul>
+                <li>
+                    {% with url=request.path %}
+                    <a href="{% url 'feed:feed' %}" class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
+                        <i class="fa-solid fa-house {% if request.path == url %} active {% else %} inactive {% endif %}" ></i></a>
+                    {% endwith %}
+                        <a href="{% url 'network:network' %}">
+                        <i class="fa-solid fa-user-group inactive"></i></a>
+                    <!-- <a href="">
+                        <i class="fa-solid fa-comment inactive"></i></a> -->
+                    <a href="">
+                        <i class="fa-solid fa-bell inactive"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul>
+                <li>
+                   
+
+
+        {% with url=request.path %}
+        <a href="{% url 'accounts:profile' %}"  class="ainactive ">
+            {% if user.profile.profile_img %}
+                <!-- Display the profile image -->
+                <img class="active" src="{{ user.profile.profile_img.url }}" alt="Profile Image">
+            {% else %}
+                <!-- Display a default icon if no profile image -->
+                <i class="fa-solid fa-user inactive "></i>
+            {% endif %}
+        </a>
+    {% endwith %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    {% block content %}
+    
+    {% endblock %}
+
+
+    {% block extra_javascript %}
+            
+    {% endblock %}
+    
+</body>
+</html>
