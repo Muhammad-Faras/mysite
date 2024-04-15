@@ -12,3 +12,6 @@ db.sqlite3
 
 # Ignore sensitive information (e.g., credentials)
 *.json
+
+
+/manage.py/
