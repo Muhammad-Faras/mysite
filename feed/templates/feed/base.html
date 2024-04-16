@@ -18,7 +18,11 @@
             <a href="">
                 <span class="first-word">Py</span> Academia
             </a>
-            <input type="text" placeholder="Search PyAcademia">
+            <form action="{% url 'feed:search-users' %}" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search PyAcademia" name="searchedquery">
+                <button type="submit">Search</button>
+            </form>
         </div>
        <nav>
             <ul>
