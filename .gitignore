@@ -14,4 +14,9 @@ db.sqlite3
 *.json
 
 
-/manage.py/
+# Ignore manage.py file
+/manage.py
+
+# Ignore Python bytecode and migrations directories
+__pycache__/
+*/migrations/
