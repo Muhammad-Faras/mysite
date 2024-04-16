@@ -1,0 +1,24 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+
+<!-- {% block extra_css %}
+<link rel="stylesheet" href="{% static 'feed/css/feed.css' %}">
+{% endblock %} -->
+
+{% block content %}
+{% if search_query %}
+
+    <h1 style="margin-top: 200px;">you search for {{search_query}}</h1>
+    {% for user in searched_users %}
+    {{user.username}} <br>
+    {{user.email}}
+    
+    <hr>
+    <hr>
+    {% endfor %}
+{% else %}
+<div style="margin-top: 200px;">
+    {{result}}
+</div>
+{% endif %}
+{% endblock %}
