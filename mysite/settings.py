@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'feed',
     'network',
     'posts',
+    'articles',
     
     'allauth',
     'allauth.account',
@@ -54,7 +55,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.github',
     
-    'ckeditor',    
+    'ckeditor',  
+    'ckeditor_uploader'  
 ]
 
 
@@ -62,8 +64,10 @@ CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default':{
-        
-    }
+        'removeplugins':'exportpdf',
+        'height':'100',
+        'skin': 'moono',
+    },
 }
 
 SITE_ID = 2

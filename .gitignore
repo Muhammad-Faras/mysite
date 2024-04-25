@@ -15,9 +15,9 @@ db.sqlite3
 
 
 # Ignore manage.py file
-/manage.py
+/manage.py/
 
 # Ignore Python bytecode and migrations directories
-__pycache__/
+/__pycache__/
 **/migrations/
 *.pyc

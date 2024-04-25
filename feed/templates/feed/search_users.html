@@ -9,9 +9,9 @@
 {% if search_query %}
 
     <h1 style="margin-top: 200px;">you search for {{search_query}}</h1>
-    {% for user in searched_users %}
-    {{user.username}} <br>
-    {{user.email}}
+    {% for i in searched_users %}
+    {{i.username}} <br> 
+    {{i.email}}
     
     <hr>
     <hr>

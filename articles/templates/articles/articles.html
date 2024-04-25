@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- article navbar -->
+
+<div>narvbar
+    <a href="{% url 'articles:publish_article' %}">create-article</a>
+</div>
+<hr>
+{% for article in articles %}
+<a href="{% url 'articles:article_detail' id=article.id %}">{{article.article_title}}</a>
+<h3>{{article.author}}</h1>
+<div class="arte">
+    {{article.article_body|safe}}
+</div>
+<hr>
+{% endfor %}
+{% endblock %}

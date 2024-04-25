@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+    <title>feed</title>
+    <style>
+        .header{
+            display: flex;
+            justify-content: space-between;
+
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="">
+                <span>Py</span> Academia
+            </a>
+            <form action="{% url 'feed:search-users' %}" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search PyAcademia" name="searchedquery">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+       <nav>
+            <ul>
+                <li>
+                    {% with url=request.path %}
+                    <a href="{% url 'feed:feed' %}">Home</a>
+                    {% endwith %}
+                        <a href="{% url 'network:network' %}">Network</a>
+                        <a href="{% url 'articles:articles' %}">Articles</a>
+                    <a href="{% url 'resources:resources' %}">Resources</a>
+                    <a href="{% url 'projects:projects' %}">Projects</a>
+                </li>
+            </ul>
+        </nav>
+        <a href="{% url 'accounts:profile' %}">profile </a>
+    </header>
+    <hr> <hr>
+
+    {% block content %}
+    
+    {% endblock %}
+    
+</body>
+</html>

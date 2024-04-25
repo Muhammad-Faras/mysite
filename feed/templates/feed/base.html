@@ -28,15 +28,12 @@
             <ul>
                 <li>
                     {% with url=request.path %}
-                    <a href="{% url 'feed:feed' %}" class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
-                        <i class="fa-solid fa-house {% if request.path == url %} active {% else %} inactive {% endif %}" ></i></a>
+                    <a href="{% url 'feed:feed' %}" class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">Home</a>
                     {% endwith %}
-                        <a href="{% url 'network:network' %}">
-                        <i class="fa-solid fa-user-group inactive"></i></a>
-                    <!-- <a href="">
-                        <i class="fa-solid fa-comment inactive"></i></a> -->
-                    <a href="">
-                        <i class="fa-solid fa-bell inactive"></i></a>
+                        <a href="{% url 'network:network' %}">Network</a>
+                        <a href="">Articles</a>
+                    <a href="">Resources</a>
+                    <a href="">Projects</a>
                 </li>
             </ul>
         </nav>

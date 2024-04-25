@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 
 class CustomUserManager(BaseUserManager):
@@ -78,10 +79,15 @@ class Profile(models.Model):
     github_link = models.URLField(blank=True)
     birthday = models.DateField()
     profile_img = models.ImageField(null=True, blank=True)
-    
+    slug = models.SlugField(null=True)
     
     def __str__(self):
         if self.user.is_superuser:
             return f'{self.user.username} (Superuser) profile'
         else:
             return f'({self.user.username}) profile  ({self.user.email})'
+
+    def save(self,*args,**kwargs):
+        if not self.slug:
+            self.slug = slugify(self.user)
+            super().save(*args, **kwargs)
