@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'home',
     'feed',
     'network',
+    'resources',
     'posts',
     'articles',
     
@@ -56,9 +57,22 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     
     'ckeditor',  
-    'ckeditor_uploader'  
+    'ckeditor_uploader' ,
+    
+    
+    
+    'tailwind', 
+    'theme',
+    'django_browser_reload',
 ]
 
+TAILWIND_APP_NAME = 'theme'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -112,6 +126,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware", # tailwind auto reload
     
     
 ]
