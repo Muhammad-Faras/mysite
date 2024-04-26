@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'feed',
     'network',
     'resources',
+    'projects',
     'posts',
     'articles',
     
@@ -78,10 +79,10 @@ CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default':{
+        
         'removeplugins':'exportpdf',
-        'height':'100',
-        'skin': 'moono',
     },
+    
 }
 
 SITE_ID = 2

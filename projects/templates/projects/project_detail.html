@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{project.project_title}}
+    {{project.project_description|safe}}
+    <a href="{% url 'projects:project_update' project.id %}">update</a> <br>
+    <a href="{% url 'projects:project_delete' project.id %}">delete</a> <br>
+    <hr>
+
+</body>
+</html>
