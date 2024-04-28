@@ -28,9 +28,12 @@ class Post(models.Model):
         return self.title
     
     
-class Follow(models.Model):
-    followers = models.ForeignKey(User, related_name="following",on_delete=models.CASCADE)
-    following = models.ForeignKey(User, related_name="followers",on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  # Add this line to reference the User model
+    comment_body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    
-    
+
+    def __str__(self):
+        return f'{self.author} - {self.created_at}'

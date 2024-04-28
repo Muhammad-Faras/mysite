@@ -27,7 +27,7 @@
         
     </div>
     <a class="related-posts-link"  href="{% url 'posts:related_posts' %}">related posts</a> <br>
-
+<hr>
     {% for post in posts_list %}
         <div class="user-post-card">
             <div style="display: flex; justify-content:space-between; align-items:center" >
@@ -45,13 +45,37 @@
                 <img src="{{ post.post_img.url }}" alt="Post Image">
             {% endif %}
 
+            <!-- like form here -->
             <div>
                 <form action="{% url 'posts:like_post' pk=post.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit">{{ post.number_of_likes }}Like  {{request.user}}</button>
                 </form>
             </div>
+
+            <!-- comments shows here -->
+            {% for comment in comments %}
+               {% if comment.post.id == post.id %}
+               <p>{{comment.post.id}}</p>
+               <p>{{comment.author}}</p>
+               <p>{{comment.comment_body}}</p>
+               <p>{{comment.created_at}}</p>
+               {{ Comment_form.errors }}
+               {{ coment.post.id }}
+               {% endif %}
+
+            {% endfor %}
+            <!-- comment form starts here -->
+            <form action="{% url 'feed:feed' %}" method="post">
+                {% csrf_token %}
+                {{ Comment_form.errors }}
+                {{ post.id }}
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                {{Comment_form.comment_body}}
+                <button type="submit">Comment</button>
+            </form>
         </div>
+        <hr> <hr>
     {% endfor %} 
 </div>
 
