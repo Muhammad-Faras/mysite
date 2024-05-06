@@ -78,12 +78,16 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
-    'default':{
-        
-        'removeplugins':'exportpdf',
-    },
-    
+    'default': {
+        'width': '100%',
+        'toolbar': 'Custom',
+        # Specify Custom Shit - GPL License -
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', '-', 'Image', 'Link', 'CodeSnippet', '-', 'NumberedList', 'BulletedList', 'HorizontalRule', '-', 'Undo', 'Redo'],
+        ], 'extraPlugins': 'codesnippet'
+    }
 }
+
 
 SITE_ID = 2
 
@@ -128,7 +132,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware", # tailwind auto reload
-    
+    # 'accounts.middlewares.ProfileCompletionMiddleware',
     
 ]
 
@@ -206,6 +210,7 @@ STATICFILES_DIRS = [
     (os.path.join(BASE_DIR, 'home','static')),
     (os.path.join(BASE_DIR, 'feed','static')),
     (os.path.join(BASE_DIR, 'network','static')),
+    (os.path.join(BASE_DIR, 'articles','static')),
     (os.path.join(BASE_DIR, 'accounts','static')),
 ]
 
@@ -248,7 +253,11 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 
 
 # ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-LOGIN_REDIRECT_URL = 'feed:feed'
+# settings.py
+
+LOGIN_REDIRECT_URL = 'accounts:custom_login_redirect'
+
+# LOGIN_REDIRECT_URL = 'feed:feed'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
 
 # ACCOUNT_LOGOUT_REDIRECT_URL = 'home'

@@ -1,13 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-    {{article.article_title}}
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'articles/css/article_detail.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="px-14 mx-72 my-6 flex flex-col justify-center ">
+    <div class="flex justify-center items-cente text-center w-full mb-10">
+        <img class="bg-bgColor h-30" src="{{article.article_thumbnail_image.url}}" alt="">
+    </div>
+    <div>
+        <p class="text-4xl font-black mb-6">{{article.article_title}}</p>
+    </div>
+    <div class="flex justify-between items-center mb-3 ">
+        <div class="flex justify-center items-center gap-6">
+            <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
+                <a href="#" class="flex items-center justify-center">
+                    <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
+                </a>
+            </div>
+            
+            <div class="flex flex-col justify-center gap-2">
+                <a class="text-4xl font-semibold hover:underline hover:text-primaryColor" href="">{{ article.author.username}}</a>
+                <p>{{ article.article_created }}</p> 
+            </div>
+        </div>
+       
+    </div>
+    <hr class="mb-2">
+    <p class="underline font-medium">{{article.article_description}}</p>
+    <hr>
+    <div>
+        <p class="asd text-4xl font-medium font-sans">{{article.article_body|safe}}</p>
+    </div>
+ 
 {% if request.user == article.author %}
 <a href="{% url 'articles:article_update' article.id %}">Update</a>
 <form action="{% url 'articles:article_delete' article.id %}">
@@ -15,6 +45,11 @@
 </form>
 {% endif%}
 
-    
-</body>
-</html>
+
+</section>
+
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet"> -->
+<!-- Include Prism.js JavaScript -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script> -->
+{% endblock %}

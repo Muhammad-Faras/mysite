@@ -1,18 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publish Article</title>
-</head>
-<body>
-    
-    <form action="{% url 'articles:publish_article' %}" method="post">
+{% extends 'base.html' %}
+{% load static %}
+
+
+<!-- {% block extra_css %}
+
+{% endblock %}
+ -->
+
+{% block content %}
+<section class="px-14 mx-52 flex flex-col justify-center">
+    <form class="flex flex-col justify-center gap-6" action="{% url 'articles:publish_article' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{article_form.media }}
         {{article_form.as_p}}
-        <button type="submit">publish</button>
+        <button class="py-4 px-10 bg-primaryColor text-[white] rounded">Publish</button>
     </form>
-
-</body>
-</html>
+</section>
+    
+{% endblock %}

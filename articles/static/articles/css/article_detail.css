@@ -1,0 +1,60 @@
+* {
+    box-sizing:border-box;
+}
+
+p {
+    margin-bottom:2rem;
+    font-weight:400;
+    font-size:1.2rem;
+    color:#242424;
+}
+
+a {
+   text-color: #f4f4f4;
+   text-decoration:underline;
+}
+h1{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:1.5rem;
+}
+.asd pre code{
+    border:1px solid red;
+}
+
+/* Target images within CKEditor */
+.asd img {
+    width: 100% !important; /* Override any existing width */
+    height: 100px !important; /* Ensure aspect ratio is maintained */
+    border: 1px solid red; /* Apply red border */
+}
+
+
+ol {
+    list-style-type: decimal; /* Use decimal numbering */
+}
+ol li{
+    margin-bottom:2rem;
+    font-weight:400;
+    font-size:1.2rem;
+    color:#242424;
+}
+
+/* Apply styles to comments within code snippets */
+h2{
+    color:blue;
+}
+
+h3{
+    color:blue;
+}
+h4{
+    color:blue;
+}
+h5{
+    color:blue;
+}
+h6{
+    color:blue;
+}
+

@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm
-from .models import Post
+from .forms import PostForm,CommentForm
+from .models import Post,Comment
 from django.shortcuts import get_object_or_404
 from accounts.models import Profile
+from django.contrib.auth import get_user_model
 # Create your views here.
+User = get_user_model()
 
 @login_required(login_url='/accounts/login/')
 def create_post_view(request):
@@ -20,14 +22,33 @@ def create_post_view(request):
         form = PostForm()
     
     context['form'] = form
+    
     return render(request, 'posts/create_post.html', context)
 
 
 
 def detail_post_view(request, slug):
     context = {}
+    comments = Comment.objects.all()
+    
+    Comment_form = CommentForm()
+# Inside your view function
+    if request.method == 'POST':
+        Comment_form = CommentForm(request.POST)
+        if Comment_form.is_valid():
+            post_id = request.POST.get('post_id')
+            print('post ki id ya ha = ',post_id)
+            post = Post.objects.get(id=post_id)
+            comment = Comment_form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            Comment_form = CommentForm()
+            
     post = get_object_or_404(Post, slug=slug, author=request.user)
     context['post'] = post
+    context['comments'] = comments
+    context['comment_form'] = Comment_form
     return render(request, 'posts/detail_post.html', context)
 
 
@@ -74,19 +95,23 @@ def related_posts_view(request):
     
     # Ensure the user is authenticated
     if request.user.is_authenticated:
-        # Access the profile attribute using lowercase 'profile'
-        user_skill = request.user.profile.skill
-        # Filter posts based on the user's skill
-        related_posts = Post.objects.filter(author__profile__skill=user_skill)
-        
-        context['user_skill'] = user_skill
-        context['related_posts'] = related_posts
+        # Check if the user has a profile
+        if hasattr(request.user, 'profile'):
+            # Access the profile attribute
+            user_skill = request.user.profile.skill
+            # Filter posts based on the user's skill
+            related_posts = Post.objects.filter(author__profile__skill=user_skill)
+            
+            context['user_skill'] = user_skill
+            context['related_posts'] = related_posts
+        else:
+            # Redirect to profile creation if the user doesn't have a profile
+            return redirect('accounts:profile')
     else:
         # Handle the case where the user is not authenticated
         context['error'] = "User is not authenticated."
     
     return render(request, 'posts/related_posts.html', context)
-    
     
     
 def post_like_view(request, pk):

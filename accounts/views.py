@@ -1,10 +1,24 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 # from .forms import UserCreationFormExtended, AuthenticationFormExtended
-# from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import get_user_model
 from .forms import ProfileForm
 from .models import Profile
 
+User = get_user_model()
 
+from .models import Profile
+
+def custom_login_redirect(request):
+    user = request.user
+    profile = Profile.objects.filter(user=user).first()
+    if profile is not None and profile.is_complete():
+        # Redirect to feed page if profile is complete
+        return redirect('feed:feed')
+    else:
+        # Redirect to profile page if profile is not complete
+        return redirect('accounts:profile')
+    
+    
 def profile_view(request):
     context = {}
     user = request.user
@@ -40,7 +54,16 @@ def profile_view(request):
 
 
 
-
+def other_user_profileview(request, id):
+    context = {}
+    context['id'] = id
+    print('id i get is ',id)
+    print('my id is ', request.user.id)
+    other_user = get_object_or_404(User, id=id)
+    profile = Profile.objects.filter(user=other_user).first()
+    context['profile'] = profile
+    
+    return render(request, 'accounts/other_userprofile.html', context)
 
 
 

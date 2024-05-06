@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books</title>
-</head>
-<body>
-    books here
+{% extends 'base.html' %}
+{% load static %}
 
+
+<!-- {% block extra_css %}
+
+{% endblock %}
+ -->
+
+{% block content %}
     {% for book in books %}
         {{book.book_title}} <br>
         {{book.book_description}} <br>
@@ -15,5 +15,4 @@
         <a href="{{ book.bookpdf.url }}" target="_blank">View PDF</a>
         <hr>
     {% endfor %}
-</body>
-</html>
+{% endblock %}

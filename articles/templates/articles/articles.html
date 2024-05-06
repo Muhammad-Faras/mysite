@@ -3,16 +3,56 @@
 {% block content %}
 <!-- article navbar -->
 
-<div>narvbar
-    <a href="{% url 'articles:publish_article' %}">create-article</a>
-</div>
-<hr>
-{% for article in articles %}
-<a href="{% url 'articles:article_detail' id=article.id %}">{{article.article_title}}</a>
-<h3>{{article.author}}</h1>
-<div class="arte">
-    {{article.article_body|safe}}
-</div>
-<hr>
-{% endfor %}
+<section class="px-14 py-4 mx-52 flex flex-col justify-center">
+    <div class="flex items-center gap-2 mb-2">
+        
+        <a class="py-2 px-4 text-2xl text-anchorColor hover:text-black"  href="{% url 'articles:publish_article' %}"><i class="fa-regular fa-pen-to-square mr-2"></i>Write</a> <br>
+        <a class="py-2 px-4 text-2xl text-anchorColor hover:text-black"  href="{% url 'articles:related_article' %}">related_blogs</a> <br>
+        
+    </div>
+    <hr>
+    {% for article in articles %}
+    <div class=" rounded-xl  p-4 mb-4 flex">
+        <div class="flex flex-col w-1/2">
+                <div class="flex justify-between items-center mb-3 ">
+                    <div class="flex justify-center items-center gap-2">
+                        <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
+                            <a href="#" class="flex items-center justify-center">
+                                <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="flex items-center justify-center gap-3 ">
+                            <a class="text-4xl font-medium  hover:underline hover:text-primaryColor" href="{% url 'accounts:other_userprofile' article.author.id %}">{{ article.author.username}}</a>
+                            <p class="text-center">{{ article.article_created|date:"M d, Y" }}</p>
+
+                        </div>
+                    </div>
+                     
+                </div>
+                <a class="text-xl mb-2 font-medium hover:text-primaryColor" href="{% url 'articles:article_detail' article.id %}">{{article.article_title}}</a>
+                <p class="text-sm mb-2">{{ article.article_description}}    
+                    
+                    {% if article.author.profile.skill %}
+                    <p class="px-4 py-2">{{ article.author.profile.skill.skill_name }}</p>
+                {% else %}
+                    <p>No skill found</p>
+                {% endif %}
+        </div>
+        <div class="w-1/2 flex justify-center items-cente">
+            <img class="bg-bgColor" style="width: 200px" src="{{article.article_thumbnail_image.url}}" alt="">
+        </div>
+    </div>
+        <hr>
+        {% endfor %} 
+</section>
+
+
+
+
+
+
+
+
+
 {% endblock %}

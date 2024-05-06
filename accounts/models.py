@@ -79,15 +79,22 @@ class Profile(models.Model):
     github_link = models.URLField(blank=True)
     birthday = models.DateField()
     profile_img = models.ImageField(null=True, blank=True)
-    slug = models.SlugField(null=True)
-    
+
+    def is_complete(self):
+        # Check if all required fields are filled
+        required_fields = [
+            self.age,
+            self.university,
+            self.skill,
+            self.gender,
+            self.birthday
+        ]
+        if not all(required_fields):
+            return False
+        return True
+        
     def __str__(self):
         if self.user.is_superuser:
             return f'{self.user.username} (Superuser) profile'
         else:
             return f'({self.user.username}) profile  ({self.user.email})'
-
-    def save(self,*args,**kwargs):
-        if not self.slug:
-            self.slug = slugify(self.user)
-            super().save(*args, **kwargs)

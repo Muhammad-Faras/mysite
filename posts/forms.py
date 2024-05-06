@@ -14,5 +14,5 @@ class CommentForm(forms.ModelForm):
         fields=('comment_body',)
         
         widgets = {
-            'comment_body': forms.Textarea(attrs={'rows': 4}),  # Customize widget for comment body
+            'comment_body': forms.Textarea(attrs={'class': 'border rounded-full p-2', 'rows': 1, 'style': 'resize: none;'})
         }

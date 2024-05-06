@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+<!-- {% block extra_css %}
+
+{% endblock %}
+ -->
+
+{% block content %}
+    your skill is  = {{request.user.profile.skill}}
+    {% for i in related_articles %}
+        <a href="">{{i.author}}</a>
+    {% endfor %}
+{% endblock %}

@@ -1,61 +1,54 @@
+
 {% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width='device-width', initial-scale=1.0">
-    <title>network</title>
-    
-    <link rel="stylesheet" href="{% static 'network/css/base.css' %}">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyAcademia | Home</title>
+    <link rel="stylesheet" href="{% static 'home/css/base.css' %}">
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    {% tailwind_css %}
+    {% block tailwind_block %}
+    {% endblock %}
+
+    {% block extra_css %}
+    {% endblock %}
 </head>
-<body>
-    <header class="header">
-        <div class="logo">
-            <a href="">
-                <span class="first-word">Py</span> Academia
-            </a>
-            <input type="text" placeholder="Search PyAcademia">
+<body  class="font-sans bg-bgColor">     
+    <header class="flex justify-between items-center p-4 bg-[white] border border-red-2 lg:px-12">
+        <div class="flex gap-10 items-center ">
+            <a class="cursor-pointer text-3xl text-primaryColor" href="{% url 'home:home' %}">PyAcademia</a>
+            <nav class="flex gap-4">
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'home:home' %}">HOME</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'feed:feed' %}">FEED</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'network:network' %}">NETWORK</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'articles:articles' %}">BLOGS</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'projects:projects' %}">PROJECTS</a>
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'resources:books' %}">RESOURCES</a>
+            </nav>
         </div>
-       <nav>
-            <ul>
-                <li>
-                    <a href="{% url 'feed:feed' %}">
-                        <i class="fa-solid fa-house inactive" ></i></a>
-                    {% with url=request.path %}
-                        <a href="{% url 'network:network' %}"  class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
-                        <i class="fa-solid fa-user-group {% if request.path == url %} active {% else %} inactive {% endif %}"></i></a>
-                    {% endwith %}
+       <div>
+        <form action="">
+            <input type="text" placeholder="asdasd">
+            <button type="submit">search</button>
+        </form>
+       </div>
+        <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
+            <a href="{% url 'accounts:profile'%}" class="flex items-center justify-center">
+                <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
+            </a>
+        </div>
+    
 
-                        <a href="">
-                        <i class="fa-solid fa-comment inactive"></i></a>
-                    <a href="">
-                        <i class="fa-solid fa-bell inactive"></i></a>
-                </li>
-            </ul>
-        </nav>
-        <nav>
-            <ul>
-                <li>
-                    {% with url=request.path %}
-        <a href="{% url 'accounts:profile' %}">
-            <i class="fa-solid fa-user inactive"></i>
-        </a>
-        {% endwith %}
-                </li>
-            </ul>
-        </nav>
+        <!-- <div>
+            <i class="fa-solid fa-magnifying-glass text-anchorColor text-lg cursor-pointer"></i>
+        </div> -->
+        
     </header>
-
     {% block content %}
     
     {% endblock %}
-
-
-    {% block extra_javascript %}
-            
-    {% endblock %}
-    
 </body>
 </html>

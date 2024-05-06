@@ -44,7 +44,7 @@
                 <ul>
                     <li>
                         {% with url=request.path %}
-    <a href="{% url 'accounts:profile' %}"  class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
+        <a href="{% url 'accounts:profile' %}"  class="{% if request.path == url %} aactive {% else %} ainactive {% endif %}">
         {% if user.profile.profile_img %}
             <!-- Display the profile image -->
             <img class="{% if request.path == url %} active {% else %} inactive {% endif %}" src="{{ user.profile.profile_img.url }}" alt="Profile Image" class="avatar">

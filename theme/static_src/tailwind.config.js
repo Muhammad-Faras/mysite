@@ -47,6 +47,7 @@ module.exports = {
                 primaryColor:'#2F65B9',
                 anchorColor:'#6F7F92',
                 secondryColor:'#07142E',
+                bgColor:'#f4f2ee'
             }
         },
     },

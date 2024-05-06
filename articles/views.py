@@ -12,14 +12,13 @@ def article_view(request):
 def publish_article(request):
     context = {}
     if request.method == 'POST':
-        article_form = ArticleForm(request.POST)
+        article_form = ArticleForm(request.POST, request.FILES)
         if article_form.is_valid():
             article = article_form.save(commit=False)
             article.author = request.user  
-            article.save() 
+            article.save()
             return redirect('articles:articles')
-        else:
-            article_form = ArticleForm()
+        
     else:
         article_form = ArticleForm()
         
@@ -66,3 +65,25 @@ def article_delete(request, id):
         context['article'] = article
         return redirect('articles:articles')
     
+
+def related_articles_views(request):
+    context = {}
+    
+    # Ensure the user is authenticated
+    if request.user.is_authenticated:
+        # Check if the user has a profile
+        if hasattr(request.user, 'profile'):
+            user_skill = request.user.profile.skill
+            # Filter posts based on the user's skill
+            related_articles = ArticleModel.objects.filter(author__profile__skill=user_skill)
+            context['user_skill'] = user_skill
+            context['related_articles'] = related_articles
+        else:
+            # Redirect to profile creation if the user doesn't have a profile
+            return redirect('accounts:profile')
+    else:
+        # Handle the case where the user is not authenticated
+        context['error'] = "User is not authenticated."
+    
+    
+    return render(request, 'articles/related_articles.html', context)

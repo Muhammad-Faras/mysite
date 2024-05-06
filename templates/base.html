@@ -1,50 +1,48 @@
+
 {% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width='device-width', initial-scale=1.0">
-    <title>feed</title>
-    <style>
-        .header{
-            display: flex;
-            justify-content: space-between;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyAcademia | Home</title>
+    <link rel="stylesheet" href="{% static 'home/css/base.css' %}">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    {% tailwind_css %}
+    {% block tailwind_block %}
+    {% endblock %}
 
-        }
-    </style>
+    {% block extra_css %}
+    {% endblock %}
 </head>
-<body>
-    <header>
-        <div>
-            <a href="">
-                <span>Py</span> Academia
-            </a>
-            <form action="{% url 'feed:search-users' %}" method="post">
-                {% csrf_token %}
-                <input type="text" placeholder="Search PyAcademia" name="searchedquery">
-                <button type="submit">Search</button>
-            </form>
+<body  class="font-sans bg-white">     
+    <header class="flex justify-between items-center p-4 bg-[white] border border-red-2 lg:px-12">
+        <div class="flex gap-10 items-center ">
+            <a class="cursor-pointer text-3xl text-primaryColor" href="{% url 'home:home' %}">PyAcademia</a>
+            <nav class="flex gap-4">
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'home:home' %}">HOME</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'feed:feed' %}">FEED</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'network:network' %}">NETWORK</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'articles:articles' %}">BLOGS</a> 
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'projects:projects' %}">PROJECTS</a>
+                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'resources:books' %}">RESOURCES</a>
+            </nav>
         </div>
-       <nav>
-            <ul>
-                <li>
-                    {% with url=request.path %}
-                    <a href="{% url 'feed:feed' %}">Home</a>
-                    {% endwith %}
-                        <a href="{% url 'network:network' %}">Network</a>
-                        <a href="{% url 'articles:articles' %}">Articles</a>
-                    <a href="{% url 'resources:books' %}">Resources</a>
-                    <a href="{% url 'projects:projects' %}">Projects</a>
-                </li>
-            </ul>
-        </nav>
-        <a href="{% url 'accounts:profile' %}">profile </a>
-    </header>
-    <hr> <hr>
+        <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
+            <a href="{% url 'accounts:profile'%}" class="flex items-center justify-center">
+                <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
+            </a>
+        </div>
+    
 
+        <!-- <div>
+            <i class="fa-solid fa-magnifying-glass text-anchorColor text-lg cursor-pointer"></i>
+        </div> -->
+        
+    </header>
     {% block content %}
     
     {% endblock %}
-    
 </body>
 </html>

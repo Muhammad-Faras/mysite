@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    other 
+    other user id = {{id}}
+    {% if profile.age %}
+    age is {{profile.age}}
+    {% else %}
+    else: he did not selected
+    {% endif %}
+    {{profile.user.username}}
+    {{profile.user.email}}
+    <br>
+    my id = {{request.user.id}} + {{request.user}}
+
+    <hr>
+
+    <div>
+        <label for="">other Profile age</label>
+            <input type="text" value="{{ profile.age }}" readonly>
+    </div>
+    
+</body>
+</html>

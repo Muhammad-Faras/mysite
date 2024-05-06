@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
     <a href="{% url 'projects:create_project' %}">Create_project</a>
     <hr>
     {% for project in projects %}
     <a href="{% url 'projects:project_detail' project.id %}">{{project.project_title}}</a>
     {% endfor %}
-</body>
-</html>
+
+{% endblock %}
