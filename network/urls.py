@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import feed_view
+from .views import network_view
 
 app_name = 'network'
 urlpatterns = [
-    path('', feed_view, name='network')
+    path('', network_view, name='network')
 ]

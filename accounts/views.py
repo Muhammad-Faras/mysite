@@ -30,7 +30,7 @@ def profile_view(request):
             form = ProfileForm(request.POST,request.FILES, instance=profile)
             if form.is_valid():
                 form.save()
-                return redirect('accounts:profile')
+                return redirect('feed:feed')
             else:
                 return HttpResponse('Profile update failed. Please check the form data.')
         else:
@@ -43,7 +43,7 @@ def profile_view(request):
                 profile = form.save(commit=False)
                 profile.user = request.user
                 profile.save()
-                return HttpResponse('Profile created successfully!')
+                return redirect('feed:feed')
             else:
                 return HttpResponse('Profile creation failed. Please check the form data.')
         else:

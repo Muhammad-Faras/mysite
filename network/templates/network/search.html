@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% for user in search_result %}
+{{user.username}}<br>
+{{user.email}}
+<hr>
+{% endfor %}
+
+{% endblock %}

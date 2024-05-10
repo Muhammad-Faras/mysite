@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect, HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 
-user = get_user_model()
+User = get_user_model()
 # Create your views here.
 from posts.models import Post,Comment
 from posts.forms import CommentForm
@@ -37,16 +37,39 @@ def feed_view(request):
 @login_required(login_url='/accounts/login/')
 def search_users_view(request):
     context = {}
-    if request.method == 'POST':
-        search_query = request.POST.get('searchedquery')
-        searched_users = user.objects.filter(username__icontains=search_query) | user.objects.filter(email__icontains=search_query)
-        context['search_query'] = search_query
-        context['searched_users'] = searched_users
+    print("Request Path:", request.path_info)
+    if request.path_info.startswith('/feed/'):
+        if request.method == 'POST':
+            search_query = request.POST.get('search-query')
+            search_result = Post.objects.filter(title__icontains=search_query)
+            context['search_result'] = search_result
+            return render(request, 'feed/search.html', context)
+        else:
+            return redirect('feed:feed')
+        
+    elif request.path_info.startswith('/network/'):
+        print("In Network Condition")
+        if request.method == 'POST':
+            search_query = request.POST.get('search-query')
+            search_result = User.objects.filter(username__icontains=search_query) | User.objects.filter(email__icontains=search_query)
+            context['search_result'] = search_result
+            return render(request, 'network/search.html', context)
+        else:
+            return redirect('network:network')
     else:
-        result = "invalid"
-        context['result'] = result    
+        print("Debug: Request path:", request.path_info)
+        return HttpResponse('Page Not Found')
+
+
+
+            # searched_result = user.objects.filter(username__icontains=search_query) | user.objects.filter(email__icontains=search_query)
+    #         context['search_query'] = search_query
+    #         context['searched_users'] = searched_users
+    #     else:
+    #         result = "invalid"
+    #         context['result'] = result    
 
     
-    return render(request, 'feed/search_users.html', context)
+    
     
 

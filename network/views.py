@@ -4,9 +4,5 @@ from django.contrib.auth.decorators import login_required
 from posts.models import Post
 
 @login_required(login_url='/accounts/login/')
-def feed_view(request):
-    context = {}
-    posts_list = Post.objects.all()
-    
-    context['posts_list'] = posts_list
-    return render(request, 'network/network.html', context)
+def network_view(request):
+    return render(request, 'network/network.html',)

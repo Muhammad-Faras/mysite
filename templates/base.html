@@ -29,6 +29,12 @@
                 <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'resources:books' %}">RESOURCES</a>
             </nav>
         </div>
+        <form action="{% url 'feed:search' %}" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="search PyAcademia" name="search-query">
+            <button type="submit">search</button>
+        </form>
+
         <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
             <a href="{% url 'accounts:profile'%}" class="flex items-center justify-center">
                 <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
