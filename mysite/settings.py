@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    'daphne',
     'fontawesomefree',     # app for fontawasome
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'projects',
     'posts',
     'articles',
+    'chat',
     
     'allauth',
     'allauth.account',
@@ -156,8 +158,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
-
+# WSGI_APPLICATION = 'mysite.wsgi.application'
+ASGI_APPLICATION = 'mysite.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -270,4 +272,15 @@ SESSION_COOKIE_AGE = 432000   # 5 days session
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.SignupFormExtended',
     # You can define other custom forms here if needed
+}
+
+
+# settings.py
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }

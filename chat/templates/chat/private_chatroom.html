@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding:0;
+        }
+        .section {
+            display: flex;
+        }
+        .section .chat-name {
+            width: 20%;
+            height: 100%;
+            margin-right: 10px;
+        }
+        .chat-input {
+            width: 75%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="chat-name">   
+            <a href="{% url 'chat:private_chatroom' user_2.id %}">chat with {{user_2.username}}</a> <br>
+        </div>
+        <div class="chat-input">
+            <h1>Chat with {{user_2.username}}</h1>
+            <textarea name="message-log" id="message-log" cols="100" rows="30"></textarea> <br>
+            <input id="message-input-text" name="message-input" type="text" placeholder="enter your message here"> <br>
+            <button id="message-submit-btn">Send</button>
+        </div>
+    </section>
+    
+    <!-- Store skill name in a script tag -->
+    {{ user_2.id|json_script:'user_2id' }}
+
+    <script>
+        const user2Id = JSON.parse(document.getElementById('user_2id').textContent);
+        console.log('User 2 ID:', user2Id);
+    
+        var awsc = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/wsc/private_chatroom/'
+            +  user2Id 
+            + '/'
+        );
+    
+        awsc.onopen = function(){
+            console.log('WebSocket connection established');
+        };
+    
+        awsc.onmessage = function(event){
+            console.log('Message received:', event);
+            console.log('Message received:', event.data);
+            const data = JSON.parse(event.data);
+
+            if (data && data.private_message && data.group_name ) {
+                document.querySelector('#message-log').value += data.private_message + data.group_name + '\n';  
+                
+                var textarea = document.querySelector('#message-log');
+                textarea.scrollTop = textarea.scrollHeight;
+            }
+           
+        };
+    
+        awsc.onclose = function(){
+            console.log('WebSocket connection closed');
+        };
+    
+        document.getElementById('message-submit-btn').onclick = function(event){
+            const messageInputDom = document.getElementById('message-input-text');
+            const message = messageInputDom.value;
+            console.log('Sending message:', message);
+            awsc.send(JSON.stringify({
+                'msg': message,
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+    
+</body>
+</html>

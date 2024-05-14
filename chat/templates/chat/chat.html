@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding:0;
+        }
+        .section {
+            display: flex;
+        }
+        .section .chat-name {
+            width: 20%;
+            height: 100%;
+            margin-right: 10px;
+        }
+        .chat-input {
+            width: 75%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="chat-name">   
+            <a href="{% url 'chat:chat' %}">chat with {{user_skill}}</a> <br>
+            <hr>
+            <a id="participants" href="{% url 'accounts:other_userprofile' user.id %}"></a>
+           
+        </div>
+        <div class="chat-input">
+            <h1>Group Name = {{user_skill}}</h1>
+            <textarea name="message-log" id="message-log" cols="100" rows="30">
+
+                {% for message in chat_messages %}
+    <p>{{ message.message }} by {{ message.user }} at {{ message.timestamp|date:"Y-m-d H:i:s" }}</p>
+    <br>
+    <hr>
+{% endfor %}
+
+            </textarea> <br>
+            <input id="message-input-text" name="message-input" type="text" placeholder="enter your message here"> <br>
+            <button id="message-submit-btn">Send</button>
+        </div>
+    </section>
+    
+    <!-- Store skill name in a script tag -->
+    {{ user_skill|json_script:'skill-name' }}
+
+    <script>
+        // Retrieve skill name from the script tag
+        const skillName = JSON.parse(document.getElementById('skill-name').textContent);
+        console.log('group name = ', skillName);
+
+        var wsc = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/wsc/'
+            +  skillName 
+            + '/'
+        );
+
+        wsc.onopen = function(){
+            console.log('connection is established');
+        };
+
+        wsc.onmessage = function(event){
+            console.log('message receive from server...', event);
+            console.log('message receive from server...', event.data);
+            const data = JSON.parse(event.data);
+            
+            if (data && data.user && data.msg && data.timestamp) {
+                document.querySelector('#message-log').value += data.user + ': ' + data.msg + ':' + data.timestamp + '\n';  
+                
+                var textarea = document.querySelector('#message-log');
+                textarea.scrollTop = textarea.scrollHeight;
+            }
+            
+            if (data && data.participants) {
+                document.querySelector('#participants').innerHTML = data.participants + '\n';    
+            }
+            
+
+            
+            
+        }
+
+        wsc.onclose = function(){
+            console.log('connection closed');
+        };
+
+        document.getElementById('message-submit-btn').onclick = function(event){
+            const messageInputDom = document.getElementById('message-input-text');
+            const message = messageInputDom.value;
+            console.log(message);
+            wsc.send(JSON.stringify({
+                'msg': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+</html>

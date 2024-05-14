@@ -57,6 +57,9 @@
                             {% else %}
                             <a class="text-sm w-full" href="#">Student</a>
                             {% endif %}
+
+                        <a href="{% url 'chat:private_chatroom' post.author.id %}"> chat</a>
+
                         </div>
                     </div>
                     <p>{{ post.created_at }}</p> 
