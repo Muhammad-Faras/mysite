@@ -236,24 +236,20 @@ AUTHENTICATION_BACKENDS = [
     # 'django.core.mail.backends.console.EmailBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-
-# ACCOUNT_USER_MODEL_USERNAME_FIELD = True
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_USERNAME_REQUIRED = True
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
-
-
-# ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
 ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+RATE_LIMITS = {
+    'login_failed': '5/m',  # Example rate limit for failed logins: 5 per minute
+    # Add more rate limits for other actions as needed
+}
+
 
 
 # ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
@@ -288,3 +284,16 @@ CHANNEL_LAYERS = {
 
 
 handler404 = 'home.views.custom_404_view_name'
+
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'noorfaras809@gmail.com'
+EMAIL_HOST_PASSWORD = 'jysxyoztqlxhajdz'
+DEFAULT_FROM_EMAIL = 'noorfaras809@gmail.com'
+
