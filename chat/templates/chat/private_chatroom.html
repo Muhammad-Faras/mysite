@@ -27,7 +27,50 @@
 <body>
     <section class="section">
         <div class="chat-name">  
-            i am {{request.user.username}} 
+            i am {{request.user.username}}  <br>
+            <!-- <h1> my roomrs are </h1>
+            {% for i in room %}
+                <a href="{% url 'chat:private_chatroom' i.user2.id %}">{{i.user2.username}}</a> <br>
+            {% endfor %} -->
+
+            <h3>Your Chat Rooms</h3>
+<ul>
+        {% for room in rooms %}
+            {% if room.user1 == user_1 %}
+                {% with other_user=room.user2 %}
+                    <li>
+                        <a href="{% url 'chat:private_chatroom' other_user.id %}" class="block p-2 rounded
+                            {% if room.id in last_message_status %}
+                                bg-green-500 text-white
+                            {% else %}
+                                bg-gray-200 text-black
+                            {% endif %}
+                        ">
+                            Chat with {{ other_user.username }}
+                        </a>
+                    </li>
+                {% endwith %}
+            {% else %}
+                {% with other_user=room.user1 %}
+                    <li>
+                        <a href="{% url 'chat:private_chatroom' other_user.id %}" class="block p-2 rounded
+                            {% if room.id in last_message_status %}
+                                bg-green-500 text-white
+                            {% else %}
+                                bg-gray-200 text-black
+                            {% endif %}
+                        ">
+                            Chat with {{ other_user.username }}
+                        </a>
+                    </li>
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+        
+            <!-- {% for j in chat_room %}
+            {{j.user_2}}
+            {% endfor %} -->
             <!-- <a href="{% url 'chat:private_chatroom' user_2.id %}">chat with {{user_2.username}}</a> <br> -->
             <!-- {% for chat_room in chat_rooms %}
             <a href="{% url 'chat:private_chatroom' chat_room.user_2.id %}">{{ chat_room.user_2.username }}</a>
@@ -37,7 +80,11 @@
         <hr>
         
         <div class="chat-input">
-            <h1> <h1>Chat between {{ user_1.username }} and {{ user_2.username }}</h1></h1>
+            {% if user_1.username == user_2.username %}
+                <h1>{{user_1.username}} (Me)</h1>
+            {% else %}
+                <h1>Chat between {{ user_1.username }} and {{ user_2.username }}</h1>
+            {% endif %}
             <textarea name="message-log" id="message-log" cols="100" rows="30">
                 {% for i in messages %}
                 {{i.message}}

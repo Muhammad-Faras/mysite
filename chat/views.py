@@ -46,12 +46,31 @@ def private_chatroom_view(request, user2_id):
         user1=min(user_1, user_2, key=lambda u: u.id),
         user2=max(user_1, user_2, key=lambda u: u.id)
     )
-
+    
+    room = PrivateChatRoom.objects.filter(user1=request.user)
+    room2 = PrivateChatRoom.objects.filter(user2=request.user) 
+    
+     # Combine the querysets
+    rooms = room | room2
+    
     # Retrieve the messages for the chat room
     messages = PrivateMessage.objects.filter(chat_room=chat_room).order_by('timestamp')
+    
+    
+    # Check the last message in each room
+    last_message_status = {}
+    for r in rooms:
+        last_message = PrivateMessage.objects.filter(chat_room=r).order_by('-timestamp').first()
+        if last_message and last_message.sender != request.user:
+            last_message_status[r.id] = 'new_message'
 
     context['user_1'] = user_1
     context['user_2'] = user_2
     context['messages'] = messages
+    context['room'] = room
+    context['room2'] = room2
+    context['rooms'] = rooms
+    context['last_message_status'] = last_message_status
+    
     
     return render(request, 'chat/private_chatroom.html', context)

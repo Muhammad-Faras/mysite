@@ -25,6 +25,7 @@ class ChatMessage(models.Model):
 class PrivateChatRoom(models.Model):
     user1 = models.ForeignKey(User, related_name='chat_rooms1', on_delete=models.CASCADE)
     user2 = models.ForeignKey(User, related_name='chat_rooms2', on_delete=models.CASCADE)
+    
 
     class Meta:
         unique_together = ('user1', 'user2')
