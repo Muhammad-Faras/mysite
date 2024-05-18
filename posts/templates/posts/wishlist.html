@@ -6,11 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    are u shure to delete this ?
-
-    <form action="{% url 'posts:delete-post' post.id %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
+    
+{% for post in wishlist_posts %}
+<h2>{{ post.title }}</h2>
+<p>{{ post.content }}</p> <hr>
+<!-- display other post details -->
+{% endfor %} 
 </body>
 </html>

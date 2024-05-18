@@ -26,12 +26,23 @@
 </head>
 <body>
     <section class="section">
-        <div class="chat-name">   
-            <a href="{% url 'chat:private_chatroom' user_2.id %}">chat with {{user_2.username}}</a> <br>
+        <div class="chat-name">  
+            i am {{request.user.username}} 
+            <!-- <a href="{% url 'chat:private_chatroom' user_2.id %}">chat with {{user_2.username}}</a> <br> -->
+            <!-- {% for chat_room in chat_rooms %}
+            <a href="{% url 'chat:private_chatroom' chat_room.user_2.id %}">{{ chat_room.user_2.username }}</a>
+                <hr>
+            {% endfor %} -->
         </div>
+        <hr>
+        
         <div class="chat-input">
-            <h1>Chat with {{user_2.username}}</h1>
-            <textarea name="message-log" id="message-log" cols="100" rows="30"></textarea> <br>
+            <h1> <h1>Chat between {{ user_1.username }} and {{ user_2.username }}</h1></h1>
+            <textarea name="message-log" id="message-log" cols="100" rows="30">
+                {% for i in messages %}
+                {{i.message}}
+                {% endfor %}
+            </textarea> <br>
             <input id="message-input-text" name="message-input" type="text" placeholder="enter your message here"> <br>
             <button id="message-submit-btn">Send</button>
         </div>
@@ -61,8 +72,8 @@
             console.log('Message received:', event.data);
             const data = JSON.parse(event.data);
 
-            if (data && data.private_message && data.group_name ) {
-                document.querySelector('#message-log').value += data.private_message + data.group_name + '\n';  
+            if (data && data.private_message && data.sender ) {
+                document.querySelector('#message-log').value += data.private_message + data.sender + '\n';  
                 
                 var textarea = document.querySelector('#message-log');
                 textarea.scrollTop = textarea.scrollHeight;

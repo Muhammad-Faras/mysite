@@ -37,39 +37,39 @@ def feed_view(request):
 @login_required(login_url='/accounts/login/')
 def search_users_view(request):
     context = {}
-    print("Request Path:", request.path_info)
-    if request.path_info.startswith('/feed/'):
-        if request.method == 'POST':
-            search_query = request.POST.get('search-query')
-            search_result = Post.objects.filter(title__icontains=search_query)
-            context['search_result'] = search_result
-            return render(request, 'feed/search.html', context)
-        else:
-            return redirect('feed:feed')
-        
-    elif request.path_info.startswith('/network/'):
+    path_info = request.path_info
+    print("Request Path:", path_info)
+
+    if path_info.startswith('/network/'):
+        context = {}
+    path_info = request.path_info
+    print("Request Path:", path_info)
+
+    if path_info.startswith('/network/'):
         print("In Network Condition")
         if request.method == 'POST':
             search_query = request.POST.get('search-query')
             search_result = User.objects.filter(username__icontains=search_query) | User.objects.filter(email__icontains=search_query)
             context['search_result'] = search_result
+            print("Network search results:", search_result)  # Debugging info
             return render(request, 'network/search.html', context)
         else:
             return redirect('network:network')
+
+    elif path_info.startswith('/feed/'):
+        print("In Feed Condition")
+        if request.method == 'POST':
+            search_query = request.POST.get('search-query')
+            search_result = Post.objects.filter(title__icontains=search_query)
+            context['search_result'] = search_result
+            print("Feed search results:", search_result)  # Debugging info
+            return render(request, 'feed/search.html', context)
+        else:
+            return redirect('feed:feed')
+
     else:
-        print("Debug: Request path:", request.path_info)
+        print("Unhandled Request Path:", path_info)
         return HttpResponse('Page Not Found')
-
-
-
-            # searched_result = user.objects.filter(username__icontains=search_query) | user.objects.filter(email__icontains=search_query)
-    #         context['search_query'] = search_query
-    #         context['searched_users'] = searched_users
-    #     else:
-    #         result = "invalid"
-    #         context['result'] = result    
-
-    
     
     
 

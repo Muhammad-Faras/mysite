@@ -5,6 +5,7 @@ from .models import Post,Comment
 from django.shortcuts import get_object_or_404
 from accounts.models import Profile
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 # Create your views here.
 User = get_user_model()
 
@@ -27,7 +28,7 @@ def create_post_view(request):
 
 
 
-def detail_post_view(request, slug):
+def detail_post_view(request, id):
     context = {}
     comments = Comment.objects.all()
     
@@ -38,14 +39,14 @@ def detail_post_view(request, slug):
         if Comment_form.is_valid():
             post_id = request.POST.get('post_id')
             print('post ki id ya ha = ',post_id)
-            post = Post.objects.get(id=post_id)
+            post = Post.objects.get(pk=id)
             comment = Comment_form.save(commit=False)
             comment.post = post
             comment.author = request.user
             comment.save()
             Comment_form = CommentForm()
             
-    post = get_object_or_404(Post, slug=slug, author=request.user)
+    post = get_object_or_404(Post, pk=id)
     context['post'] = post
     context['comments'] = comments
     context['comment_form'] = Comment_form
@@ -53,15 +54,15 @@ def detail_post_view(request, slug):
 
 
 @login_required(login_url='/accounts/login/')
-def update_post_view(request, slug):
+def update_post_view(request, id):
     context = {}
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, pk=id)
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = PostForm(request.POST, instance=post)
             if form.is_valid():
                 form.save()
-                return redirect('posts:detail-post', slug=slug)  # Redirect to the post detail page after successful update
+                return redirect('posts:detail-post', id=id)  # Redirect to the post detail page after successful update
         else:
             form = PostForm(instance=post)
         context['form'] = form  # Move this line inside the else block
@@ -70,9 +71,9 @@ def update_post_view(request, slug):
 
 
 @login_required(login_url='/accounts/login/')
-def delete_post_view(request, slug):
+def delete_post_view(request, id):
     context = {}
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, pk=id)
     
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -122,3 +123,20 @@ def post_like_view(request, pk):
         post.likes.add(request.user)
 
     return redirect('feed:feed')
+
+
+def add_to_wishlist(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.wishlist = True
+    post.save()
+    return redirect('feed:feed',)
+
+def remove_from_wishlist(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.wishlist = False
+    post.save()
+    return redirect('feed:feed')
+
+def wishlist(request):
+    wishlist_posts = Post.objects.filter(wishlist=True)
+    return render(request, 'posts/wishlist.html', {'wishlist_posts': wishlist_posts})

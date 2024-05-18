@@ -32,9 +32,15 @@
             </a>
         </div> -->
         
-    <div class="flex items-center gap-2 mb-2 ">
-        <a class="py-2 px-4 bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">related</a> <br>
-        <a class="py-2 px-4 bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+    <div class="grid grid-cols-8 grid-rows-1 ">
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">related</a> <br>
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+        <a class="py-2 inline-block text-center bg-primaryColor text-white border border-primaryColor rounded-full hover:bg-white hover:text-primaryColor"  href="{% url 'posts:related_posts' %}">following</a> <br>
+        
     </div>
     <div class="w-full  border border-slate-600 mb-4">
 
@@ -49,6 +55,7 @@
                                 <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
                             </a>
                         </div>
+                        <a href="{% url 'chat:private_chatroom' post.author.id %}"><i class="fa-solid fa-message"></i></a>
                         
                         <div class="flex flex-col justify-center items-center">
                             <a class="text-4xl font-medium hover:underline hover:text-primaryColor" href="{% url 'accounts:other_userprofile' post.author.id %}">{{ post.author.get_full_name }}</a>
@@ -58,17 +65,22 @@
                             <a class="text-sm w-full" href="#">Student</a>
                             {% endif %}
 
-                        <a href="{% url 'chat:private_chatroom' post.author.id %}"> chat</a>
+                            {% if not post.wishlist %}
+                                <a href="{% url 'posts:add_to_wishlist' post.id %}">Add to Wishlist</a>
+                            {% else %}
+                                <a href="{% url 'posts:remove_from_wishlist' post.id %}">Remove from Wishlist</a>
+                            {% endif %}
 
                         </div>
+
                     </div>
                     <p>{{ post.created_at }}</p> 
                 </div>
-                <a class="text-xl mb-2 hover:text-primaryColor" href="{% url 'posts:detail-post' slug=post.slug %}">{{post.title}}</a>
+                <a class="text-xl mb-2 hover:text-primaryColor" href="{% url 'posts:detail-post' post.id %}">{{post.title}}</a>
                 {% if post.description %}
                     <p class="text-sm mb-2">{{ post.description|truncatechars:300 }}
                         {% if post.description|length > 300 %} 
-                            <a class="text-primaryColor" href="{% url 'posts:detail-post' slug=post.slug %}">MORE</a>
+                            <a class="text-primaryColor" href="{% url 'posts:detail-post' post.id %}">MORE</a>
                         {% endif %}</p>
                 {% endif %}
                 {% if post.post_img %}
@@ -77,14 +89,14 @@
                 {% endif %}
                 <div class="flex justify-between items-center">
                     <p>{{ post.number_of_likes }} likes</p>
-                    <p>20 comments</p>
+                    <p>{{post.number_of_comments}}</p>
                 </div>
                 <div class="w-full  border border-slate-600 mb-4">
 
                 </div>
                 <!-- like form here -->
             <div>
-                <form action="{% url 'posts:like_post' pk=post.id %}" method="post">
+                <form action="{% url 'posts:like_post' post.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="mb-4 flex items-center justify-center rounded-2xl gap-2 px-4 py-2 hover:bg-gray-300 hover:rounded-2xl">
                         {% if request.user in post.likes.all %}
@@ -127,6 +139,5 @@
     </div>
         {% endfor %} 
 </section>
-
-
     {% endblock %}
+

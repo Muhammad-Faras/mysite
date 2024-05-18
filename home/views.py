@@ -3,6 +3,8 @@ from .forms import AuthenticationFormExtended
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
+def custom_404_view_name(request,exception):
+    return render(request, '404.html',)
 
 
 def home_view(request):

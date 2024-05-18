@@ -9,11 +9,13 @@ db.sqlite3
 
 # Ignore environment-specific files
 /.env/
-
+/.venv/
 # Ignore sensitive information (e.g., credentials)
 *.json
 
+node_modules/
 
+/node_modules/
 # Ignore manage.py file
 /manage.py/
 

@@ -3,10 +3,11 @@ from asgiref.sync import async_to_sync
 import json 
 import re
 import datetime
-from .models import ChatGroup, ChatMessage
+from .models import ChatGroup, ChatMessage, PrivateChatRoom, PrivateMessage
 from accounts.models import Skill
 from asgiref.sync import sync_to_async
 from django.contrib.auth import get_user_model
+from channels.db import database_sync_to_async
 User = get_user_model()
 
 class My_WebSocketConsumer(WebsocketConsumer):
@@ -119,98 +120,76 @@ class My_WebSocketConsumer(WebsocketConsumer):
 
 
 
+
+
+
+
 class Private_chatroom_Consumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Get the current user
         self.user = self.scope['user']
-
-        print('-----------------------------')
-        print('username_1 = ', self.user.username)
-        print('-----------------------------')
-
-        print('-----------------------------')
-        print('username_1.id = ', self.user.id)
-        print('-----------------------------')
-
-        # Get user2Id from the URL route
         self.user2_id = self.scope['url_route']['kwargs']['user2Id']
 
-        # Fetch user2 object using user2Id
-        self.user2 = await sync_to_async(User.objects.get)(id=self.user2_id)
+        self.user2 = await database_sync_to_async(User.objects.get)(id=self.user2_id)
 
-        print('-----------------------------')
-        print('username_2.id = ', self.user2_id)
-        print('-----------------------------')
-
-        print('-----------------------------')
-        print('username_2 = ', self.user2.username)
-        print('-----------------------------')
-        if self.user.id < self.user2_id:
-            self.group_name = f'privatechat_{self.user.id}_{self.user2.id}'  # Unique group name for the chat between two users
+        if self.user.id < self.user2.id:
+            self.room_name = f'privatechat_{self.user.id}_{self.user2.id}'
         else:
-            self.group_name = f'privatechat_{self.user2.id}_{self.user.id}'  # Unique group name for the chat between two users
-        print('-----------------------------')
-        print('group_name = ', self.group_name)
-        print('-----------------------------')
+            self.room_name = f'privatechat_{self.user2.id}_{self.user.id}'
+        
+        self.chat_room = await database_sync_to_async(self.get_or_create_chat_room)(self.user, self.user2)
 
-        # Add both users to the same group
         await self.channel_layer.group_add(
-            self.group_name,
+            self.room_name,
             self.channel_name
         )
 
-        # Accept the WebSocket connection
         await self.accept()
 
     async def receive(self, text_data):
-        print('------------------------------------------')
-        print('Message received from client/frontend:', text_data)
-        print('-----------------------------------------')
         try:
             data = json.loads(text_data)
-            print('-----------------------------------------')
-            print('Data from client in JSON format:', data)
-            print('-----------------------------------------')
+            private_message = data.get('msg', '')
 
-            private_message = data['msg']
+            if private_message:
+                await database_sync_to_async(self.save_message)(self.user, self.chat_room, private_message)
 
-            print('-----------------------------------------')
-            print("Extracting message from data['msg']:", private_message)
-            print('-----------------------------------------')
-
-            await self.channel_layer.group_send(
-                self.group_name,
-                {
-                    'type': 'chat_message',
-                    'private_message': private_message,
-                    'group_name':self.group_name
-                }
-            )
-            print("Sent message to group:", self.group_name)
+                await self.channel_layer.group_send(
+                    self.room_name,
+                    {
+                        'type': 'chat_message',
+                        'private_message': private_message,
+                        'sender': self.user.username
+                    }
+                )
 
         except json.JSONDecodeError:
             print('Error decoding JSON')
-        except KeyError:
-            print('Key error in received data')
+        except KeyError as e:
+            print(f'Key error: {e}')
+        except Exception as e:
+            print(f'Unexpected error: {e}')
 
     async def chat_message(self, event):
-        try:
-            print("Event received:", event)
-            private_message = event["private_message"]
-            group_name = event["group_name"]
-            await self.send(text_data=json.dumps({
-                'private_message': private_message,
-                'group_name': group_name,
-            }))
-            print("Sent message back to frontend:", private_message)
-        except KeyError as e:
-            print('Key error in received data:', e)
-        except Exception as e:
-            print('Error:', e)
+        private_message = event.get("private_message", "")
+        sender = event.get("sender", "")
+
+        await self.send(text_data=json.dumps({
+            'private_message': private_message,
+            'sender': sender,
+        }))
 
     async def disconnect(self, close_code):
-        # Remove the user from the group when they disconnect
         await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
+            self.room_name,
+            self.channel_name,
         )
+
+    def get_or_create_chat_room(self, user1, user2):
+        chat_room, created = PrivateChatRoom.objects.get_or_create(
+            user1=min(user1, user2, key=lambda u: u.id),
+            user2=max(user1, user2, key=lambda u: u.id)
+        )
+        return chat_room
+
+    def save_message(self, sender, chat_room, message):
+        PrivateMessage.objects.create(sender=sender, chat_room=chat_room, message=message)

@@ -10,8 +10,8 @@
 {% block content %}
 <section class="px-14 mx-72 flex flex-col justify-center">
     {% if request.user == post.author %}
-    <a class="px-6 py-2 border " href="{% url 'posts:update-post' slug=post.slug %}">update</a>
-    <a class="px-6 py-2 border " href="{% url 'posts:delete-post' slug=post.slug %}">delete</a>
+    <a class="px-6 py-2 border " href="{% url 'posts:update-post' post.id %}">update</a>
+    <a class="px-6 py-2 border " href="{% url 'posts:delete-post' post.id %}">delete</a>
     {% endif %}
     <hr>
 <div class="bg-bgColor rounded-xl border border-gray-400 p-4 mb-4 flex flex-col">
@@ -65,7 +65,7 @@
 </div>
 <hr>
 <!-- comment form starts here -->
-<form class="flex items-center justify-between gap-3 w-full" action="{% url 'posts:detail-post' slug=post.slug%}" method="post">
+<form class="flex items-center justify-between gap-3 w-full" action="{% url 'posts:detail-post' post.id %}" method="post">
     {% csrf_token %}
     <!-- {{ post.id }} -->
     <input type="hidden" name="post_id" value="{{ post.id }}">

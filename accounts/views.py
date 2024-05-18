@@ -3,6 +3,12 @@ from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from django.contrib.auth import get_user_model
 from .forms import ProfileForm
 from .models import Profile
+from allauth.account.views import PasswordChangeView, PasswordSetView
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 User = get_user_model()
 
@@ -64,6 +70,30 @@ def other_user_profileview(request, id):
     context['profile'] = profile
     
     return render(request, 'accounts/other_userprofile.html', context)
+
+
+
+
+class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    success_url = reverse_lazy('feed:feed')  # Corrected success URL
+
+    def form_valid(self, form):
+        messages.success(self.request, "Password changed successfully.")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Custom logic for getting success URL if needed
+        success_url = self.success_url
+        print("Success URL:", success_url)  # Debug message
+        return success_url
+
+    def get(self, *args, **kwargs):
+        # Custom logic for handling GET requests
+        return super().get(*args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        # Custom logic for handling POST requests
+        return super().post(*args, **kwargs)
 
 
 

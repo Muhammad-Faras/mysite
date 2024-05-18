@@ -25,9 +25,11 @@ SECRET_KEY = 'django-insecure-r3fsi)#lzcs7l93sm-mxxxxp1h+-&95=!jqu-jyv3y1o4_rv+c
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
+
 
 ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -268,6 +270,7 @@ ACCOUNT_SESSION_REMEMBER = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 432000   # 5 days session
 
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.SignupFormExtended',
@@ -275,12 +278,13 @@ ACCOUNT_FORMS = {
 }
 
 
-# settings.py
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
 }
+
+
+
+
+handler404 = 'home.views.custom_404_view_name'

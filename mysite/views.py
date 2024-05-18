@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,HttpResponse
 from .forms import UserCreationFormExtended, AuthenticationFormExtended
 from django.contrib.auth import authenticate, login, logout
 
+
+
 # def signup_view(request):
 #     if request.method == 'POST':
 #         form = UserCreationFormExtended(request.POST)

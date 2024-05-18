@@ -15,10 +15,14 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField()
     likes = models.ManyToManyField(User, related_name='blogpost_like')
+    wishlist = models.BooleanField(default=False)
 
     def number_of_likes(self):
         return self.likes.count()
-  
+    
+    def number_of_comments(self):
+        return self.comments.count()
+    
     def save(self,*args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
@@ -37,3 +41,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.author} - {self.created_at}'
+    
+    

@@ -31,11 +31,11 @@
             </div>
             <p>{{ post.created_at }}</p> 
         </div>
-        <a class="text-xl mb-2 hover:text-primaryColor" href="{% url 'posts:detail-post' slug=post.slug %}">{{post.title}}</a>
+        <a class="text-xl mb-2 hover:text-primaryColor" href="{% url 'posts:detail-post' post.id %}">{{post.title}}</a>
         {% if post.description %}
             <p class="text-sm mb-2">{{ post.description|truncatechars:300 }}
                 {% if post.description|length > 300 %} 
-                    <a class="text-primaryColor" href="{% url 'posts:detail-post' slug=post.slug %}">MORE</a>
+                    <a class="text-primaryColor" href="{% url 'posts:detail-post' post.id %}">MORE</a>
                 {% endif %}</p>
         {% endif %}
         {% if post.post_img %}
