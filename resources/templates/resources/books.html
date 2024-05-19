@@ -15,4 +15,12 @@
         <a href="{{ book.bookpdf.url }}" target="_blank">View PDF</a>
         <hr>
     {% endfor %}
+
+    <hr><hr><hr>
+
+    {% for link in links %}
+        <a href="{{ link.link }}" target="_blank">{{link.link}}</a> <hr>
+    {% endfor %}
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=_GcQvhnDKTmis18V&amp;list=PLjVLYmrlmjGeZfYtmLwQdEhy5Aocp4IV2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 {% endblock %}
