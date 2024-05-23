@@ -8,6 +8,47 @@
  -->
 
 {% block content %}
+
+
+
+
+
+<div class="container mx-auto py-12">
+
+    <!-- Blog Creation Form -->
+    <section class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-4xl font-semibold mb-8 text-center text-gray-800">Create Blog</h2>
+        <form action="#" method="POST">
+            <div class="mb-8">
+                <label for="blog-title" class="block input-label mb-2">Blog Title</label>
+                <input type="text" id="blog-title" name="blog-title" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Enter blog title..." required>
+            </div>
+            <div class="mb-8">
+                <label for="blog-thumbnail" class="block input-label mb-2">Blog Thumbnail Image</label>
+                <input type="file" id="blog-thumbnail" name="blog-thumbnail" accept="image/*" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500" required>
+                <p class="text-sm text-gray-600 mt-2">Select an image to be used as the thumbnail for your blog.</p>
+            </div>
+            <div class="mb-8">
+                <label for="blog-description" class="block input-label mb-2">Blog Description</label>
+                <textarea id="blog-description" name="blog-description" rows="6" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Enter blog description..." required></textarea>
+            </div>
+            <div class="mb-8">
+                <label for="blog-content" class="block input-label mb-2">Blog Content</label>
+                <!-- CKEditor can be integrated here for rich text editing -->
+                <textarea id="blog-content" name="blog-content" rows="10" class="w-full input-field rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Enter blog content..." required></textarea>
+            </div>
+            <div class="flex justify-center">
+                <button type="submit" class="btn-publish text-white py-3 px-12 rounded-lg hover:bg-blue-600 focus:outline-none">Publish Blog</button>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+
+
+
+
 <section class="px-14 mx-52 flex flex-col justify-center">
     <form class="flex flex-col justify-center gap-6" action="{% url 'articles:publish_article' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}

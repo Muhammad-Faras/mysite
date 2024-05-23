@@ -6,38 +6,40 @@
 {% endblock head_title %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'account/css/logout.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'account/css/logout.css' %}"> -->
 {% endblock extra_head %}
 
 {% block content %}
 
-    <section class="section">
-        <div class="container">
-            <div class="title">
-                <div class="logo">
-                    <p>
-                        <span class="first-word">Py</span> Academia
-                    </p>
-                </div>
-                <div class="bottom-bar">
 
-                </div>
-            </div>
 
-            <div class="container-content">
-
-                <div style="margin-bottom: 40px;" class="content-text">
-                    <p>Are you sure you want to sign out?</p>  <!-- Fixed typo in this line -->
-                </div>
-                
-
-                <div class="form">
-                    <form action="{% url 'account_logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit">Logout Confirm</button>
-                    </form>
-                </div>
-            </div>
+<section class="bg-white p-10 rounded-lg shadow-lg max-w-md w-full space-y-6">
+    <div class="text-center">
+        <div class="text-3xl font-bold">
+            <p>
+                <span class="text-indigo-600">Py</span> Academia
+            </p>
         </div>
-    </section>
+        <div class="border-t-2 border-gray-300 mt-4"></div>
+    </div>
+
+    <div class="container-content space-y-6">
+        <div class="text-center">
+            <p class="text-gray-600 text-lg">Are you sure you want to sign out?</p>
+        </div>
+
+        <div class="form">
+            <form action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-indigo-600 text-white rounded-md py-3 px-4 text-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+Logout Confirm
+</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+
 {% endblock content %}

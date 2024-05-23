@@ -1,56 +1,77 @@
 {% extends 'base.html' %}
 
+{% block custom_styles %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    .bg-primary {
+        background-color: #4a90e2;
+    }
+    .text-primary {
+        color: #4a90e2;
+    }
+    .hover-bg-primary:hover {
+        background-color: #357bd8;
+    }
+    .hover-text-primary:hover {
+        color: #357bd8;
+    }
+    .border-primary {
+        border-color: #4a90e2;
+    }
+    .hover-border-primary:hover {
+        border-color: #357bd8;
+    }
+    .btn-publish {
+        background-color: #1abc9c;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 18px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-publish:hover {
+        background-color: #16a085;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- article navbar -->
 
-<section class="px-14 py-4 mx-52 flex flex-col justify-center">
-    <div class="flex items-center gap-2 mb-2">
-        
-        <a class="py-2 px-4 text-2xl text-anchorColor hover:text-black"  href="{% url 'articles:publish_article' %}"><i class="fa-regular fa-pen-to-square mr-2"></i>Write</a> <br>
-        <a class="py-2 px-4 text-2xl text-anchorColor hover:text-black"  href="{% url 'articles:related_article' %}">related_blogs</a> <br>
-        
-    </div>
-    <hr>
-    {% for article in articles %}
-    <div class=" rounded-xl  p-4 mb-4 flex">
-        <div class="flex flex-col w-1/2">
-                <div class="flex justify-between items-center mb-3 ">
-                    <div class="flex justify-center items-center gap-2">
-                        <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
-                            <a href="#" class="flex items-center justify-center">
-                                <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="flex items-center justify-center gap-3 ">
-                            <a class="text-4xl font-medium  hover:underline hover:text-primaryColor" href="{% url 'accounts:other_userprofile' article.author.id %}">{{ article.author.username}}</a>
-                            <p class="text-center">{{ article.article_created|date:"M d, Y" }}</p>
 
-                        </div>
-                    </div>
-                     
+<div class="container mx-auto py-6">
+    <!-- Publish Blog Button -->
+    <div class="flex justify-center items-center mb-8 border-b border-black pb-2">
+        <a href="create_blog.html" class="text-3xl flex items-center text-gray-700 hover:text-black">
+            <i class="far fa-edit mr-2 text-3xl"></i>
+            <span class="font-bold">Write</span>
+        </a>
+    </div>
+    
+
+    <h1 class="text-3xl font-semibold text-center mb-8">Latest Blogs</h1>
+    <!-- Blog Grid -->
+    <div class="sm:grid sm:grid-cols-1 md:grid md:grid-cols-3  gap-4">
+        <!-- Sample Blog -->
+        {% for article in articles %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img src="{{ article.article_thumbnail_image.url }}" alt="Blog Thumbnail" class="w-full h-64 object-cover object-center">
+            <div class="p-4">
+                <p class="text-gray-600 text-sm">{{ article.article_created|date:"M d, Y" }}</p>
+                <h2 class="text-xl font-semibold mt-2 mb-4">{{article.article_title}}</h2>
+                <div class="flex items-center justify-between">
+                    <p class="text-gray-700">{{ article.author.username}}</p>
+                    <a href="blog_detail.html" class="bg-primary text-white px-4 py-2 rounded-lg hover-bg-primary hover-text-white transition-colors duration-300">Read More</a>
                 </div>
-                <a class="text-xl mb-2 font-medium hover:text-primaryColor" href="{% url 'articles:article_detail' article.id %}">{{article.article_title}}</a>
-                <p class="text-sm mb-2">{{ article.article_description}}    
-                    
-                    {% if article.author.profile.skill %}
-                    <p class="px-4 py-2">{{ article.author.profile.skill.skill_name }}</p>
-                {% else %}
-                    <p>No skill found</p>
-                {% endif %}
+            </div>
         </div>
-        <div class="w-1/2 flex justify-center items-cente">
-            <img class="bg-bgColor" style="width: 200px" src="{{article.article_thumbnail_image.url}}" alt="">
-        </div>
+        {% endfor %}
+        <!-- Add more blogs here -->
     </div>
-        <hr>
-        {% endfor %} 
-</section>
-
-
-
-
-
+</div>
 
 
 

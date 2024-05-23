@@ -1,3 +1,6 @@
+{% load static %}
+{% load static tailwind_tags %}
+
 {% load i18n %}
 <!DOCTYPE html>
 <html>
@@ -9,12 +12,20 @@
             {% comment %} {% block head_title %}
             {% endblock head_title %} {% endcomment %}
         </title>
+
+        {% tailwind_css %}
+        {% block tailwind_block %}
+        {% endblock %}
+
+        <!-- Load Font Awesome CSS -->
+        <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
         {% block extra_head %}
         {% endblock extra_head %}
     </head>
-    <body>
+    <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+                   
         {% block body %}
-            
 
             <!-- <header class="header">
                 <nav>

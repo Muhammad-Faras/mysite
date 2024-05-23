@@ -1,6 +1,13 @@
 from django.shortcuts import render,redirect, HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from accounts.models import Profile
+from django.db.models import Q
+from posts.forms import FeedPostForm
+from django.contrib import messages
+from accounts.models import Follow
+from django.core.mail import send_mail
+from django.urls import reverse
 
 User = get_user_model()
 # Create your views here.
@@ -10,10 +17,43 @@ from posts.forms import CommentForm
 @login_required(login_url='/accounts/login/')
 def feed_view(request):
     context = {}
+    context['id'] = request.user.id
     posts_list = Post.objects.all()
     comments = Comment.objects.all()
     
     Comment_form = CommentForm()
+    
+    
+    if request.method == 'POST':
+        form = FeedPostForm(request.POST, request.FILES)
+        if form.is_valid():  # Correctly call is_valid() method
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+
+            post_url = request.build_absolute_uri(reverse('posts:detail-post', kwargs={'id': post.id}))
+            followers = Follow.objects.filter(following=post.author)
+            if followers.exists():
+                for follower in followers:
+                    try:
+                        send_mail(
+                            subject='Post Creation Notification',
+                            message=f'Hi {follower.follower.username}, {post.author.username} has created a new post.You can view it here: {post_url}',
+                            from_email='noorfaras809@gmail.com',
+                            recipient_list=[follower.follower.email],
+                        )
+                    except Exception as e:
+                        # Logging the error could be beneficial
+                        print(f'Failed to send email to {follower.follower.email}: {e}')
+                        messages.error(request, f'Post created but failed to send email to {follower.follower.username}: {e}')
+                
+        messages.success(request, 'Post created successfully!')
+        return redirect('feed:feed')
+    else:
+        feed_post_form = FeedPostForm()
+
+    context['feed_post_form'] = feed_post_form
+    
 # Inside your view function
     if request.method == 'POST':
         Comment_form = CommentForm(request.POST)
@@ -27,8 +67,27 @@ def feed_view(request):
             comment.save()
             return redirect('feed:feed')  # Redirect back to the same page
 
+    
+    try:
+        user_profile = Profile.objects.filter(user=request.user).first()
+    except Profile.DoesNotExist:
+        # Handle the case where the profile does not exist, if needed
+        return redirect('accounts:profile',id)
+
+    if user_profile:
+        related_skill_users = Profile.objects.filter(skill=user_profile.skill).exclude(user=request.user).select_related('user')
+        related_uni_users = Profile.objects.filter(university=user_profile.university).exclude(user=request.user).select_related('user')
+        
+        other_users = User.objects.exclude(
+            Q(profile__skill=user_profile.skill) |
+            Q(profile__university=user_profile.university) |
+            Q(pk=request.user.pk)
+        )
+        
+        context['related_skill_users'] = related_skill_users
 
     context['posts_list'] = posts_list
+    
     context['comments'] = comments
     context['Comment_form'] = Comment_form
     return render(request, 'feed/feed.html', context)

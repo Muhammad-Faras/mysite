@@ -9,7 +9,7 @@ urlpatterns = [
     path('detail/<int:id>', article_detail, name='article_detail'),
     path('update/<int:id>', article_update, name='article_update'),
     path('delete/<int:id>', article_delete, name='article_delete'),
-    path('related-articles/', related_articles_views, name='related_article'),
+    path('related-blogs/', related_articles_views, name='related_article'),
     
     
 ]

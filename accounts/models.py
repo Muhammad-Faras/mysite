@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
-
+from django.contrib.auth import get_user_model
 
 class CustomUserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -69,7 +69,7 @@ class Gender(models.Model):
     
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(null=True)
     university = models.ForeignKey(University, on_delete=models.SET_NULL, null=True)
     skill = models.ForeignKey(Skill,on_delete=models.SET_NULL, null=True)
     bio = models.TextField(blank=True)
@@ -77,17 +77,13 @@ class Profile(models.Model):
     twitter_link = models.URLField(blank=True)
     facebook_link = models.URLField(blank=True)
     github_link = models.URLField(blank=True)
-    birthday = models.DateField()
+    birthday = models.DateField(null=True)
     profile_img = models.ImageField(null=True, blank=True)
 
     def is_complete(self):
         # Check if all required fields are filled
         required_fields = [
-            self.age,
-            self.university,
             self.skill,
-            self.gender,
-            self.birthday
         ]
         if not all(required_fields):
             return False
@@ -98,3 +94,16 @@ class Profile(models.Model):
             return f'{self.user.username} (Superuser) profile'
         else:
             return f'({self.user.username}) profile  ({self.user.email})'
+
+
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(CustomUser, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(CustomUser, related_name='followers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.follower.username} is following {self.following.username}'
+
+    

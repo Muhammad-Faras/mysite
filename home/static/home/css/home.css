@@ -1,0 +1,6 @@
+{% load static %}
+
+.section-bg {
+    background-image: url('/static/images/home-bg-image.avif');
+    /* Other styles */
+}

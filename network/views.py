@@ -1,39 +1,43 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from accounts.models import Profile
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 User = get_user_model()
 
 @login_required(login_url='/accounts/login/')
 def network_view(request):
     context = {}
-    try:
-        user_profile = Profile.objects.filter(user=request.user).first()
-    except Profile.DoesNotExist:
-        # Handle the case where the profile does not exist, if needed
-        return redirect('accounts:profile')
+    user = request.user
 
-    if user_profile:
-        related_skill_users = Profile.objects.filter(skill=user_profile.skill).exclude(user=request.user).select_related('user')
-        related_uni_users = Profile.objects.filter(university=user_profile.university).exclude(user=request.user).select_related('user')
-        
-        other_users = User.objects.exclude(
-            Q(profile__skill=user_profile.skill) |
-            Q(profile__university=user_profile.university) |
-            Q(pk=request.user.pk)
-        )
-        
-        context['user_profile'] = user_profile
-        context['related_skill_users'] = related_skill_users
-        context['related_uni_users'] = related_uni_users
-        context['other_users'] = other_users
-        print('same skill ==== ',related_skill_users)
-        print('same uni ==== ',related_uni_users)
-        print('other users ==== ', other_users)
-    else:
-        return redirect('accounts:profile')
-    
-    
+    # Fetch the user's profile
+    user_profile = Profile.objects.filter(user=user).first()
+    if not user_profile:
+        messages.warning(request, 'Please complete your profile.')
+        return redirect('accounts:create_profile')
+
+    # Fetch users with the same skill and university, excluding the current user
+    related_skill_users = Profile.objects.filter(skill=user_profile.skill).exclude(user=user).select_related('user')
+    related_uni_users = Profile.objects.filter(university=user_profile.university).exclude(user=user).select_related('user')
+
+    context['related_skill_users'] = related_skill_users
+    context['related_uni_users'] = related_uni_users
+
+    # Fetch other users excluding those with the same skill or university, and the current user
+    other_users = User.objects.exclude(
+        Q(profile__skill=user_profile.skill) |
+        Q(profile__university=user_profile.university) |
+        Q(pk=user.pk)
+    )
+
+    context['other_users'] = other_users
+    context['user_profile'] = user_profile
+
+    # For debugging purposes
+    print('same skill ==== ', related_skill_users)
+    print('same uni ==== ', related_uni_users)
+    print('other users ==== ', other_users)
+
     return render(request, 'network/network.html', context)

@@ -27,7 +27,7 @@ urlpatterns = [
     path('feed/', include('feed.urls')),
     path('network/', include('network.urls')),
     path('posts/', include('posts.urls')),
-    path('articles/', include('articles.urls')),
+    path('blogs/', include('articles.urls')),
     path('resources/', include('resources.urls')),
     path('projects/', include('projects.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),

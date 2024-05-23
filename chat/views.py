@@ -2,36 +2,58 @@ from django.shortcuts import render,redirect,get_object_or_404
 from accounts.models import Profile
 from .models import ChatGroup,ChatMessage, PrivateChatRoom, PrivateMessage
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 User = get_user_model()
 # Create your views here.
 
+@login_required(login_url='/accounts/login/')
+
 def chat_view(request):
     context = {}
-    user_profile = Profile.objects.filter(user=request.user).first()
-    
-    if not user_profile:
-        return redirect('accounts:profile')
+    user = request.user
+    user_profile, created = Profile.objects.get_or_create(user=user)
+    if created:
+        # Redirect to a profile setup page if the profile was just created
+        return redirect('feed:feed')
+    # if not user_profile:
+    #     return redirect('accounts:profile')
     
     if user_profile.is_complete():
         user_skill = user_profile.skill.skill_name
         context['user_skill'] = user_skill
+    else:
+        messages.info(request, 'You need to complete your profile before accessing the Discussion Forum')
+        return redirect('accounts:create_profile')
         
-        try:
-            chat_group = ChatGroup.objects.get(skill__skill_name=user_skill)
-        except ChatGroup.DoesNotExist:
-            # Handle the case where the chat group does not exist
-            # You can choose to create a new ChatGroup here if needed
-            chat_group = ChatGroup.objects.create(skill=user_profile.skill)
+    try:
+        chat_group = ChatGroup.objects.get(skill__skill_name=user_skill)
+    except ChatGroup.DoesNotExist:
+        # Handle the case where the chat group does not exist
+        # You can choose to create a new ChatGroup here if needed
+        chat_group = ChatGroup.objects.create(skill=user_profile.skill)
         
-        # Retrieve chat messages for the ChatGroup
-        chat_messages = ChatMessage.objects.filter(group=chat_group)
-        context['chat_messages'] = chat_messages
+    skill_group = ChatGroup.objects.filter(skill__skill_name=user_skill).first()
+
+    # Check if the skill group exists
+    if skill_group:
+        # Retrieve all the participants associated with the skill group
+        participants = skill_group.participants.all()
         
-        print('----------------------------------')
-        print('user_skill ======', user_skill)
-        print('----------------------------------')
+    # Retrieve chat messages for the ChatGroup
+    chat_messages = ChatMessage.objects.filter(group=chat_group)
+    print('--------------------')
+    print(participants)
+    print('--------------------')
+        
+    context['chat_messages'] = chat_messages
+    context['participants'] = participants
+        
+        
+    print('----------------------------------')
+    print('user_skill ======', user_skill)
+    print('----------------------------------')
     
     return render(request, 'chat/chat.html', context)
 

@@ -2,159 +2,110 @@
 
 {% load static %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}"> -->
 {% endblock %}
 
 {% block content %}  
-<section class="parent-section">
 
-    {% if request.user.profile %}
-    {% else %}
-    <aside
-    class="fixed bottom-4 end-4 z-50 flex items-center justify-center gap-4 rounded-lg bg-black px-5 py-3 text-white"
-  >
-    <a href="#" target="_blank" rel="noreferrer" class="text-sm font-medium hover:opacity-75">
-      Hey! Complete Your Profile👋
-    </a>
-  
-    <button class="rounded bg-white/20 p-1 hover:bg-white/10">
-      <span class="sr-only">Close</span>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-        <path
-          fillRule="evenodd"
-          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </button>
-  </aside>
-  {% endif %}
 
-    <a class="inline-block text-center mb-2 px-6 py-2 text-white bg-primaryColor" href="">chat</a>
-            <div class="child-sec1">
-        <div class="child-child1">
-            
-            <div>
-                {% if user.profile.profile_img %}
-            
-                    <img width="40px" src="{{ user.profile.profile_img.url }}" alt="">
+    <!-- Cover Photo Section -->
+    <div class="bg-white shadow">
+        <div class="h-56 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/1500x400');">
+        </div>
+        <div class="flex justify-center -mt-16">
+            <div class="w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-full overflow-hidden border-4 border-white">
+                {% if user_profile.user.profile.profile_img %}
+                <img src="{{ user_profile.user.profile.profile_img.url }}" alt="Profile Picture" class="w-full h-full object-cover">
                 {% else %}
-                    <i class="fa-solid fa-user" style="color: #a0b4b7; font-size: 40px;"></i>
                 {% endif %}
             </div>
         </div>
-        <div class="name-title">
-            <h1>{{ user.first_name }} {{ user.last_name }} &nbsp; &nbsp; &nbsp; ({{ user.username }})</h1>
-            <p>{{ request.user }}</p>
-        </div>
-        <div style="display: flex;">
-            <a href="{% url 'posts:my_posts' %}">Mypsots</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-            <a href="{% url 'account_logout' %}">logout</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
-            <a href="{% url 'posts:wishlist' %}">wishlist</a>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;
+    </div>
 
-            {% if user.has_usable_password %}
-                <!-- User has already set a password -->
-                <a href="{% url 'accounts:account_change_password' %}">Change password</a>
-            {% else %}
+    <!-- User Info Section -->
+    <div class="text-center mt-6 sm:mt-4 px-4">
+        
+
+        <h1 class="text-2xl sm:text-3xl font-bold">{{ user_profile.user.username }}</h1>
+        <p class="text-gray-600">{{ user_profile.user.email }}</p>
+        <p class="text-gray-700">{{ user_profile.user.profile.skill }}</p>
+        <p>{{ users_you_are_following }} following</p>
+        <p>{{ users_following_you }} followers</p>
+        
+        <div class="mt-4 flex justify-center space-x-2">
+            
+
+            {% if is_following %}
+            <form action="{% url 'accounts:unfollow' user_profile.user.id %}" method="post">
+                {% csrf_token %}
+                <button class="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" type="submit">Unfollow</button>
+            </form>
+        {% else %}
+            <form action="{% url 'accounts:follow' user_profile.user.id %}" method="post">
+                {% csrf_token %}
+                <button class="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" type="submit">Follow</button>
+            </form>
+        {% endif %}
+
+
+            <a href="{% url 'chat:private_chatroom' user_profile.user.id %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Message</a>
+            {% if request.user.is_authenticated %}
+                {% if request.user == user_profile.user %}
+            <a href="{% url 'accounts:create_profile' %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Update Profile</a>
             {% endif %}
-
-
-
-
+            
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Navigation Tabs -->
+    <div class="mt-6 bg-white shadow">
+        <div class="flex justify-center space-x-2 sm:space-x-8">
+            <a href="#" class="py-4 px-3 sm:px-6 block text-blue-500 border-b-2 border-blue-500 font-medium">posts</a>
+            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">About</a>
+            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">Friends</a>
+            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">Photos</a>
+            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">More</a>
         </div>
     </div>
 
-    <div class="child-sec2">
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-        <h1>Personal Information</h1>
-            <div>
-                <label for="">Profile Picture</label>
-                {% if user == request.user %}
-                    {{ form.profile_img }}
-                {% else %}
-                    <input type="text" value="{{ form.profile_img.value }}" readonly>
+    <!-- Timeline Section -->
+    <div class="mt-6 max-w-2xl mx-auto px-4 sm:px-0">
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md space-y-4">
+            <!-- Post 1 -->
+            {% for post in user_posts %}
+            <div class="border-b pb-4">
+                <div class="flex space-x-4">
+                    {% if post.author.profile.profile_img %}
+                        <img src="{{ post.author.profile.profile_img.url }}" alt="Us" class="w-12 h-12 rounded-full">
+                    {% else %}
+                        <img src="https://via.placeholder.com/50" alt="User Avatar" class="w-12 h-12 rounded-full">
+                    {% endif %}
+                    <div>
+                        <h3 class="text-lg font-semibold">{{post.author.username}}</h3>
+                        <p class="text-gray-500 text-sm">{{post.created_at}}</p>
+                    </div>
+                </div>
+                <p class="mt-2 text-gray-700">{{post.title}}</p>
+                {% if post.description %}
+                    <p class="text-sm mb-2 break-words">{{ post.description|truncatechars:300 }}
+                        {% if post.description|length > 300 %} 
+                            <a class="text-indigo-600" href="{% url 'posts:detail-post' post.id %}">MORE</a>
+                        {% endif %}</p>
                 {% endif %}
-            </div>
-
-            <div>
-                <label for="">University</label>
-                {% if user == request.user %}
-                    {{ form.university }}
-                {% else %}
-                    <input type="text" value="{{ form.university.value }}" readonly>
+                {% if post.post_img %}
+                <img src="{{ post.post_img.url }}" alt="Post Image" class="mt-2 rounded-lg w-full object-cover">
                 {% endif %}
+                <!-- <div class="flex space-x-4 mt-2">
+                    <button class="text-blue-500 hover:underline">Like</button>
+                    <button class="text-blue-500 hover:underline">Comment</button>
+                    <button class="text-blue-500 hover:underline">Share</button>
+                </div> -->
             </div>
-            <div>
-                <label for="">Skill</label>
-                {% if user == request.user %}
-                    {{ form.skill }}
-                {% else %}
-                    <input type="text" value="{{ form.skill.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <label for="">Gender</label>
-                {% if user == request.user %}
-                    {{ form.gender }}
-                {% else %}
-                    <input type="text" value="{{ form.gender.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <label for="">Age</label>
-                {% if user == request.user %}
-                    {{ form.age }}
-                {% else %}
-                    <input type="number" value="{{ form.age.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <label for="">Date Of Birth</label>
-                {% if user == request.user %}
-                    {{ form.birthday }}
-                {% else %}
-                    <input type="date" value="{{ form.birthday.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <label for="">About</label>
-                {% if user == request.user %}
-                    {{ form.bio }}
-                {% else %}
-                    <textarea readonly>{{ form.bio.value }}</textarea>
-                {% endif %}
-            </div>
-            <h1>Social Media Links </h1>
-            <div>
-                <label for="">Twitter</label>
-                {% if user == request.user %}
-                    {{ form.twitter_link }}
-                {% else %}
-                    <input type="text" value="{{ form.twitter_link.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <label for="">Facebook</label>
-                {% if user == request.user %}
-                    {{ form.facebook_link }}
-                {% else %}
-                    <input type="text" value="{{ form.facebook_link.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <label for="">Github</label>
-                {% if user == request.user %}
-                    {{ form.github_link }}
-                {% else %}
-                    <input type="text" value="{{ form.github_link.value }}" readonly>
-                {% endif %}
-            </div>
-            <div>
-                <button type="submit" {% if user != request.user %} disabled {% endif %}>Save</button>
-            </div>
-        </form>
+            {% endfor %}
+            
+        </div>
     </div>
-</section>
+    
 
 {% endblock %}

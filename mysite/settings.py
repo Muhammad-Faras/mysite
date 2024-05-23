@@ -140,6 +140,9 @@ MIDDLEWARE = [
     
 ]
 
+# Ensure you have the message storage backend set up
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 ROOT_URLCONF = 'mysite.urls'
 
 TEMPLATES = [
@@ -270,6 +273,7 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.SignupFormExtended',
+    'login': 'accounts.forms.CustomLoginForm',
     # You can define other custom forms here if needed
 }
 

@@ -6,71 +6,82 @@
     Signup
 {% endblock head_title %}
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'account/css/signup.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'account/css/signup.css' %}"> -->
 {% endblock extra_head %}
 
 {% block content %}
-<div class="parent-section">
+
+<div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full space-y-6">
+    <h2 class="text-2xl font-bold text-center">Create Your Account</h2>
+    
+    <form class="space-y-4" method="post" action="{% url 'account_signup' %}" >
+        {% csrf_token %}
+        <div>
+            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+            {{form.username}}
+        </div>
+
+        <div>
+            <label for="firstname" class="block text-sm font-medium text-gray-700">First Name</label>
+            {{form.first_name}}
+        </div>
+
+        <div>
+            <label for="lastname" class="block text-sm font-medium text-gray-700">Last Name</label>
+            {{form.last_name}}
+        </div>
+
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            {{form.email}}
+        </div>
         
-    <div class="register-title">
-        <h1>Make the most of your learning life</h1>
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            {{form.password1}}
+        </div>
+
+        <div>
+            <label for="confirmpassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+            {{form.password2}}
+        </div>
         
+        <div>
+            <button type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Sign Up
+            </button>
+        </div>
+    </form>
+    
+    <div class="text-center text-sm text-gray-500">
+        Already have an account? 
+        <a href="{{ login_url }}" class="font-medium text-indigo-600 hover:text-indigo-500">Log in</a>
     </div>
 
-   
-
-
-    <div class="register-card">
-        <form method="post" action="{% url 'account_signup' %}" >
-            {% csrf_token %}
-            <label>Username</label>
-            {{form.username}}
-            <label>First Name</label>
-            {{form.first_name}}
-            <label>Last Name</label>
-            {{form.last_name}}
-            <label>Email</label>
-            {{form.email}}
-            <label>Password</label>
-            {{form.password1}}
-            <label>Confirm Password</label>
-            {{form.password2}}
-            <p class="register-terms-para">By clicking Agree & Join, you agree to the PyAcademia <a href="">User Agreement,  Privacy Policy</a>, and <a href="">Cookie Policy.</a></p>
-                
-            <button class="joinbtn" type="submit">Agree & Join</button>
-        </form>
-
-        <div class="horizontal-line">
-            <p>or</p>
+    <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
         </div>
-            <!--  -->
-        <div class="partylogin-auth">
-            <div class="partylogin ">
-                <a href="{% provider_login_url 'google' action='reauthenticate' %}">
-                    <div class="party-title">
-                        <p>Continue with Google</p>
-                    </div>
-                    <!-- <div class="glogin-icon"> -->
-                        <img src="{% static 'account/images/google-icon40.png' %}" alt="google-login-icon">
-                    <!-- </div> -->
-                </a>
-            </div>
-
-           
+        <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">or</span>
         </div>
-
-        <div class="login">
-            <p>Already on PyAcademia? <a href="{{ login_url }}">Sign in</a></p>
-        </div>
-
-
-        
+    </div>
+    
+    <div>
+        <a href="{% provider_login_url 'google' action='reauthenticate' %}"
+                class="w-full inline-flex justify-center items-center gap-2 py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <img src="{% static 'account/images/google-icon40.png' %}" alt="">
+                <!-- <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+                <path d="M24 22V26H34C33.47 29.67 30.78 32 26 32C21.02 32 18 28.53 18 24C18 19.47 21.02 16 26 16C28.17 16 29.9 16.82 31 18.07L34.13 15C31.93 12.56 28.96 11 26 11C19.97 11 15 16.02 15 22C15 28.02 19.97 33 26 33C31.54 33 36 29 36 24.5H24Z" fill="#4285F4"/>
+                <path d="M15.27 15.9L18.35 12.8C20.03 10.56 23.03 9 26 9C30.42 9 34.43 12.07 35.57 15.72L31.13 19.4C30.35 17.61 28.47 16 26 16C23.54 16 21.64 17.35 21.04 19.3L15.27 15.9Z" fill="#34A853"/>
+                <path d="M15 22C15 24.67 16.19 26.85 17.97 28.1L15.3 31.53C13.58 29.75 12 26.99 12 22.99C12 18.99 13.58 16.23 15.3 14.45L18.03 17.88C16.23 19.13 15 21.31 15 22Z" fill="#FBBC05"/>
+                <path d="M26 33C29.96 33 32.47 31.57 33.68 30.53L36.67 33.62C34.35 35.97 31.47 37 26 37C21.03 37 17 33.53 17 28C17 26.36 17.56 24.86 18.5 23.64L21.79 27.56C21.26 28.47 20.48 29.02 19.85 29.02C19.22 29.02 18.6 28.89 18.02 28.62C18.5 31.19 21.02 33 26 33Z" fill="#EA4335"/>
+            </svg> -->
+            Sign Up with Google
+        </a>
     </div>
 </div>
-
-
-
-
 
    
     {% comment %} {% if SOCIALACCOUNT_ENABLED %}

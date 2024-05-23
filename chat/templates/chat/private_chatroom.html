@@ -3,103 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>PyAcademia | Discussion Forum</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding:0;
+        /* CSS for messages sent by the current user */
+        .message-sent {
+            justify-content: flex-end;
         }
-        .section {
-            display: flex;
-        }
-        .section .chat-name {
-            width: 20%;
-            height: 100%;
-            margin-right: 10px;
-        }
-        .chat-input {
-            width: 75%;
-            height: 100%;
+
+        /* CSS for messages sent by other users */
+        .message-received {
+            justify-content: flex-start;
         }
     </style>
 </head>
-<body>
-    <section class="section">
-        <div class="chat-name">  
-            i am {{request.user.username}}  <br>
-            <!-- <h1> my roomrs are </h1>
-            {% for i in room %}
-                <a href="{% url 'chat:private_chatroom' i.user2.id %}">{{i.user2.username}}</a> <br>
-            {% endfor %} -->
+<body class="bg-gray-100 font-sans">
 
-            <h3>Your Chat Rooms</h3>
-<ul>
+<div class="flex h-screen">
+    <!-- User List -->
+    <div class="w-1/4 bg-gray-200 overflow-y-auto p-4">
+        <h1 class="text-lg font-semibold mb-4">Chat Users {{ user_2.id|json_script:'user_2id' }}</h1>
+        <!-- Sample user list -->
         {% for room in rooms %}
             {% if room.user1 == user_1 %}
                 {% with other_user=room.user2 %}
-                    <li>
-                        <a href="{% url 'chat:private_chatroom' other_user.id %}" class="block p-2 rounded
-                            {% if room.id in last_message_status %}
-                                bg-green-500 text-white
-                            {% else %}
-                                bg-gray-200 text-black
-                            {% endif %}
-                        ">
-                            Chat with {{ other_user.username }}
-                        </a>
-                    </li>
+                    <a href="{% url 'chat:private_chatroom' other_user.id %}" class="px-4 flex items-center py-3 border-b rounded-2xl hover:bg-gray-300 transition-colors duration-300">
+                        {% if other_user.profile.profile_img %}
+                            <img src="{{ other_user.profile.profile_img.url }}" alt="User" class="h-12 w-12 rounded-full mr-4 shadow-md">
+                        {% else %}
+                            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-12 w-12 rounded-full mr-4 shadow-md">
+                        {% endif %}
+                        <span class="text-lg font-semibold">{{ other_user.username }}</span>
+                    </a>
                 {% endwith %}
             {% else %}
                 {% with other_user=room.user1 %}
-                    <li>
-                        <a href="{% url 'chat:private_chatroom' other_user.id %}" class="block p-2 rounded
-                            {% if room.id in last_message_status %}
-                                bg-green-500 text-white
-                            {% else %}
-                                bg-gray-200 text-black
-                            {% endif %}
-                        ">
-                            Chat with {{ other_user.username }}
-                        </a>
-                    </li>
+                    <a href="{% url 'chat:private_chatroom' other_user.id %}" class="px-4 flex items-center py-3 border-b rounded-2xl hover:bg-gray-300 transition-colors duration-300">
+                        {% if participant_user.profile.profile_img %}
+                            <img src="{{ other_user.profile.profile_img.url }}" alt="User" class="h-12 w-12 rounded-full mr-4 shadow-md">
+                        {% else %}
+                            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-12 w-12 rounded-full mr-4 shadow-md">
+                        {% endif %}
+                        <span class="text-lg font-semibold">{{ other_user.username }}</span>
+                    </a>
                 {% endwith %}
             {% endif %}
         {% endfor %}
-    </ul>
-        
-            <!-- {% for j in chat_room %}
-            {{j.user_2}}
-            {% endfor %} -->
-            <!-- <a href="{% url 'chat:private_chatroom' user_2.id %}">chat with {{user_2.username}}</a> <br> -->
-            <!-- {% for chat_room in chat_rooms %}
-            <a href="{% url 'chat:private_chatroom' chat_room.user_2.id %}">{{ chat_room.user_2.username }}</a>
-                <hr>
-            {% endfor %} -->
-        </div>
-        <hr>
-        
-        <div class="chat-input">
-            {% if user_1.username == user_2.username %}
-                <h1>{{user_1.username}} (Me)</h1>
-            {% else %}
-                <h1>Chat between {{ user_1.username }} and {{ user_2.username }}</h1>
-            {% endif %}
-            <textarea name="message-log" id="message-log" cols="100" rows="30">
-                {% for i in messages %}
-                {{i.message}}
-                {% endfor %}
-            </textarea> <br>
-            <input id="message-input-text" name="message-input" type="text" placeholder="enter your message here"> <br>
-            <button id="message-submit-btn">Send</button>
-        </div>
-    </section>
-    
-    <!-- Store skill name in a script tag -->
-    {{ user_2.id|json_script:'user_2id' }}
+    </div>
 
-    <script>
-        const user2Id = JSON.parse(document.getElementById('user_2id').textContent);
+    <!-- Chat Section -->
+    <div class="w-3/4 bg-white p-4">
+        <!-- Chat Messages -->
+        <div id="message-container" class="h-4/5 bg-gray-100 overflow-y-auto p-4 mb-4">
+            
+            <!-- Add more chat messages here -->
+        </div>
+
+        <!-- Chat Input -->
+        <div class="flex items-center">
+            <input id="message-input-text" type="text" class="flex-1 border border-gray-300 p-3 mr-2 focus:outline-none focus:ring focus:border-blue-500 rounded-lg" placeholder="Type your message...">
+            <button id="message-submit-btn" class="bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const user2Id = JSON.parse(document.getElementById('user_2id').textContent);
         console.log('User 2 ID:', user2Id);
     
         var awsc = new WebSocket(
@@ -110,38 +79,55 @@
             + '/'
         );
     
-        awsc.onopen = function(){
-            console.log('WebSocket connection established');
-        };
-    
-        awsc.onmessage = function(event){
-            console.log('Message received:', event);
-            console.log('Message received:', event.data);
-            const data = JSON.parse(event.data);
+    awsc.onopen = function(){
+        console.log('WebSocket connection established');
+    };
 
-            if (data && data.private_message && data.sender ) {
-                document.querySelector('#message-log').value += data.private_message + data.sender + '\n';  
-                
-                var textarea = document.querySelector('#message-log');
-                textarea.scrollTop = textarea.scrollHeight;
+    awsc.onmessage = function(event){
+        console.log('message receive from server...', event);
+        console.log('message receive from server...', event.data);
+        const data = JSON.parse(event.data);
+        
+        if (data && data.private_message  && data.sender ) {
+            const messageContainer = document.getElementById('message-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('flex', 'mb-4', 'break-words');
+            if (data.user === "{{ request.user.username }}") {
+                messageDiv.classList.add('message-sent');
+            } else {
+                messageDiv.classList.add('message-received');
             }
-           
-        };
-    
-        awsc.onclose = function(){
-            console.log('WebSocket connection closed');
-        };
-    
-        document.getElementById('message-submit-btn').onclick = function(event){
-            const messageInputDom = document.getElementById('message-input-text');
-            const message = messageInputDom.value;
-            console.log('Sending message:', message);
-            awsc.send(JSON.stringify({
-                'msg': message,
-            }));
-            messageInputDom.value = '';
-        };
-    </script>
-    
+            messageDiv.innerHTML = `
+                <div class="rounded-lg bg-blue-500 text-white py-2 px-4 max-w-xs">
+                    <p class="font-semibold">${data.sender}</p>
+                    <p>${data.private_message}</p>
+                </div>
+            `;
+            messageContainer.appendChild(messageDiv);
+
+            var textarea = document.querySelector('#message-container');
+            textarea.scrollTop = textarea.scrollHeight;
+        }
+        
+        
+    }
+
+    awsc.onclose = function(){
+        console.log('connection closed');
+    };
+
+    document.getElementById('message-submit-btn').onclick = function(event){
+        const messageInputDom = document.getElementById('message-input-text');
+        const message = messageInputDom.value;
+        console.log(message);
+        awsc.send(JSON.stringify({
+            'msg': message
+        }));
+        messageInputDom.value = '';
+    };
+</script>
+
 </body>
 </html>
+
+

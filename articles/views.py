@@ -1,7 +1,10 @@
 from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from .forms import ArticleForm
 from .models import ArticleModel
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
+@login_required(login_url='/accounts/login/')
 def article_view(request):
     context = {}
     articles = ArticleModel.objects.all()
@@ -9,6 +12,7 @@ def article_view(request):
     return render(request, 'articles/articles.html', context)
 
 
+@login_required(login_url='/accounts/login/')
 def publish_article(request):
     context = {}
     if request.method == 'POST':
@@ -26,7 +30,8 @@ def publish_article(request):
     
     return render(request, 'articles/publish_article.html', context)
          
-
+         
+@login_required(login_url='/accounts/login/')
 def article_detail(request,id):
     context = {}
     article = get_object_or_404(ArticleModel,pk=id)
@@ -36,7 +41,7 @@ def article_detail(request,id):
 
 
 
-
+@login_required(login_url='/accounts/login/')
 def article_update(request, id):
     context = {}
     article = get_object_or_404(ArticleModel,pk=id)
@@ -57,6 +62,8 @@ def article_update(request, id):
     
     return render(request, 'articles/update_article.html', context)
 
+
+@login_required(login_url='/accounts/login/')
 def article_delete(request, id):
     context = {}
     article = get_object_or_404(ArticleModel,pk=id)
@@ -66,6 +73,8 @@ def article_delete(request, id):
         return redirect('articles:articles')
     
 
+
+@login_required(login_url='/accounts/login/')
 def related_articles_views(request):
     context = {}
     

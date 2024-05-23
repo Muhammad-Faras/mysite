@@ -15,40 +15,149 @@
 
     {% block extra_css %}
     {% endblock %}
+
+    <style>
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .carousel-item {
+            flex: 0 0 calc(100% / 3);
+        }
+        .carousel-buttons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        @media (min-width: 1024px) {
+            #menu-toggle {
+                display: none;
+            }
+            #mobile-menu {
+              display: none;
+            }
+        }
+        
+    </style>
+
 </head>
-<body  class="font-sans bg-bgColor">     
-    <header class="flex justify-between items-center p-4 bg-[white] border border-red-2 lg:px-12">
-        <div class="flex gap-10 items-center ">
-            <a class="cursor-pointer text-3xl text-primaryColor" href="{% url 'home:home' %}">PyAcademia</a>
-            <nav class="flex gap-4">
-                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'home:home' %}">HOME</a> 
-                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'feed:feed' %}">FEED</a> 
-                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'network:network' %}">NETWORK</a> 
-                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'articles:articles' %}">BLOGS</a> 
-                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'projects:projects' %}">PROJECTS</a>
-                <a class="text-anchorColor font-medium cursor-pointer hover:text-primaryColor" href="{% url 'resources:books' %}">RESOURCES</a>
-            </nav>
-        </div>
-       <div>
-        <form action="">
-            <input type="text" placeholder="asdasd">
-            <button type="submit">search</button>
-        </form>
-       </div>
-        <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
-            <a href="{% url 'accounts:profile'%}" class="flex items-center justify-center">
-                <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
-            </a>
-        </div>
+<body  class="bg-gray-100 font-sans">  
     
 
-        <!-- <div>
-            <i class="fa-solid fa-magnifying-glass text-anchorColor text-lg cursor-pointer"></i>
-        </div> -->
-        
+    <header class="bg-white shadow-md mb-4">
+        <div class="container mx-auto flex justify-between items-center p-4 lg:px-12">
+            <a class="cursor-pointer text-3xl text-indigo-600 font-bold" href="#">PyAcademia</a>
+            <nav class="hidden lg:flex gap-4">
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'home:home' %}">HOME</a> 
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'feed:feed' %}">FEED</a> 
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'network:network' %}">NETWORK</a> 
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
+                <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
+            </nav>
+            <div class="hidden lg:flex items-center space-x-4">
+                <form action="#" method="post" class="relative">
+                    <input
+                        type="text"
+                        id="search-query"
+                        name="search-query"
+                        placeholder="Search for..."
+                        class="rounded-md border-gray-200 py-2.5 pr-10 shadow-sm sm:text-sm"
+                    />
+                    <span class="absolute inset-y-0 right-0 grid w-10 place-content-center">
+                        <button type="submit" class="text-gray-600 hover:text-gray-700">
+                            <span class="sr-only">Search</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-4 w-4"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                />
+                            </svg>
+                        </button>
+                    </span>
+                </form>
+                <div class="flex items-center justify-center rounded-full border border-indigo-600 w-12 h-12">
+                    <a href="#" class="flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600 text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="lg:hidden">
+                <button id="menu-toggle" class="text-gray-600 hover:text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <nav id="mobile-menu" class="hidden lg:hidden bg-white shadow-md p-4 space-y-2">
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'home:home' %}">HOME</a> 
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'feed:feed' %}">FEED</a> 
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'network:network' %}">NETWORK</a> 
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
+            <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
+            <form action="#" method="post" class="relative">
+                <label for="mobile-search-query" class="sr-only">Search</label>
+                <input
+                    type="text"
+                    id="mobile-search-query"
+                    name="search-query"
+                    placeholder="Search for..."
+                    class="w-full rounded-md border-gray-200 py-2.5 pr-10 shadow-sm sm:text-sm"
+                />
+                <span class="absolute inset-y-0 right-0 grid w-10 place-content-center">
+                    <button type="submit" class="text-gray-600 hover:text-gray-700">
+                        <span class="sr-only">Search</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="h-4 w-4"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                            />
+                        </svg>
+                    </button>
+                </span>
+            </form>
+        </nav>
     </header>
+
+
+   
     {% block content %}
     
+    {% endblock %}
+
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+
+    {% block extra_js %}
     {% endblock %}
 </body>
 </html>
