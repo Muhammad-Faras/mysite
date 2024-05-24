@@ -78,16 +78,16 @@ class ProfileForm(forms.ModelForm):
         exclude = ['user']
         
         widgets = {
-            'profile_img': forms.ClearableFileInput(attrs={'class': 'form-input'}),
-            'university': forms.Select(attrs={'class': 'form-input'}),
-            'skill': forms.Select(attrs={'class': 'form-input'}),
-            'gender': forms.Select(attrs={'class': 'form-input'}),
-            'age': forms.NumberInput(attrs={'class': 'form-input'}),
-            'birthday': forms.DateInput(attrs={'class': 'form-input', 'type': 'date'}),
-            'bio': forms.Textarea(attrs={'class': 'form-input'}),
-            'twitter_link': forms.URLInput(attrs={'class': 'form-input'}),
-            'facebook_link': forms.URLInput(attrs={'class': 'form-input'}),
-            'github_link': forms.URLInput(attrs={'class': 'form-input'}),
+            'profile_img': forms.ClearableFileInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'university': forms.Select(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'skill': forms.Select(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'gender': forms.Select(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'age': forms.NumberInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'birthday': forms.DateInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm', 'type': 'date'}),
+            'bio': forms.Textarea(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'twitter_link': forms.URLInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'facebook_link': forms.URLInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
+            'github_link': forms.URLInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
         }
         
         # widgets = {

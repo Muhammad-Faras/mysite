@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        <p class="w-full  bg-indigo-600 text-white py-2 px-4 text-center">{{ message }}</p>    
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+<div class="container mx-auto py-6">
+
+    <!-- Grid Section - User Profiles -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- User Profile Card 1 -->
+        {% if search_result %}
+        {% for search_user in search_result %}
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <div class="text-center">
+                {% if search_user.user.profile.profile_img %}
+                        <img src="{{ search_user.user.profile.profile_img.url }}" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
+                    {% else %}
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
+                    {% endif %}
+                    
+                    {% if search_user.profile %}
+                    <a href="{% url 'accounts:profile' search_user.id %}" class="block text-lg font-semibold">{{search_user.username}}</a>
+                    {% else %}
+                    <p class="text-lg font-semibold">{{search_user.username}}</p>
+                    {% endif %}
+                {% if search_user.profile.skill %}
+                    <p class="text-sm text-gray-600">{{search_user.profile.skill}}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <a href="{% url 'network:network' %}">go back</a>
+        {% endif %}
+        <!-- User Profile Card 2 -->
+        <!-- Add more user profile cards as needed -->
+    </div>
+
+            
+</div>
+{% endblock %}

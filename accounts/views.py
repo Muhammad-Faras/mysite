@@ -60,8 +60,8 @@ def profile_view(request, id):
             user_profile = Profile.objects.filter(user=user).first()
             user_posts = Post.objects.filter(author=user)
         else:
-            messages.warning(request, 'Please create a profile.')
-            return redirect('accounts:create_profile')
+            messages.warning(request, 'user have not created profile yet')
+            return redirect('feed:feed')
     except:
         
         messages.info(request, 'please! Complete your profile')
@@ -82,6 +82,7 @@ def profile_view(request, id):
     return render(request, 'accounts/profile.html', context)
 
 
+@login_required(login_url='/accounts/login/')
 def create_profile_view(request):
     context = {}
     

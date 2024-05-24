@@ -41,3 +41,29 @@ def network_view(request):
     print('other users ==== ', other_users)
 
     return render(request, 'network/network.html', context)
+
+
+
+@login_required(login_url='/accounts/login/')
+def search_users_view(request):
+    context = {}
+
+    if request.method == 'POST':
+        search_query = request.POST.get('search-query')
+        if search_query:
+            search_result = User.objects.filter(
+                Q(email__icontains=search_query) |
+                Q(profile__university__university_name__icontains=search_query) |
+                Q(profile__skill__skill_name__icontains=search_query)
+            ).distinct()
+            context['search_result'] = search_result
+            if search_result.exists():
+                context['search_result'] = search_result
+                messages.success(request, 'Users searched successfully.')
+            else:
+                messages.info(request, 'No users found matching the search query.')
+            print("Network search results:", search_result)  # Debugging info
+            
+            return render(request, 'network/user_search.html', context)
+    else:
+        return redirect('network:network')

@@ -116,6 +116,7 @@ def delete_post_view(request, id):
     if request.user.is_authenticated:
         if request.method == 'POST':
             post.delete()
+            messages.info(request,'post deleted successfully')
             return redirect('feed:feed')  # Redirect to the post list page after successfully deleting the post
     context['post']= post
     return render(request, 'posts/delete_confirm_post.html', context)

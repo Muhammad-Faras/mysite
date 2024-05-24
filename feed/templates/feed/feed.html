@@ -1,6 +1,14 @@
 
 {% extends 'base.html' %}
+{% load static %}
 
+{% block title %}
+PyAcademia | Feed
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'feed/css/feed.css' %}">
+    {% endblock %}
 {% block content %}
 <div class="container mx-auto py-6">
     <!-- Parent Div -->
@@ -15,7 +23,7 @@
     {% endif %}
     <div class="flex flex-wrap justify-between">
         <!-- Left Side - My Profile Info -->
-        <div class="sm:hidden md:block md:w-1/4 pr-4 ">
+        <div class="hide-on-small md:block lg:block lg:w-1/4 pr-4">
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
                 <h2 class="text-lg font-semibold mb-4">Me</h2>
                 {% if request.user.profile.profile_img %}
@@ -23,7 +31,7 @@
 {% else %}
     <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
 {% endif %}
-<a href="#" class="block text-lg text-center mb-2 hover:underline">{{request.user.username}}</a>
+<a href="{% url 'accounts:profile' request.user.id %}" class="block text-lg text-center mb-2 hover:underline">{{request.user.username}}</a>
                 {% if request.user.profile.is_complete %}
                     <p class="text-sm text-gray-600 text-center">{{request.user.profile.skill}}</p>
                 {% else %}
@@ -43,7 +51,7 @@
                     {{feed_post_form.title}}
                     <!-- Add Django ImageField here -->
                     <div class="flex justify-between mt-4">
-                            <label for="image-upload" class="cursor-pointer flex items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <label for="image-upload" class="cursor-pointer flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                                 <i class="fas fa-upload"></i>
                                 <span>Upload Image</span>
                             </label>
@@ -51,11 +59,25 @@
                         
                         
 
-                        <button type="submit" class="bg-blue-500 text-white py-2 px-8 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Post</button>
+                        <button type="submit" class="bg-indigo-600 text-white py-2 px-8 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-blue-600">Post</button>
                     </div>
                 </form>
             </div>
             
+            <!-- Interest Dropdown -->
+            <div class=" mb-6 w-full">
+                <button id="interest-button" class="w-full bg-indigo-600 text-white py-2 px-8 rounded hover:bg-indigo-700 flex justify-between items-center">
+                    Interest
+                    <svg class="ml-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="interest-menu" class="hidden relative mt-2 w-full bg-white shadow-lg rounded-md z-10">
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Follow</a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Skill</a>
+                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">University</a>
+                </div>
+            </div>
 
             <!-- Posts -->
             <div class="space-y-6">
@@ -66,7 +88,11 @@
                         <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-10 w-10 rounded-full">
                         <div class="ml-4">
                             <a href="{% url 'chat:private_chatroom' post.author.id %}"><i class="fa-solid fa-message"></i></a>
-                            <a href="{% url 'accounts:profile' post.author.id %}" class="text-lg font-semibold hover:underline">{{post.author.username}}</a>
+                            {% if post.author.profile %}
+                                <a href="{% url 'accounts:profile' post.author.id %}" class="text-lg font-semibold hover:underline">{{post.author.username}}</a>
+                            {% else %}
+                            <a href="" class="text-lg font-semibold hover:underline">{{post.author.username}}</a>
+                            {% endif %}
                             <p class="text-sm text-gray-600">{{post.created_at}}</p>
                         </div>
                     </div>
@@ -94,9 +120,9 @@
         </div>
 
         <!-- Right Side - Other User Profiles Suggestions -->
-        <div class="sm:hidden lg:w-1/4 pl-4 lg:block ">
+        <div class="hide-on-small md:hidden lg:block lg:w-1/4 pl-4" >
             <!-- Suggestions -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-md mb-6" >
                 <h2 class="text-lg font-semibold mb-4">Suggestions</h2>
                 {% if related_skill_users %}
                     {% for related_user in related_skill_users %}
@@ -114,9 +140,11 @@
                             </div>
                         </div>
                     {% endfor %}
+
                 {% else %}
-                    <a class="block font-normal text-center hover:underline" href="{% url 'accounts:create_profile' %}">complete your profile for suggestion</a>
+                    
                 {% endif %}
+                
                 
                 
                 <!-- Add more suggested profiles here -->
@@ -124,4 +152,14 @@
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+<script>
+    document.getElementById('interest-button').addEventListener('click', function () {
+        var menu = document.getElementById('interest-menu');
+        menu.classList.toggle('hidden');
+    });
+</script>
 {% endblock %}

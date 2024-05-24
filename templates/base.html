@@ -6,7 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyAcademia | Home</title>
+    <title>
+        {% block title %}
+        {% endblock %}
+        
+    </title>
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     
@@ -36,13 +40,13 @@
     <div class="container mx-auto flex justify-between items-center p-4 lg:px-12">
         <a class="cursor-pointer text-3xl text-indigo-600 font-bold" href="{% url 'home:home' %}">PyAcademia</a>
         <nav class="hidden lg:flex gap-4">
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'home:home' %}">HOME</a> 
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'feed:feed' %}">FEED</a> 
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'network:network' %}">NETWORK</a> 
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
-            <a class="text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
+            <a class="{% if request.path == '/' %}text-indigo-600 {% else %} text-gray-600 {% endif %}  font-medium cursor-pointer hover:text-indigo-600" href="{% url 'home:home' %}">HOME</a> 
+            <a class="{% if request.path == '/feed/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'feed:feed' %}">FEED</a> 
+            <a class="{% if request.path == '/network/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'network:network' %}">NETWORK</a> 
+            <a class="{% if request.path == '/blogs/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
+            <a class="{% if request.path == '/projects/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
+            <a class="{% if request.path == '/resources/videos/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
+            <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
         </nav>
         <div class="lg:flex items-center space-x-4">
            
@@ -78,14 +82,17 @@
         <main class="mt-20">
         {% block content %}
         {% endblock %}
-    </main>
+        </main>
 
 
+{% block extra_javascript %}
         <script>
           document.getElementById('menu-toggle').addEventListener('click', function() {
               var menu = document.getElementById('mobile-menu');
               menu.classList.toggle('hidden');
           });
       </script>
-</body>
+{% endblock %}
+
+    </body>
 </html>
