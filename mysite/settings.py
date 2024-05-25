@@ -84,13 +84,30 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default': {
         'width': '100%',
-        'toolbar': 'Custom',
-        # Specify Custom Shit - GPL License -
+        'toolbar': 'Custom',  # Use your custom toolbar name
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline', '-', 'Image', 'Link', 'CodeSnippet', '-', 'NumberedList', 'BulletedList', 'HorizontalRule', '-', 'Undo', 'Redo'],
-        ], 'extraPlugins': 'codesnippet'
+            ['Image'],  # Only include the Image button
+        ],
+        'extraPlugins': 'image2,codesnippet,exportpdf',
+        'removePlugins': 'image,link',  # Remove other unnecessary plugins
+        'filebrowserImageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
+        'imageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
+        'image_prefillDimensions': True,
+        'image_removeLinkByEmptyURL': True,
+        'removeDialogTabs': 'image:info;image:advanced;image:Link',  # Exclude all tabs except upload image
+        'image2_disableResizer': True,
+        'image2_showAdvancedTab': False,  # Remove the Advanced tab
+        'image2_uploadUrl': '/ckeditor/upload/',  # Upload URL
+        'image2_maxFileSize': 1024 * 1024 * 10,  # Max file size (10MB)
+        'image2_uploadAsync': True,  # Upload images asynchronously
+        'image2_defaultAlign': 'none',  # Default alignment
+        'image2_disableUploadImage': True,  # Enable image upload on selection
+        'image2_showUploadTab': True,  # Disable the Upload tab
     }
 }
+
+
+
 
 
 SITE_ID = 2

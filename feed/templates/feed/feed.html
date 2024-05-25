@@ -31,7 +31,7 @@ PyAcademia | Feed
 {% else %}
     <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
 {% endif %}
-<a href="{% url 'accounts:profile' request.user.id %}" class="block text-lg text-center mb-2 hover:underline">{{request.user.username}}</a>
+                <a href="{% url 'accounts:profile' request.user.id %}" class="block text-lg text-center mb-2 hover:underline">{{request.user.username}}</a>
                 {% if request.user.profile.is_complete %}
                     <p class="text-sm text-gray-600 text-center">{{request.user.profile.skill}}</p>
                 {% else %}
@@ -42,7 +42,7 @@ PyAcademia | Feed
         </div>
 
         <!-- Middle Section - Posts -->
-        <div class="md:w-3/4 lg:w-1/2">
+        <div class="middle-section-in-mobile md:w-3/4 lg:w-1/2">
             <!-- Post Form -->
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
                 <form action="{% url 'feed:feed' %}" method="post" enctype="multipart/form-data"> <!-- enctype attribute is added for handling file uploads -->
@@ -80,7 +80,7 @@ PyAcademia | Feed
             </div>
 
             <!-- Posts -->
-            <div class="space-y-6">
+            <div class=" space-y-6">
                 {% for post in posts_list %}
                 <!-- Sample Post -->
                 <div class="bg-white p-4 rounded-lg shadow-md">

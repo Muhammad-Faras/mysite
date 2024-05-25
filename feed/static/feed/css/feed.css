@@ -1,6 +1,8 @@
-/* In your CSS file or within a <style> tag */
 @media (max-width: 767px) {
   .hide-on-small {
     display: none;
+  }
+  .middle-section-in-mobile {
+    width:100%;
   }
 }

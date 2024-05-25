@@ -85,14 +85,16 @@
         </main>
 
 
-{% block extra_javascript %}
         <script>
-          document.getElementById('menu-toggle').addEventListener('click', function() {
-              var menu = document.getElementById('mobile-menu');
-              menu.classList.toggle('hidden');
-          });
-      </script>
-{% endblock %}
+            document.getElementById('menu-toggle').addEventListener('click', function() {
+                var menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+            
+        </script>
+        {% block extra_javascript %}
+        
+        {% endblock %}
 
     </body>
 </html>
