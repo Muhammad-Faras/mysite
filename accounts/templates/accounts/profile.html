@@ -62,10 +62,7 @@
     <div class="mt-6 bg-white shadow">
         <div class="flex justify-center space-x-2 sm:space-x-8">
             <a href="#" class="py-4 px-3 sm:px-6 block text-blue-500 border-b-2 border-blue-500 font-medium">posts</a>
-            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">About</a>
-            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">Friends</a>
-            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">Photos</a>
-            <a href="#" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">More</a>
+            <a href="{% url 'accounts:profile_about' user_profile.user.id %}" class="py-4 px-3 sm:px-6 block text-gray-600 hover:text-blue-500">About</a>
         </div>
     </div>
 

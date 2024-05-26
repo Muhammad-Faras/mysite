@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -8,10 +9,44 @@
  -->
 
 {% block content %}
-    <form action="{% url 'projects:create_project' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.media}}
-        {{form.as_p}}
-        <button type="submit">Create Project</button>
-    </form>
+
+
+
+
+
+<div class="container mx-auto py-12">
+
+    <!-- Blog Creation Form -->
+    <section class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-4xl font-semibold mb-8 text-center text-gray-800">Discuss Project</h2>
+        <form action="{% url 'projects:create_project' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.media }}
+            <div class="mb-8">
+                <label for="project-title" class="block input-label mb-2">Project Title</label>
+                {{form.project_title}}
+            </div>
+            <div class="mb-8">
+                <label for="blog-thumbnail" class="block input-label mb-2">Project Thumbnail Image</label>
+                {{form.project_thumbnail_image}}
+                <p class="text-sm text-gray-600 mt-2">Select an image to be used as the thumbnail for your project.</p>
+            </div>
+            
+            <div class="mb-8">
+                <label for="blog-content" class="block input-label mb-2">Project Explanation <span class="text-indigo-500">*</span></label>
+                <!-- CKEditor can be integrated here for rich text editing -->
+                <div class="w-full ">
+                    {{form.project_description}}
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <button type="submit" class="btn-publish text-white py-3 px-12 rounded-lg bg-blue-600 focus:outline-none">Share Project</button>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+
+
 {% endblock %}

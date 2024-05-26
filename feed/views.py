@@ -8,7 +8,7 @@ from django.contrib import messages
 from accounts.models import Follow
 from django.core.mail import send_mail
 from django.urls import reverse
-
+from accounts.models import UserMainSkill,UserSubSkill
 User = get_user_model()
 # Create your views here.
 from posts.models import Post,Comment
@@ -17,6 +17,14 @@ from posts.forms import CommentForm
 @login_required(login_url='/accounts/login/')
 def feed_view(request):
     context = {}
+    user_main_skill  =UserMainSkill.objects.get(user=request.user)
+    
+    context['user_main_skill'] = user_main_skill
+    
+    user_sub_skill = UserSubSkill.objects.filter(user=request.user)
+    
+    context['user_sub_skill'] = user_sub_skill
+    
     context['id'] = request.user.id
     posts_list = Post.objects.all()
     comments = Comment.objects.all()

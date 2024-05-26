@@ -68,6 +68,15 @@ class UserMainSkill(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.main_skill.skill_name}"
+    
+    def is_complete(self):
+        # Check if all required fields are filled
+        required_fields = [
+            self.main_skill,
+        ]
+        if not all(required_fields):
+            return False
+        return True
 
 class UserSubSkill(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

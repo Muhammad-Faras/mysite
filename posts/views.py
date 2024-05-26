@@ -145,9 +145,10 @@ def related_posts_view(request):
             
             context['user_skill'] = user_skill
             context['related_posts'] = related_posts
+            
         else:
             # Redirect to profile creation if the user doesn't have a profile
-            return redirect('accounts:profile')
+            return redirect('accounts:create_profile')
     else:
         # Handle the case where the user is not authenticated
         context['error'] = "User is not authenticated."

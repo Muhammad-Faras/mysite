@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import main_skill_view,sub_skill_view,follow_view,unfollow_view,profile_view,create_profile_view, other_user_profileview, custom_login_redirect, CustomPasswordChangeView
+from .views import main_skill_view,sub_skill_view,follow_view,unfollow_view,profile_view,about_view,create_profile_view, other_user_profileview, custom_login_redirect, CustomPasswordChangeView
 
 
 app_name = 'accounts'
 urlpatterns = [
     path('profile/<int:id>', profile_view, name='profile'),
+    path('profile/<int:user_id>/about/', about_view, name='profile_about'),
     path('create_profile/', create_profile_view, name='create_profile'),
     path('other_userprofile/<int:id>', other_user_profileview, name='other_userprofile'),
     path('custom-login-redirect/', custom_login_redirect, name='custom_login_redirect'),

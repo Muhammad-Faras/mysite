@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
+from ckeditor_uploader import views as ckeditor_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,7 +32,8 @@ urlpatterns = [
     path('blogs/', include('articles.urls')),
     path('resources/', include('resources.urls')),
     path('projects/', include('projects.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('ckeditor/upload/', login_required(ckeditor_views.upload), name='ckeditor_upload'),
+    path('ckeditor/browse/', never_cache(login_required(ckeditor_views.browse)), name='ckeditor_browse'),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
     path("__reload__/", include("django_browser_reload.urls")), # tailwind auto reload

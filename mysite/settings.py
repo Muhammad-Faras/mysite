@@ -83,10 +83,10 @@ CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default': {
-        'width': '100%',
+        'width': '707px',  # Set initial width
         'toolbar': 'Custom',  # Use your custom toolbar name
         'toolbar_Custom': [
-            ['Image'],  # Only include the Image button
+            ['Bold', 'Italic', 'Underline', '-', 'Image', 'CodeSnippet', '-', 'NumberedList', 'BulletedList', 'HorizontalRule', 'Undo', 'Redo'],
         ],
         'extraPlugins': 'image2,codesnippet,exportpdf',
         'removePlugins': 'image,link',  # Remove other unnecessary plugins
@@ -94,17 +94,19 @@ CKEDITOR_CONFIGS = {
         'imageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
         'image_prefillDimensions': True,
         'image_removeLinkByEmptyURL': True,
-        'removeDialogTabs': 'image:info;image:advanced;image:Link',  # Exclude all tabs except upload image
+        'removeDialogTabs': 'image:advanced;image:Link',  # Exclude all tabs except upload image
         'image2_disableResizer': True,
         'image2_showAdvancedTab': False,  # Remove the Advanced tab
         'image2_uploadUrl': '/ckeditor/upload/',  # Upload URL
         'image2_maxFileSize': 1024 * 1024 * 10,  # Max file size (10MB)
         'image2_uploadAsync': True,  # Upload images asynchronously
         'image2_defaultAlign': 'none',  # Default alignment
-        'image2_disableUploadImage': True,  # Enable image upload on selection
-        'image2_showUploadTab': True,  # Disable the Upload tab
+        'image2_disableUploadImage': False,  # Enable image upload on selection
+        'image2_showUploadTab': True,  # Enable the Upload tab
+        'removeDialogTabs': 'image:Link;image:advanced',  # Ensure only upload tab is shown
     }
 }
+
 
 
 

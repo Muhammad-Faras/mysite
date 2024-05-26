@@ -48,15 +48,21 @@
             <a class="{% if request.path == '/resources/videos/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
             <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
         </nav>
-        <div class="lg:flex items-center space-x-4">
+        <div class="flex items-center lg:flex lg:items-center space-x-4">
            
             <div class="flex items-center justify-center rounded-full border border-indigo-600 w-12 h-12">
                 <a href="{% url 'accounts:profile' request.user.id %}" class="flex items-center justify-center">
                     {% if request.user.profile.profile_img %}
                         <img src="{{ request.user.profile.profile_img.url }}" alt="User" class="h-10 w-10 rounded-full">
                     {% else %}
-                    <i class="fas fa-user text-indigo-600 text-2xl"></i>
+                    <i class="fas fa-user text-[red] text-2xl"></i>
                     {% endif %}
+                </a>
+                
+            </div>
+            <div class="flex items-center justify-center">
+                <a href="{% url 'account_logout' %}" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-sign-out-alt text-2xl text-indigo-500"></i>
                 </a>
             </div>
         </div>

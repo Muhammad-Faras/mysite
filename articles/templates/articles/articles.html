@@ -49,7 +49,7 @@ PyAcademia | blogs
 <div class="container mx-auto py-6">
     <!-- Publish Blog Button -->
     <div class="flex justify-center items-center mb-8 border-b border-black pb-2">
-        <a href="create_blog.html" class="text-3xl flex items-center text-gray-700 hover:text-black">
+        <a href="{% url 'articles:publish_article' %}" class="text-3xl flex items-center text-gray-700 hover:text-black">
             <i class="far fa-edit mr-2 text-3xl"></i>
             <span class="font-bold">Write</span>
         </a>
@@ -68,7 +68,7 @@ PyAcademia | blogs
                 <h2 class="text-xl font-semibold mt-2 mb-4">{{article.article_title}}</h2>
                 <div class="flex items-center justify-between">
                     <p class="text-gray-700">{{ article.author.username}}</p>
-                    <a href="blog_detail.html" class="bg-primary text-white px-4 py-2 rounded-lg hover-bg-primary hover-text-white transition-colors duration-300">Read More</a>
+                    <a href="{% url 'articles:article_detail' article.id %}" class="bg-primary text-white px-4 py-2 rounded-lg hover-bg-primary hover-text-white transition-colors duration-300">Read More</a>
                 </div>
             </div>
         </div>
