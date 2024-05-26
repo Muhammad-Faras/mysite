@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 # from .forms import UserCreationFormExtended, AuthenticationFormExtended
 from django.contrib.auth import get_user_model
 from .forms import ProfileForm
-from .models import Profile,Follow
+from .models import Profile,Follow,Skill
 from allauth.account.views import PasswordChangeView, PasswordSetView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -12,9 +12,47 @@ from posts.models import Post
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.mail import send_mail
+from django.db import IntegrityError
 User = get_user_model()
 
 from .models import Profile
+
+from .models import Skill, SubSkill, UserMainSkill, UserSubSkill
+from .forms import MainSkillForm, SubSkillForm
+
+@login_required
+def main_skill_view(request):
+    if request.method == 'POST':
+        main_skill_id = request.POST.get('main_skill')
+        main_skill =Skill.objects.get(id=main_skill_id)
+        UserMainSkill.objects.update_or_create(user=request.user, defaults={'main_skill': main_skill})
+        return redirect('accounts:sub_skill')
+
+    main_skills = Skill.objects.all()
+    selected_main_skill = None
+    try:
+        selected_main_skill = request.user.usermainskill.main_skill
+    except UserMainSkill.DoesNotExist:
+        pass
+    return render(request, 'accounts/main_skill.html', {'main_skills': main_skills, 'selected_main_skill': selected_main_skill})
+
+@login_required
+def sub_skill_view(request):
+    user_main_skill = request.user.usermainskill.main_skill
+    sub_skills = SubSkill.objects.filter(main_skill=user_main_skill)
+
+    if request.method == 'POST':
+        selected_sub_skills = request.POST.getlist('sub_skills')
+        UserSubSkill.objects.filter(user=request.user).delete()
+        for sub_skill_id in selected_sub_skills:
+            sub_skill = SubSkill.objects.get(id=sub_skill_id)
+            UserSubSkill.objects.create(user=request.user, sub_skill=sub_skill)
+        return redirect('feed:feed')
+
+    selected_sub_skills = UserSubSkill.objects.filter(user=request.user).values_list('sub_skill', flat=True)
+    return render(request, 'accounts/sub_skill.html', {'sub_skills': sub_skills, 'selected_sub_skills': selected_sub_skills})
+
+
 
 @login_required(login_url='/accounts/login/')
 
@@ -102,7 +140,7 @@ def create_profile_view(request):
             if form.is_valid():
                 form.save()
                 messages.success(request,'profile operation successfully done')
-                return redirect('feed:feed')
+                return redirect('accounts:main_skill')
             else:
                 messages.error(request,'profile updation failed')
                 return redirect('accounts:create_profile')
@@ -117,7 +155,7 @@ def create_profile_view(request):
                 profile.user = request.user
                 profile.save()
                 messages.success(request,'profile operation successfully done')
-                return redirect('feed:feed')
+                return redirect('accounts:main_skill')
             else:
                 messages.error(request,'profile updation failed')
                 return redirect('accounts:create_profile')
@@ -200,6 +238,39 @@ def unfollow_view(request, id):
         return redirect('accounts:profile', id=id)
     
 
+
+
+
+
+
+
+
+
+# def Student_profile_view(request):
+#     if request.method == 'POST':
+#         skill_form = StudentProfileForm(request.POST)
+#         if skill_form.is_valid():
+#             skill = skill_form.cleaned_data['skill']
+#             if StudentSkill.objects.filter(user_skill=request.user, skill=skill).exists():
+#                 messages.error(request, 'You have already selected this skill.')
+#             else:
+#                 try:
+#                     student_skill = skill_form.save(commit=False)
+#                     student_skill.user_skill = request.user
+#                     student_skill.save()
+#                     messages.success(request, 'Skill selected successfully.')
+#                     return redirect('accounts:student_profile_sub_skill')
+#                 except IntegrityError:
+#                     messages.error(request, 'This skill is already associated with your profile.')
+#         else:
+#             messages.error(request, 'Invalid form submission.')
+#     else:
+#         skill_form = StudentProfileForm()
+
+#     context = {
+#         'skill_form': skill_form,
+#     }
+#     return render(request, 'accounts/student_profile_skill.html', context)
 
 
 

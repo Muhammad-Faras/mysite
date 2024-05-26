@@ -3,12 +3,25 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from allauth.account.forms import SignupForm,LoginForm
 from django.contrib.auth import get_user_model
-from .models import Profile
+from .models import Profile,Skill
 from django.contrib import messages
-
-
+from django.shortcuts import render, get_object_or_404
+from django import forms
 CustomUser = get_user_model()
+from .models import Skill, SubSkill
 
+class MainSkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = ['skill_name']
+
+class SubSkillForm(forms.ModelForm):
+    class Meta:
+        model = SubSkill
+        fields = ['name', 'main_skill']
+        widgets = {
+            'main_skill': forms.HiddenInput()
+        }
         
 class SignupFormExtended(SignupForm):
     first_name = forms.CharField(
@@ -99,3 +112,28 @@ class ProfileForm(forms.ModelForm):
         if age is not None and (age < 10 or age > 100):
             raise forms.ValidationError("Age must be between 10 and 100.")
         return age
+
+
+
+
+
+
+# class StudentProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = StudentSkill
+#         fields = ('skill',)
+#         widgets = {
+#             'skill': forms.RadioSelect(attrs={'class':'bcolor'}),
+#         }
+    
+
+# class SubSkillForm(forms.Form):
+#     def __init__(self, *args, **kwargs):
+#         student_skill_id = kwargs.pop('student_skill_id', None)
+#         super(SubSkillForm, self).__init__(*args, **kwargs)
+#         if student_skill_id:
+#             self.fields['sub_skills'] = forms.ModelMultipleChoiceField(
+#                 queryset=StudentSubSkill.objects.filter(main_skill=StudentSkill.objects.filter),
+#                 widget=forms.CheckboxSelectMultiple,
+#                 required=False
+#             )

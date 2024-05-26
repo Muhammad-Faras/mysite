@@ -53,8 +53,30 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.skill_name
+    
+    
+class SubSkill(models.Model):
+    name = models.CharField(max_length=100)
+    main_skill = models.ForeignKey(Skill, related_name='subskills', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
 
+class UserMainSkill(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    main_skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.main_skill.skill_name}"
+
+class UserSubSkill(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    sub_skill = models.ForeignKey(SubSkill, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.sub_skill.name}"
+
+    
 class University(models.Model):
     university_name = models.CharField(max_length=150,unique=True)
 
@@ -107,3 +129,5 @@ class Follow(models.Model):
         return f'{self.follower.username} is following {self.following.username}'
 
     
+
+

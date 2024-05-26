@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
-from .models import Profile, Skill, University, Gender,Follow
+from .models import Profile, Skill, University, Gender,Follow,SubSkill,UserMainSkill,UserSubSkill
 
 
 
@@ -32,3 +32,6 @@ admin.site.register(Skill)
 admin.site.register(University)
 admin.site.register(Gender)
 admin.site.register(Follow)
+admin.site.register(SubSkill)
+admin.site.register(UserMainSkill)
+admin.site.register(UserSubSkill)

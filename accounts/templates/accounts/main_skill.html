@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Main Skill</title>
+</head>
+<body>
+    <h1>Select Main Skill</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for main_skill in main_skills %}
+            <div>
+                <label for="main_skill_{{ main_skill.id }}">{{main_skill.skill_name}}</label>
+                <input type="radio" id="main_skill_{{ main_skill.id }}" name="main_skill" value="{{ main_skill.id }}" 
+                {% if main_skill == selected_main_skill %} checked {% endif %}>
+                <label for="main_skill_{{ main_skill.id }}">{{ main_skill.name }}</label>
+            </div>
+        {% endfor %}
+        <button type="submit">Next</button>
+    </form>
+</body>
+</html>
