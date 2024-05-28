@@ -21,7 +21,7 @@
                         <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
                     {% endif %}
                     <h2 class="text-lg font-semibold">{{ skill_user.user.username }}</h2>
-                    <p class="text-sm text-gray-600">{{skill_user.user.email}}</p>
+                    <p class="text-sm text-gray-600">{{skill_user.user.profile.skill}}</p>
                 </div>
             </div>
             {% endfor %}
@@ -46,8 +46,12 @@
                         <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
                     {% endif %}
 
-                <h2 class="text-lg font-semibold">{{other_user.username}}</h2>
-                <p class="text-sm text-gray-600">Data Scientist</p>
+                <h2 class="text-lg font-semibold">{{other_user.user.username}}</h2>
+                {% if other_user.user.profile.skill %}
+                    <p class="text-sm text-gray-600">{{other_user.user.profile.skill}}</p>
+                {% else %}
+                <p class="text-sm text-gray-600">profile undefined</p>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

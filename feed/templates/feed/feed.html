@@ -25,11 +25,11 @@ PyAcademia | Feed
         <!-- Left Side - My Profile Info -->
         <div class="hide-on-small md:block lg:block lg:w-1/4 pr-4">
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
-                <h2 class="text-lg font-semibold mb-4">{{user_main_skill.main_skill}}</h2>
+                <!-- <h2 class="text-lg font-semibold mb-4">{{user_main_skill.main_skill}}</h2>
                 {% for sub in user_sub_skill %}
                 {{ sub.sub_skill }}
                 {% endfor %}
-                {% if request.user.profile.profile_img %}
+                {% if request.user.profile.profile_img %} -->
     <img src="{{ request.user.profile.profile_img.url }}" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
 {% else %}
     <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">

@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render,redirect,HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -29,7 +29,7 @@ def network_view(request):
     other_users = User.objects.exclude(
         Q(profile__skill=user_profile.skill) |
         Q(profile__university=user_profile.university) |
-        Q(pk=user.pk)
+        Q(pk=request.user.id)
     )
 
     context['other_users'] = other_users
@@ -52,7 +52,7 @@ def search_users_view(request):
         search_query = request.POST.get('search-query')
         if search_query:
             search_result = User.objects.filter(
-                Q(email__icontains=search_query) |
+                Q(username__icontains=search_query) |
                 Q(profile__university__university_name__icontains=search_query) |
                 Q(profile__skill__skill_name__icontains=search_query)
             ).distinct()
@@ -67,3 +67,34 @@ def search_users_view(request):
             return render(request, 'network/user_search.html', context)
     else:
         return redirect('network:network')
+    
+    
+    
+    
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import SearchForm
+
+def student_search(request):
+    context = {}
+    form = SearchForm(request.GET or None)
+    context['form'] = form
+
+    if form.is_valid():
+        university = form.cleaned_data.get('university')
+        skill = form.cleaned_data.get('skill')
+
+        # Start with all users
+        search_result = User.objects.all()
+
+        # Filter based on university
+        if university:
+            search_result = search_result.filter(profile__university__university_name__icontains=university)
+        # Filter based on skill
+        if skill:
+            search_result = search_result.filter(profile__skill__skill_name__icontains=skill)
+        context['search_result'] = search_result
+        return render(request,'network/user_search.html',context)
+    
+    return render(request, 'network/student_search.html',context)

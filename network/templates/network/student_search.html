@@ -1,0 +1,24 @@
+<!-- templates/student_search.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Search</title>
+</head>
+<body>
+    <h1>Search Students</h1>
+    <form method="get" action="{% url 'network:student_search' %}">
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Results</h2>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }} - {{ student.university }} - {{ student.skills.all|join:", " }}</li>
+        {% empty %}
+            <li>No students found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
