@@ -20,7 +20,7 @@
                     {% else %}
                         <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
                     {% endif %}
-                    <h2 class="text-lg font-semibold">{{ skill_user.user.username }}</h2>
+                    <a href="{% url 'accounts:profile' skill_user.user.id %}" class="block text-lg font-semibold">{{ skill_user.user.username }}</a>
                     <p class="text-sm text-gray-600">{{skill_user.user.profile.skill}}</p>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                         <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
                     {% endif %}
 
-                <h2 class="text-lg font-semibold">{{other_user.user.username}}</h2>
+                <h2 class="text-lg font-semibold">{{other_user.username}}</h2>
                 {% if other_user.user.profile.skill %}
                     <p class="text-sm text-gray-600">{{other_user.user.profile.skill}}</p>
                 {% else %}

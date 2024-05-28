@@ -1,56 +1,104 @@
 {% extends 'base.html' %}
 {% block title %}
-    PyAcademia |             
+    PyAcademia | Article          
 {% endblock %}
 
 {% load static %}
 
-
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'articles/css/article_detail.css' %}">
+
+<style>
+    /* Styling for paragraph elements within article */
+    .article > p {
+        font-size: 1.125rem; /* text-lg */
+        line-height: 1.75rem; /* leading-relaxed */
+        margin-bottom: 4rem; /* mb-8 */
+        
+    }
+
+    /* Styling for h1 elements within article */
+    .article h1 {
+        font-size: 1.5rem; /* text-2xl */
+        font-weight: 600; /* font-semibold */
+        margin-bottom: 1rem; /* mb-4 */
+    }
+
+    /* Styling for pre elements within article */
+    .article pre {
+        background-color: #f7fafc; /* bg-gray-100 */
+        padding: 1rem; /* p-4 */
+        border-radius: 0.5rem; /* rounded-lg */
+        overflow: auto; /* overflow-auto */
+        margin-bottom: 2rem; /* mb-8 */
+        white-space: pre-wrap; /* Ensure preformatted text wraps */
+        word-break: break-word; /* Break long words */
+    }
+
+    /* Styling for code elements within article */
+    .article code {
+        background-color: #f7fafc; /* bg-gray-100 */
+        padding: 0.25rem; /* p-1 */
+        border-radius: 0.25rem; /* rounded-md */
+    }
+
+    /* Styling for img elements within article */
+    .article img {
+        width: 100%; /* w-full */
+        height: auto; /* h-auto */
+        border-radius: 0.5rem; /* rounded-lg */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-md */
+        margin-bottom: 2rem; /* mb-8 */
+    }
+
+    /* Styling for a elements within article */
+    .article a {
+        color: #3182ce; /* text-blue-600 */
+        text-decoration: underline; /* underline */
+    }
+
+    /* Ensure text does not overflow the container */
+    .article {
+        overflow-wrap: break-word; /* Break long words */
+        word-wrap: break-word; /* Break long words */
+        word-break: break-word; /* Break long words */
+        hyphens: auto; /* Hyphenate words if needed */
+    }
+</style>
 {% endblock %}
-
-
 {% block content %}
 
-<section class="px-14 mx-72 my-6 flex flex-col justify-center ">
-    <div class="flex justify-center items-cente text-center w-full mb-10">
-        <img class="bg-bgColor h-30" src="{{article.article_thumbnail_image.url}}" alt="">
+<!-- Blog Header -->
+<div class="max-w-4xl mx-auto mb-8">
+    <img src="{{article.article_thumbnail_image.url}}" alt="Blog Thumbnail" class="w-full h-64 object-cover object-center rounded-lg shadow-md mb-4">
+    <h1 class="text-3xl font-semibold mb-4">{{article.article_title}}</h1>
+    <div class="flex items-center text-gray-600 text-sm mb-4">
+        {% if article.author.profile.profile_img %}
+        <img src="{{article.author.profile.profile_img.url}}" alt="User Profile" class="h-8 w-8 rounded-full mr-2">  
+        {% else %}
+        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User Profile" class="h-8 w-8 rounded-full mr-2">
+        {% endif %}
+        <p>{{ article.author.username}} | {{ article.article_created }}</p>
     </div>
-    <div>
-        <p class="text-4xl font-black mb-6">{{article.article_title}}</p>
+    {% if request.user == article.author %}
+    <div class="flex justify-end space-x-4">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Update</button>
+        <button class="bg-red-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-600">Remove</button>
     </div>
-    <div class="flex justify-between items-center mb-3 ">
-        <div class="flex justify-center items-center gap-6">
-            <div class="flex items-center justify-center rounded-full border border-primaryColor w-12 h-12">
-                <a href="#" class="flex items-center justify-center">
-                    <i class="fa-solid fa-user text-primaryColor text-2xl"></i>
-                </a>
-            </div>
-            
-            <div class="flex flex-col justify-center gap-2">
-                <a class="text-4xl font-semibold hover:underline hover:text-primaryColor" href="">{{ article.author.username}}</a>
-                <p>{{ article.article_created }}</p> 
-            </div>
-        </div>
-       
+    {% endif %}
+</div>
+<div class="mb-4 max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+    <p class="font-medium"><i class="fa-solid fa-quote-left text-2xl mr-2"></i>{{article.article_description}}<i class="fa-solid fa-quote-right text-2xl ml-2"></i></p>
+</div>
+
+    <!-- Blog Content -->
+    <div class=" border border-black max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+                <div class="article">
+                    {{ article.article_body|safe}}
+                </div>
     </div>
-    <hr class="mb-2">
-    <p class="underline font-medium">{{article.article_description}}</p>
-    <hr>
-    <div>
-        <p class="asd text-4xl font-medium font-sans">{{article.article_body|safe}}</p>
-    </div>
- 
-{% if request.user == article.author %}
-<a href="{% url 'articles:article_update' article.id %}">Update</a>
-<form action="{% url 'articles:article_delete' article.id %}">
-    <button type="submit">Delete</button>
-</form>
-{% endif%}
 
 
-</section>
 
 <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet"> -->
 <!-- Include Prism.js JavaScript -->

@@ -86,10 +86,19 @@ CKEDITOR_CONFIGS = {
         'width': '707px',  # Set initial width
         'toolbar': 'Custom',  # Use your custom toolbar name
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline', '-', 'Image', 'CodeSnippet', '-', 'NumberedList', 'BulletedList', 'HorizontalRule', 'Undo', 'Redo'],
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'CodeSnippet', 'Table', 'HorizontalRule', 'SpecialChar'],
+            ['Styles', 'Format', 'Font', 'FontSize', 'TextColor', 'BGColor'],
+            ['Undo', 'Redo', '-', 'Cut', '-', 'Find', 'Replace', '-', 'SelectAll', 'Scayt'],
+            ['Maximize', 'ShowBlocks'],
+            
+            
         ],
+        'allowedContent': True,
         'extraPlugins': 'image2,codesnippet,exportpdf',
-        'removePlugins': 'image,link',  # Remove other unnecessary plugins
+        'removePlugins': 'image',  # Remove other unnecessary plugins
         'filebrowserImageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
         'imageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
         'image_prefillDimensions': True,

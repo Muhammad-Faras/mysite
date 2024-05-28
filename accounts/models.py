@@ -100,14 +100,10 @@ class Gender(models.Model):
     
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    age = models.PositiveIntegerField(null=True)
     university = models.ForeignKey(University, on_delete=models.SET_NULL, null=True)
     skill = models.ForeignKey(Skill,on_delete=models.SET_NULL, null=True)
     bio = models.TextField(blank=True)
     gender = models.ForeignKey(Gender, on_delete=models.SET_NULL, null=True)
-    twitter_link = models.URLField(blank=True)
-    facebook_link = models.URLField(blank=True)
-    github_link = models.URLField(blank=True)
     birthday = models.DateField(null=True)
     profile_img = models.ImageField(null=True, blank=True)
 

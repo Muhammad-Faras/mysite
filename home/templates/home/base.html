@@ -76,11 +76,24 @@
 </header>
 
 
-        <main class="mt-16">
         {% block content %}
         {% endblock %}
-    </main>
 
+    <footer class="bg-indigo-600 py-6 sm:py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-white mb-4 md:mb-6">
+                <div class="mb-2 md:mb-0">
+                    <p>&copy; 2024 PyAcademia. All rights reserved.</p>
+                </div>
+                <div>
+                    <a href="{% url 'home:privacy_policy' %}" class="text-white hover:underline mr-4">Privacy Policy</a>
+                    <a href="{% url 'home:terms-of-service' %}" class="text-white hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
 
         <script>
           document.getElementById('menu-toggle').addEventListener('click', function() {

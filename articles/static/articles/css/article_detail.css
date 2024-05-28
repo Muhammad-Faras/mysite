@@ -1,60 +1,110 @@
-* {
-    box-sizing:border-box;
+/* Responsive styling for all provided configuration attributes */
+.article p,
+.article pre,
+.article code,
+.article img,
+.article h2,
+.article a,
+.article .bg-gray-100,
+.article .text-lg,
+.article .text-2xl,
+.article .font-semibold,
+.article .rounded-lg,
+.article .shadow-md {
+    /* Common styles */
+    margin-bottom: 1rem;
 }
 
-p {
-    margin-bottom:2rem;
-    font-weight:400;
-    font-size:1.2rem;
-    color:#242424;
+/* Paragraph styles */
+.article p {
+    font-size: 1rem;
 }
 
-a {
-   text-color: #f4f4f4;
-   text-decoration:underline;
-}
-h1{
-    font-size:30px;
-    font-weight:700;
-    margin-bottom:1.5rem;
-}
-.asd pre code{
-    border:1px solid red;
+/* Code block styles */
+.article pre {
+    font-size: 1rem;
 }
 
-/* Target images within CKEditor */
-.asd img {
-    width: 100% !important; /* Override any existing width */
-    height: 100px !important; /* Ensure aspect ratio is maintained */
-    border: 1px solid red; /* Apply red border */
+/* Inline code styles */
+.article code {
+    font-size: 0.875rem;
 }
 
-
-ol {
-    list-style-type: decimal; /* Use decimal numbering */
-}
-ol li{
-    margin-bottom:2rem;
-    font-weight:400;
-    font-size:1.2rem;
-    color:#242424;
+/* Image styles */
+.article img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Apply styles to comments within code snippets */
-h2{
-    color:blue;
+/* Heading styles */
+.article h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-h3{
-    color:blue;
-}
-h4{
-    color:blue;
-}
-h5{
-    color:blue;
-}
-h6{
-    color:blue;
+/* Link styles */
+.article a {
+    color: #4299e1;
+    text-decoration: underline;
 }
 
+/* Background color styles */
+.article .bg-gray-100 {
+    background-color: #f7fafc;
+}
+
+/* Large text styles */
+.article .text-lg {
+    font-size: 1.125rem;
+}
+
+/* Extra large text styles */
+.article .text-2xl {
+    /* font-size: 1.5rem; */
+    /* Using Tailwind CSS class for heading font size */
+}
+
+/* Semi-bold font weight */
+.article .font-semibold {
+    font-weight: 600;
+}
+
+/* Rounded corners */
+.article .rounded-lg {
+    border-radius: 0.5rem;
+}
+
+/* Medium shadow */
+.article .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 768px) {
+    /* Adjust font sizes for smaller screens */
+    .article p {
+        font-size: 0.875rem;
+    }
+    
+    .article pre {
+        font-size: 0.875rem;
+    }
+
+    .article code {
+        font-size: 0.75rem;
+    }
+
+    /* .article h2 {
+        font-size: 1.25rem;
+    } */
+
+    .article .text-lg {
+        font-size: 1rem;
+    }
+
+    /* .article .text-2xl {
+        font-size: 1.25rem;
+    } */
+}
