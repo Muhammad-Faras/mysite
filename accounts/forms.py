@@ -22,34 +22,112 @@ class SubSkillForm(forms.ModelForm):
         widgets = {
             'main_skill': forms.HiddenInput()
         }
-        
+
+from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator, MaxLengthValidator
+from django.core.exceptions import ValidationError
+
+# Custom validator for alphanumeric username
+def validate_custom_username(value):
+    if not value.isalnum():
+        raise ValidationError(
+            'Username must be alphanumeric'
+        )
+    if len(value) < 4:
+        raise ValidationError(
+            'Username must be at least 4 characters long'
+        )
+
+# Custom validator for first and last name
+def validate_name(value):
+    if not value.isalpha():
+        raise ValidationError(
+            'Name must contain only letters'
+        )
+    if len(value) < 4:
+        raise ValidationError(
+            'Name must be at least 4 characters long'
+        )
+    if len(value) > 16:
+        raise ValidationError(
+            'Name must be less than 16 characters long'
+        )
+
 class SignupFormExtended(SignupForm):
     first_name = forms.CharField(
-        max_length=25,
+        min_length=4,
+        max_length=18,
         label='First Name',
-        widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-        'placeholder': 'Enter your first name',   
+        validators=[validate_name],
+        widget=forms.TextInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Enter your first name',   
         })
     )
     last_name = forms.CharField(
-        max_length=25,
+        min_length=4,
+        max_length=18,
         label='Last Name',
-        widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-        'placeholder': 'Enter your last name'                              
+        validators=[validate_name],
+        widget=forms.TextInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Enter your last name'                              
         })
+    )
+    username = forms.CharField(
+        min_length=4,
+        max_length=18,
+        label='Username',
+        validators=[validate_custom_username],
+        widget=forms.TextInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Enter your username'
+        })
+    )
+    email = forms.EmailField(
+        label='Email',
+        validators=[EmailValidator(message="Enter a valid email address")],
+        widget=forms.EmailInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Enter your email'
+        })
+    )
+    password1 = forms.CharField(
+        label='Password',
+        strip=False,
+        validators=[MinLengthValidator(8), MaxLengthValidator(18)],
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Enter your password'
+        })
+    )
+    password2 = forms.CharField(
+        label='Password confirmation',
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+            'placeholder': 'Confirm your password'
+        }),
+        strip=False,
+        validators=[MinLengthValidator(8), MaxLengthValidator(18)]
     )
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2', 'first_name', 'last_name')
 
     def __init__(self, *args, **kwargs):
         super(SignupFormExtended, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-        self.fields['email'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-        self.fields['password1'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-        self.fields['password2'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-    
+        self.fields['username'].widget.attrs.update({
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+        })
+        self.fields['email'].widget.attrs.update({
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+        })
+        self.fields['password1'].widget.attrs.update({
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+        })
     
     def save(self, request):
         user = super(SignupFormExtended, self).save(request)
@@ -57,6 +135,41 @@ class SignupFormExtended(SignupForm):
         user.last_name = self.cleaned_data['last_name']
         user.save()
         return user
+    
+# class SignupFormExtended(SignupForm):
+#     first_name = forms.CharField(
+#         max_length=25,
+#         label='First Name',
+#         widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+#         'placeholder': 'Enter your first name',   
+#         })
+#     )
+#     last_name = forms.CharField(
+#         max_length=25,
+#         label='Last Name',
+#         widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
+#         'placeholder': 'Enter your last name'                              
+#         })
+#     )
+
+#     class Meta:
+#         model = CustomUser
+#         fields = ('username', 'email', 'password1', 'password2')
+
+#     def __init__(self, *args, **kwargs):
+#         super(SignupFormExtended, self).__init__(*args, **kwargs)
+#         self.fields['username'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
+#         self.fields['email'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
+#         self.fields['password1'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
+#         self.fields['password2'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
+    
+    
+#     def save(self, request):
+#         user = super(SignupFormExtended, self).save(request)
+#         user.first_name = self.cleaned_data['first_name']
+#         user.last_name = self.cleaned_data['last_name']
+#         user.save()
+#         return user
 
 class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):

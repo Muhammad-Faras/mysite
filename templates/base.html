@@ -48,7 +48,7 @@
             <a class="{% if request.path == '/blogs/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
             <a class="{% if request.path == '/projects/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
             <a class="{% if request.path == '/resources/videos/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
-            <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
+            <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">Discussion</a>
         </nav>
         <div class="flex items-center lg:flex lg:items-center space-x-4">
            
@@ -57,7 +57,7 @@
                     {% if request.user.profile.profile_img %}
                         <img src="{{ request.user.profile.profile_img.url }}" alt="User" class="h-10 w-10 rounded-full">
                     {% else %}
-                    <i class="fas fa-user text-[red] text-2xl"></i>
+                    <i class="fas fa-user text-indigo-600 text-2xl"></i>
                     {% endif %}
                 </a>
                 
@@ -81,7 +81,7 @@
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
-        <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
+        <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">Discussion</a>
         
     </nav>
 </header>

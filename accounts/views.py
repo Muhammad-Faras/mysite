@@ -144,7 +144,7 @@ def create_profile_view(request):
             if form.is_valid():
                 form.save()
                 messages.success(request,'profile operation successfully done')
-                return redirect('accounts:main_skill')
+                return redirect('feed:feed')
             else:
                 messages.error(request,'profile updation failed')
                 return redirect('accounts:create_profile')
@@ -159,10 +159,8 @@ def create_profile_view(request):
                 profile.user = request.user
                 profile.save()
                 messages.success(request,'profile operation successfully done')
-                return redirect('accounts:main_skill')
-            else:
-                messages.error(request,'profile updation failed')
-                return redirect('accounts:create_profile')
+                return redirect('feed:feed')
+            
         else:
             form = ProfileForm()
 

@@ -134,37 +134,43 @@ def my_posts_view(request):
 def related_posts_view(request):
     context = {}
     
-    # Ensure the user is authenticated
-    if request.user.is_authenticated:
-        # Check if the user has a profile
-        if hasattr(request.user, 'profile'):
-            # Access the profile attribute
-            user_skill = request.user.profile.skill
-            # Filter posts based on the user's skill
-            related_posts = Post.objects.filter(author__profile__skill=user_skill)
-            
-            context['user_skill'] = user_skill
-            context['related_posts'] = related_posts
-            
+    if request.user.profile.is_complete():
+            # Ensure the user is authenticated
+        if request.user.is_authenticated:
+            # Check if the user has a profile
+            if hasattr(request.user, 'profile'):
+                # Access the profile attribute
+                user_skill = request.user.profile.skill
+                # Filter posts based on the user's skill
+                related_posts = Post.objects.filter(author__profile__skill=user_skill)
+                
+                context['user_skill'] = user_skill
+                context['related_posts'] = related_posts
+                
+            else:
+                # Redirect to profile creation if the user doesn't have a profile
+                return redirect('accounts:create_profile')
         else:
-            # Redirect to profile creation if the user doesn't have a profile
-            return redirect('accounts:create_profile')
+            # Handle the case where the user is not authenticated
+            context['error'] = "User is not authenticated."
+        
+        return render(request, 'posts/related_posts.html', context)
     else:
-        # Handle the case where the user is not authenticated
-        context['error'] = "User is not authenticated."
+        messages.info(request, 'complete your profile for related posts')
+        return redirect('accounts:create_profile')
+        
     
-    return render(request, 'posts/related_posts.html', context)
-    
-
+from django.http import JsonResponse
 @login_required(login_url='/accounts/login/')
 def post_like_view(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
+        liked = False
     else:
         post.likes.add(request.user)
-
-    return redirect('feed:feed')
+        liked = True
+    return JsonResponse({'liked': liked, 'like_count': post.likes.count()})
 
 @login_required(login_url='/accounts/login/')
 def add_to_wishlist(request, post_id):

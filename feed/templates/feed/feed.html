@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -7,8 +6,9 @@ PyAcademia | Feed
 {% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'feed/css/feed.css' %}">
-    {% endblock %}
+<link rel="stylesheet" href="{% static 'feed/css/feed.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container mx-auto py-6">
     <!-- Parent Div -->
@@ -16,7 +16,7 @@ PyAcademia | Feed
     <div class="messages">
         {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-        <p class="w-full  bg-indigo-600 text-white py-2 px-4 text-center">{{ message }}</p>    
+            <p class="w-full bg-indigo-600 text-white py-2 px-4 text-center">{{ message }}</p>
         </div>
         {% endfor %}
     </div>
@@ -25,22 +25,17 @@ PyAcademia | Feed
         <!-- Left Side - My Profile Info -->
         <div class="hide-on-small md:block lg:block lg:w-1/4 pr-4">
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
-                <!-- <h2 class="text-lg font-semibold mb-4">{{user_main_skill.main_skill}}</h2>
-                {% for sub in user_sub_skill %}
-                {{ sub.sub_skill }}
-                {% endfor %}
-                {% if request.user.profile.profile_img %} -->
-    <img src="{{ request.user.profile.profile_img.url }}" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
-{% else %}
-    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
-{% endif %}
-                <a href="{% url 'accounts:profile' request.user.id %}" class="block text-lg text-center mb-2 hover:underline">{{request.user.username}}</a>
-                {% if request.user.profile.is_complete %}
-                    <p class="text-sm text-gray-600 text-center">{{request.user.profile.skill}}</p>
+                {% if request.user.profile.profile_img %}
+                <img src="{{ request.user.profile.profile_img.url }}" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
                 {% else %}
-                    <a href="{% url 'accounts:create_profile' %}" class="block text-sm text-gray-600 text-center hover:underline">complete profile</a>
+                <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4">
                 {% endif %}
-                <!-- Add more profile info here -->
+                <a href="{% url 'accounts:profile' request.user.id %}" class="block text-lg text-center mb-2 hover:underline">{{ request.user.username }}</a>
+                {% if request.user.profile.is_complete %}
+                <p class="text-sm text-gray-600 text-center">{{ request.user.profile.skill }}</p>
+                {% else %}
+                <a href="{% url 'accounts:create_profile' %}" class="block text-sm text-gray-600 text-center hover:underline">complete profile</a>
+                {% endif %}
             </div>
         </div>
 
@@ -48,27 +43,22 @@ PyAcademia | Feed
         <div class="middle-section-in-mobile md:w-3/4 lg:w-1/2">
             <!-- Post Form -->
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
-                <form action="{% url 'feed:feed' %}" method="post" enctype="multipart/form-data"> <!-- enctype attribute is added for handling file uploads -->
+                <form action="{% url 'feed:feed' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-
-                    {{feed_post_form.title}}
-                    <!-- Add Django ImageField here -->
+                    {{ feed_post_form.title }}
                     <div class="flex justify-between mt-4">
-                            <label for="image-upload" class="cursor-pointer flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-                                <i class="fas fa-upload"></i>
-                                <span>Upload Image</span>
-                            </label>
-                            {{feed_post_form.post_img}}
-                        
-                        
-
+                        <label for="image-upload" class="cursor-pointer flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                            <i class="fas fa-upload"></i>
+                            <span>Upload Image</span>
+                        </label>
+                        {{ feed_post_form.post_img }}
                         <button type="submit" class="bg-indigo-600 text-white py-2 px-8 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-blue-600">Post</button>
                     </div>
                 </form>
             </div>
-            
+
             <!-- Interest Dropdown -->
-            <div class=" mb-6 w-full">
+            <div class="mb-6 w-full">
                 <button id="interest-button" class="w-full bg-indigo-600 text-white py-2 px-8 rounded hover:bg-indigo-700 flex justify-between items-center">
                     Interest
                     <svg class="ml-2 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,98 +66,126 @@ PyAcademia | Feed
                     </svg>
                 </button>
                 <div id="interest-menu" class="hidden relative mt-2 w-full bg-white shadow-lg rounded-md z-10">
-                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Follow</a>
                     <a href="{% url 'posts:related_posts' %}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Skill</a>
-                    <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">University</a>
                 </div>
             </div>
 
             <!-- Posts -->
-            <div class=" space-y-6">
+            <div class="space-y-6">
                 {% for post in posts_list %}
-                <!-- Sample Post -->
-                <div class="bg-white p-4 rounded-lg shadow-md">
+                <div class="post bg-white p-4 rounded-lg shadow-md" id="post-{{ post.id }}">
                     <div class="flex items-center mb-4">
                         {% if post.author.profile.profile_img %}
-                            <img src="{{ post.author.profile.profile_img.url }}" alt="User" class="h-10 w-10 rounded-full">
+                        <img src="{{ post.author.profile.profile_img.url }}" alt="User" class="h-10 w-10 rounded-full">
                         {% else %}
-                            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-10 w-10 rounded-full">
-
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-10 w-10 rounded-full">
                         {% endif %}
                         <div class="ml-4">
-                            <!-- <a href="{% url 'chat:private_chatroom' post.author.id %}"><i class="fa-solid fa-message"></i></a> -->
                             {% if post.author.profile %}
-                                <a href="{% url 'accounts:profile' post.author.id %}" class="text-lg font-semibold hover:underline">{{post.author.username}}</a>
+                            <a href="{% url 'accounts:profile' post.author.id %}" class="text-lg font-semibold hover:underline">{{ post.author.username }}</a>
                             {% else %}
-                            <a href="" class="text-lg font-semibold hover:underline">{{post.author.username}}</a>
+                            <a href="" class="text-lg font-semibold hover:underline">{{ post.author.username }}</a>
                             {% endif %}
-                            <p class="text-sm text-gray-600">{{post.created_at}}</p>
+                            <p class="text-sm text-gray-600">{{ post.created_at }}</p>
                         </div>
                     </div>
-                    <a href="{% url 'posts:detail-post' post.id %}" class="block text-xl break-words">{{post.title}}</a>
+                    <a href="{% url 'posts:detail-post' post.id %}" class="block text-xl break-words">{{ post.title }}</a>
 
                     {% if post.description %}
                     <p class="text-sm mb-2 break-words">{{ post.description|truncatechars:300 }}
-                        {% if post.description|length > 300 %} 
-                            <a class="text-indigo-600" href="{% url 'posts:detail-post' post.id %}">MORE</a>
-                        {% endif %}</p>
-                {% endif %}
-
-                    
-                    
-                    {% if post.post_img %}
-                        <img src="{{ post.post_img.url }}" alt="post image">
-                       
+                        {% if post.description|length > 300 %}
+                        <a class="text-indigo-600" href="{% url 'posts:detail-post' post.id %}">MORE</a>
+                        {% endif %}
+                    </p>
                     {% endif %}
+
+                    {% if post.post_img %}
+                    <img src="{{ post.post_img.url }}" alt="post image">
+                    {% endif %}
+
+                    <div class="w-full flex justify-between items-center mt-4 px-2 sm:px-4 md:px-8 lg:px-16">
+                        <form class="like-form" data-post-id="{{ post.id }}">
+                            {% csrf_token %}
+                            <button type="submit" class="like-button flex items-center text-gray-600 hover:bg-gray-300 hover:border rounded focus:outline-none px-2 sm:px-4 py-2">
+                                {% if user in post.likes.all %}
+                                <i class="fa-solid fa-thumbs-up text-lg sm:text-lg"></i>
+                                <span class="ml-1 sm:ml-2 text-xs sm:text-base">{{ post.likes.count }} Like</span>
+                                {% else %}
+                                <i class="fa-regular fa-thumbs-up text-lg sm:text-lg"></i>
+                                <span class="ml-1 sm:ml-2 text-xs sm:text-base">{{ post.likes.count }} Like</span>
+                                {% endif %}
+                            </button>
+                        </form>
+                        <button class="flex items-center text-gray-600 hover:bg-gray-300 hover:border rounded focus:outline-none px-2 sm:px-4 py-2">
+                            <i class="fa-regular fa-comment text-lg sm:text-lg"></i> <span class="ml-1 sm:ml-2 text-xs sm:text-base">Comment</span>
+                        </button>
+                        <button class="flex items-center text-gray-600 hover:bg-gray-300 hover:border rounded focus:outline-none px-2 sm:px-4 py-2">
+                            <i class="fa-regular fa-flag text-lg sm:text-lg"></i> <span class="ml-1 sm:ml-2 text-xs sm:text-base">Report</span>
+                        </button>
+                    </div>
                 </div>
-
                 {% endfor %}
-
-                
             </div>
         </div>
 
         <!-- Right Side - Other User Profiles Suggestions -->
-        <div class="hide-on-small md:hidden lg:block lg:w-1/4 pl-4" >
-            <!-- Suggestions -->
-            <div class="bg-white p-4 rounded-lg shadow-md mb-6" >
+        <div class="hide-on-small md:hidden lg:block lg:w-1/4 pl-4">
+            <div class="bg-white p-4 rounded-lg shadow-md mb-6">
                 <h2 class="text-lg font-semibold mb-4">Suggestions</h2>
                 {% if related_skill_users %}
-                    {% for related_user in related_skill_users %}
-                    
-                        <div class="flex items-center mb-4">
-                            {% if related_user.user.profile.profile_img %}
-                                <img src="{{ related_user.user.profile.profile_img.url }}" alt="User" class="h-10 w-10 rounded-full">
-                            {% else %}
-                                <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="User" class="h-10 w-10 rounded-full">
-                            {% endif %}
-                                <div class="ml-4">
-                                
-                                <a href="{% url 'accounts:profile' related_user.user.id %}" class="block text-lg font-semibold">{{related_user.user.username}}</a>
-                                <p class="text-sm text-gray-600">{{ related_user.user.profile.skill }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                {% else %}
-                    
+                {% for related_user in related_skill_users %}
+                <div class="flex items-center mb-4">
+                    {% if related_user.user.profile.profile_img %}
+                    <img src="{{ related_user.user.profile.profile_img.url }}" alt="User" class="h-10 w-10 rounded-full">
+                    {% else %}
+                    <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="User" class="h-10 w-10 rounded-full">
+                    {% endif %}
+                    <div class="ml-4">
+                        <a href="{% url 'accounts:profile' related_user.user.id %}" class="block text-lg font-semibold">{{ related_user.user.username }}</a>
+                        <p class="text-sm text-gray-600">{{ related_user.user.profile.skill }}</p>
+                    </div>
+                </div>
+                {% endfor %}
                 {% endif %}
-                
-                
-                
-                <!-- Add more suggested profiles here -->
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block extra_javascript %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     document.getElementById('interest-button').addEventListener('click', function () {
         var menu = document.getElementById('interest-menu');
         menu.classList.toggle('hidden');
+    });
+
+    $(document).ready(function(){
+        $('.like-button').on('click', function(event){
+            event.preventDefault();
+            var button = $(this);
+            var post_id = button.closest('.like-form').data('post-id');
+
+            $.ajax({
+                url: "{% url 'posts:like_post' 0 %}".slice(0, -2) + post_id + "/",
+                method: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function(response){
+                    var icon = button.find('i');
+                    var countSpan = button.find('span');
+                    if(response.liked){
+                        icon.removeClass('fa-regular').addClass('fa-solid');
+                    } else {
+                        icon.removeClass('fa-solid').addClass('fa-regular');
+                    }
+                    countSpan.text(response.like_count + " Like");
+                }
+            });
+        });
     });
 </script>
 {% endblock %}

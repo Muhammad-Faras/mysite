@@ -65,7 +65,7 @@
             <a class="{% if request.path == '/blogs/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
             <a class="{% if request.path == '/projects/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
             <a class="{% if request.path == '/resources/videos/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
-            <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
+            <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">Discussion</a>
             </nav>
             <div class="hidden lg:flex items-center space-x-4">
                 <form action="{% url 'network:search' %}" method="post" class="relative">
@@ -104,6 +104,11 @@
                         {% else %}
                         <i class="fas fa-user text-indigo-600 text-2xl"></i>
                         {% endif %}
+                    </a>
+                </div>
+                <div class="flex items-center justify-center">
+                    <a href="{% url 'account_logout' %}" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-sign-out-alt text-2xl text-indigo-500"></i>
                     </a>
                 </div>
             </div>

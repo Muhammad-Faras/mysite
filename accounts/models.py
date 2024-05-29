@@ -38,7 +38,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     
     email = models.EmailField(_('email address'), unique=True)
-    username = models.CharField(_('username'), max_length=150, blank=True)
+    username = models.CharField(_('username'), max_length=16,unique=True, blank=True)
     
 
     USERNAME_FIELD = 'email'
@@ -97,14 +97,21 @@ class Gender(models.Model):
 
     def __str__(self):
         return self.gender_cateory
-    
+from datetime import date
+from django.core.exceptions import ValidationError
+def age_validator(value):
+    today = date.today()
+    age = today.year - value.year - ((today.month,today.day) < (value.month,value.day))
+    if age < 13:
+        raise ValidationError('age must be 13 or greater than 13')
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     university = models.ForeignKey(University, on_delete=models.SET_NULL, null=True)
     skill = models.ForeignKey(Skill,on_delete=models.SET_NULL, null=True)
     bio = models.TextField(blank=True)
     gender = models.ForeignKey(Gender, on_delete=models.SET_NULL, null=True)
-    birthday = models.DateField(null=True)
+    birthday = models.DateField(validators=[age_validator],null=True)
     profile_img = models.ImageField(null=True, blank=True)
 
     def is_complete(self):
