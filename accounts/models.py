@@ -101,9 +101,11 @@ from datetime import date
 from django.core.exceptions import ValidationError
 def age_validator(value):
     today = date.today()
-    age = today.year - value.year - ((today.month,today.day) < (value.month,value.day))
+    age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
     if age < 13:
-        raise ValidationError('age must be 13 or greater than 13')
+        raise ValidationError('Age must be 13 or greater.')
+    if age > 60:
+        raise ValidationError('Age must be 60 or less.')
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

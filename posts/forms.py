@@ -1,6 +1,7 @@
-from .models import Post, Comment
+from .models import Post, Comment,Report
 from django import forms
-from django.forms import ModelForm
+
+
 class PostForm(forms.ModelForm):
     
     class Meta:
@@ -58,3 +59,16 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'comment_body': forms.Textarea(attrs={'class': 'border rounded-full p-2', 'rows': 1, 'style': 'resize: none;'})
         }
+
+
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ['reason', 'description', 'image']  # Include the 'image' field
+        widgets = {
+            'reason': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})  # Add widget for image field
+        }
+        
+        

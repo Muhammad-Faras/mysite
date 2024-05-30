@@ -11,13 +11,14 @@ from django.urls import reverse
 from accounts.models import UserMainSkill,UserSubSkill
 User = get_user_model()
 # Create your views here.
-from posts.models import Post,Comment
+from posts.models import Post,Comment,Report
 from posts.forms import CommentForm
 
 @login_required(login_url='/accounts/login/')
 def feed_view(request):
     context = {}
-    
+    reported_posts = Report.objects.filter(reported_by=request.user).values_list('post_ref_id', flat=True)
+    context['reported_posts'] = reported_posts
     posts_list = Post.objects.all()
     comments = Comment.objects.all()
     

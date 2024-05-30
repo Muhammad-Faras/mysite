@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm,CommentForm
-from .models import Post,Comment
+from .forms import PostForm,CommentForm,ReportForm
+from .models import Post,Comment,Report
 from django.shortcuts import get_object_or_404
 from accounts.models import Profile
 from django.contrib.auth import get_user_model
@@ -190,3 +190,35 @@ def remove_from_wishlist(request, post_id):
 def wishlist(request):
     wishlist_posts = Post.objects.filter(wishlist=True)
     return render(request, 'posts/wishlist.html', {'wishlist_posts': wishlist_posts})
+
+
+from django.core.exceptions import ObjectDoesNotExist
+@login_required
+def report_post_view(request, post_id):
+    context={}
+    post = get_object_or_404(Post, id=post_id)
+    
+    try:
+        # Check if the user has already reported this post
+        existing_report = Report.objects.get(post_ref=post, reported_by=request.user)
+        if existing_report:
+            existing_report.delete()
+            messages.success(request, 'Report removed successfully.')
+            return redirect('feed:feed')
+    except ObjectDoesNotExist:
+        # No report exists, proceed with form handling
+        if request.method == 'POST':
+            form = ReportForm(request.POST, request.FILES)
+            if form.is_valid():
+                report = form.save(commit=False)
+                report.post_ref = post
+                report.reported_by = request.user
+                report.save()
+                messages.success(request, 'Report submitted successfully.')
+                return redirect('feed:feed')
+        else:
+            form = ReportForm()
+
+    context['post'] = post
+    context['form'] = form
+    return render(request, 'posts/report_post.html', context)

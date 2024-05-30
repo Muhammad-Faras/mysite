@@ -25,18 +25,17 @@ class SubSkillForm(forms.ModelForm):
 
 from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator, MaxLengthValidator
 from django.core.exceptions import ValidationError
-
-# Custom validator for alphanumeric username
+import re
+# Custom validator for alphanumeric username with letters and numbers
 def validate_custom_username(value):
     if not value.isalnum():
-        raise ValidationError(
-            'Username must be alphanumeric'
-        )
+        raise ValidationError('Username must be alphanumeric')
     if len(value) < 4:
-        raise ValidationError(
-            'Username must be at least 4 characters long'
-        )
-
+        raise ValidationError('Username must be at least 4 characters long')
+    if not re.search(r'[A-Za-z]', value):
+        raise ValidationError('Username must contain at least one letter')
+    if not re.search(r'\d', value):
+        raise ValidationError('Username must contain at least one number')
 # Custom validator for first and last name
 def validate_name(value):
     if not value.isalpha():
@@ -85,7 +84,8 @@ class SignupFormExtended(SignupForm):
     )
     email = forms.EmailField(
         label='Email',
-        validators=[EmailValidator(message="Enter a valid email address")],
+        help_text='Enter a valid @gmail.com email address.',
+        validators=[EmailValidator(message="Enter a valid @gmail.com email address")],
         widget=forms.EmailInput(attrs={
             'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
             'placeholder': 'Enter your email'

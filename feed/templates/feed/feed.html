@@ -119,9 +119,14 @@ PyAcademia | Feed
                         <button class="flex items-center text-gray-600 hover:bg-gray-300 hover:border rounded focus:outline-none px-2 sm:px-4 py-2">
                             <i class="fa-regular fa-comment text-lg sm:text-lg"></i> <span class="ml-1 sm:ml-2 text-xs sm:text-base">Comment</span>
                         </button>
-                        <button class="flex items-center text-gray-600 hover:bg-gray-300 hover:border rounded focus:outline-none px-2 sm:px-4 py-2">
-                            <i class="fa-regular fa-flag text-lg sm:text-lg"></i> <span class="ml-1 sm:ml-2 text-xs sm:text-base">Report</span>
-                        </button>
+                        <a href="{% url 'posts:report_post' post.id %}" class="flex items-center text-gray-600 hover:bg-gray-300 hover:border rounded focus:outline-none px-2 sm:px-4 py-2">
+                            {% if post.id in reported_posts %}
+                            <i class="fa-solid fa-flag text-lg sm:text-lg"></i> 
+                            {% else %}
+                            <i class="fa-regular fa-flag text-lg sm:text-lg"></i> 
+                            {% endif %}
+                            <span class="ml-1 sm:ml-2 text-xs sm:text-base">Report</span>
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
