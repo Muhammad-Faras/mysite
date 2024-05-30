@@ -54,11 +54,17 @@ class FeedPostForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields=('comment_body',)
-        
+        fields = ['comment_body']
         widgets = {
-            'comment_body': forms.Textarea(attrs={'class': 'border rounded-full p-2', 'rows': 1, 'style': 'resize: none;'})
-        }
+            'comment_body': forms.Textarea(attrs={
+            'class': 'w-full resize-none border rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300',
+            'rows': '1',
+            'id':"comment",
+            'placeholder': 'Enter your comment here...'
+        }),
+            
+}   
+        
 
 
 class ReportForm(forms.ModelForm):

@@ -67,26 +67,26 @@ def create_post_view(request):
 @login_required(login_url='/accounts/login/')
 def detail_post_view(request, id):
     context = {}
-    comments = Comment.objects.all()
-    
-    Comment_form = CommentForm()
-# Inside your view function
+    post = get_object_or_404(Post, pk=id)
+    comments = Comment.objects.filter(post=post)
+    comment_form = CommentForm()
+
     if request.method == 'POST':
-        Comment_form = CommentForm(request.POST)
-        if Comment_form.is_valid():
-            post_id = request.POST.get('post_id')
-            print('post ki id ya ha = ',post_id)
-            post = Post.objects.get(pk=id)
-            comment = Comment_form.save(commit=False)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
             comment.post = post
             comment.author = request.user
             comment.save()
-            Comment_form = CommentForm()
-            
-    post = get_object_or_404(Post, pk=id)
+            messages.success(request, 'Comment successfully posted')
+            return redirect('posts:detail-post', id=id)
+        else:
+            messages.error(request, 'There was an error posting your comment. Please try again.')
+
     context['post'] = post
+    context['comment_form'] = comment_form
     context['comments'] = comments
-    context['comment_form'] = Comment_form
+
     return render(request, 'posts/detail_post.html', context)
 
 
@@ -134,28 +134,30 @@ def my_posts_view(request):
 def related_posts_view(request):
     context = {}
     
-    if request.user.profile.is_complete():
+    try:
+        if request.user.profile.is_complete():
             # Ensure the user is authenticated
-        if request.user.is_authenticated:
-            # Check if the user has a profile
-            if hasattr(request.user, 'profile'):
-                # Access the profile attribute
-                user_skill = request.user.profile.skill
-                # Filter posts based on the user's skill
-                related_posts = Post.objects.filter(author__profile__skill=user_skill)
+            if request.user.is_authenticated:
+                # Check if the user has a profile
+                if hasattr(request.user, 'profile'):
+                    # Access the profile attribute
+                    user_skill = request.user.profile.skill
+                    # Filter posts based on the user's skill
+                    related_posts = Post.objects.filter(author__profile__skill=user_skill)
+                    
+                    context['user_skill'] = user_skill
+                    context['related_posts'] = related_posts
                 
-                context['user_skill'] = user_skill
-                context['related_posts'] = related_posts
-                
+                else:
+                    # Redirect to profile creation if the user doesn't have a profile
+                    return redirect('accounts:create_profile')
             else:
-                # Redirect to profile creation if the user doesn't have a profile
-                return redirect('accounts:create_profile')
-        else:
-            # Handle the case where the user is not authenticated
-            context['error'] = "User is not authenticated."
+                # Handle the case where the user is not authenticated
+                context['error'] = "User is not authenticated."
         
         return render(request, 'posts/related_posts.html', context)
-    else:
+    
+    except:
         messages.info(request, 'complete your profile for related posts')
         return redirect('accounts:create_profile')
         
@@ -171,6 +173,23 @@ def post_like_view(request, pk):
         post.likes.add(request.user)
         liked = True
     return JsonResponse({'liked': liked, 'like_count': post.likes.count()})
+
+@login_required
+def add_comment_view(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    
+    if request.method == 'POST':
+        comment_body = request.POST.get('comment_body')
+        if comment_body:
+            comment = Comment.objects.create(post=post, author=request.user, comment_body=comment_body)
+            response_data = {
+                'success': True,
+                'username': request.user.username,
+                'comment_body': comment.comment_body
+            }
+            return JsonResponse(response_data)
+    return JsonResponse({'success': False})
+    
 
 @login_required(login_url='/accounts/login/')
 def add_to_wishlist(request, post_id):

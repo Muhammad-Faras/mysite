@@ -229,12 +229,12 @@ def unfollow_view(request, id):
         follow = Follow.objects.filter(follower=request.user, following=other_user)
         if follow.exists():
             follow.delete()
-            send_mail(
-                subject='Unfollow Notification',
-                message=f'Hi {other_user.username}, {request.user.username} has unfollowed you.',
-                from_email='your_email@example.com',
-                recipient_list=[other_user.email],
-            )
+            # send_mail(
+            #     subject='Unfollow Notification',
+            #     message=f'Hi {other_user.username}, {request.user.username} has unfollowed you.',
+            #     from_email='your_email@example.com',
+            #     recipient_list=[other_user.email],
+            # )
         return redirect('accounts:profile', id=id)
     except User.DoesNotExist:
         return redirect('accounts:profile', id=id)
