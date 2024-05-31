@@ -35,10 +35,15 @@
         <div class="mt-4 flex justify-center space-x-2">
             
 
+            {% if request.user == user_profile.user %}
+            {% else %}
             {% if is_following %}
-            <form action="{% url 'accounts:unfollow' user_profile.user.id %}" method="post">
+            <form class="flex justify-center items-center" action="{% url 'accounts:unfollow' user_profile.user.id %}" method="post">
                 {% csrf_token %}
+                <div><a href="">><i class="fa-solid fa-bell  text-indigo-600 text-2xl mr-2"></i></a></div>
+                <div><a href="">><i class="fa-regular fa-bell-slash  text-indigo-600 text-2xl mr-2"></i></a></div>
                 <button class="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" type="submit">Unfollow</button>
+            
             </form>
         {% else %}
             <form action="{% url 'accounts:follow' user_profile.user.id %}" method="post">
@@ -46,9 +51,16 @@
                 <button class="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" type="submit">Follow</button>
             </form>
         {% endif %}
+        {% endif %}
 
+<!-- {
+    name: "abc",
+    "toNotify": [1,2,3,4]
+} -->
 
-            <a href="{% url 'chat:private_chatroom' user_profile.user.id %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Message</a>
+            <a href="{% url 'chat:private_chatroom' user_profile.user.id %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
+                {% if request.user == user_profile.user %} Yourself (Me) {% else %} Message {% endif %}
+            </a>
             {% if request.user.is_authenticated %}
                 {% if request.user == user_profile.user %}
             <a href="{% url 'accounts:create_profile' %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Update Profile</a>

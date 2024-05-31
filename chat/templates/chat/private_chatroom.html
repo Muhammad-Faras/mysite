@@ -27,7 +27,7 @@
         {% for room in rooms %}
             {% if room.user1 == user_1 %}
                 {% with other_user=room.user2 %}
-                    <a href="{% url 'chat:private_chatroom' other_user.id %}" class="px-4 flex items-center py-3 border-b rounded-2xl hover:bg-gray-300 transition-colors duration-300">
+                    <a href="{% url 'chat:private_chatroom' other_user.id %}" class="{% if other_user.id == user_2.id %}bg-indigo-600 hover:bg-indigo-700{% endif %} px-4 flex items-center py-3 border-b rounded-2xl hover:bg-gray-300 transition-colors duration-300">
                         {% if other_user.profile.profile_img %}
                             <img src="{{ other_user.profile.profile_img.url }}" alt="User" class="h-12 w-12 rounded-full mr-4 shadow-md">
                         {% else %}
@@ -38,7 +38,7 @@
                 {% endwith %}
             {% else %}
                 {% with other_user=room.user1 %}
-                    <a href="{% url 'chat:private_chatroom' other_user.id %}" class="px-4 flex items-center py-3 border-b rounded-2xl hover:bg-gray-300 transition-colors duration-300">
+                    <a href="{% url 'chat:private_chatroom' other_user.id %}" class="{% if other_user.id == user_2.id %}bg-indigo-600 hover:bg-indigo-700{% endif %} px-4 flex items-center py-3 border-b rounded-2xl hover:bg-gray-300 transition-colors duration-300">
                         {% if participant_user.profile.profile_img %}
                             <img src="{{ other_user.profile.profile_img.url }}" alt="User" class="h-12 w-12 rounded-full mr-4 shadow-md">
                         {% else %}
