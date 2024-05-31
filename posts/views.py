@@ -221,8 +221,7 @@ def report_post_view(request, post_id):
         # Check if the user has already reported this post
         existing_report = Report.objects.get(post_ref=post, reported_by=request.user)
         if existing_report:
-            existing_report.delete()
-            messages.success(request, 'Report removed successfully.')
+            messages.success(request, 'Already reported')
             return redirect('feed:feed')
     except ObjectDoesNotExist:
         # No report exists, proceed with form handling

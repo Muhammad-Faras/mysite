@@ -44,13 +44,15 @@
             {% endfor %}
             {% if form.username.help_text %}
                     <small>{{ form.username.help_text }}</small>
-                {% endif %}
+            {% endif %}
+            
         </div>
 
         <div>
             <label for="firstname" class="block text-sm font-medium text-gray-700">First Name</label>
             {{ form.first_name }}
-            <p class="text-gray-500 text-sm">First name must contain only letters and be between 4 and 16 characters long.</p>
+            <small class="text-black">First name must contain only letters and be between 4 and 16 characters long.</small>
+            
             {% for error in form.first_name.errors %}
                 <div class="text-red-600">{{ error }}</div>
             {% endfor %}
@@ -60,6 +62,7 @@
             <label for="lastname" class="block text-sm font-medium text-gray-700">Last Name</label>
             {{ form.last_name }}
             <small class="text-black">Last name must contain only letters and be between 4 and 16 characters long.</small>
+            
             {% for error in form.last_name.errors %}
                 <div class="text-red-600">{{ error }}</div>
             {% endfor %}
@@ -73,7 +76,7 @@
             {% endfor %}
             {% if form.email.help_text %}
                     <small>{{ form.email.help_text }}</small>
-                {% endif %}
+            {% endif %}
         </div>
         
         <div>

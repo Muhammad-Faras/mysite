@@ -40,8 +40,8 @@
             {% if is_following %}
             <form class="flex justify-center items-center" action="{% url 'accounts:unfollow' user_profile.user.id %}" method="post">
                 {% csrf_token %}
-                <div><a href="">><i class="fa-solid fa-bell  text-indigo-600 text-2xl mr-2"></i></a></div>
-                <div><a href="">><i class="fa-regular fa-bell-slash  text-indigo-600 text-2xl mr-2"></i></a></div>
+                <!-- <div><a href="">><i class="fa-solid fa-bell  text-indigo-600 text-2xl mr-2"></i></a></div>
+                <div><a href="">><i class="fa-regular fa-bell-slash  text-indigo-600 text-2xl mr-2"></i></a></div> -->
                 <button class="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" type="submit">Unfollow</button>
             
             </form>
