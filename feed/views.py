@@ -8,7 +8,7 @@ from django.contrib import messages
 from accounts.models import Follow
 from django.core.mail import send_mail
 from django.urls import reverse
-from accounts.models import UserMainSkill,UserSubSkill
+
 User = get_user_model()
 # Create your views here.
 from posts.models import Post,Comment,Report
@@ -27,7 +27,7 @@ def feed_view(request):
     
     if request.method == 'POST':
         form = FeedPostForm(request.POST, request.FILES)
-        if form.is_valid():  # Correctly call is_valid() method
+        if form.is_valid(): 
             post = form.save(commit=False)
             post.author = request.user
             post.save()
@@ -44,7 +44,7 @@ def feed_view(request):
                             recipient_list=[follower.follower.email],
                         )
                     except Exception as e:
-                        # Logging the error could be beneficial
+                      
                         print(f'Failed to send email to {follower.follower.email}: {e}')
                         messages.error(request, f'Post created but failed to send email to {follower.follower.username}: {e}')
                 
@@ -55,7 +55,7 @@ def feed_view(request):
 
     context['feed_post_form'] = feed_post_form
     
-# Inside your view function
+
     if request.method == 'POST':
         Comment_form = CommentForm(request.POST)
         if Comment_form.is_valid():
@@ -66,13 +66,13 @@ def feed_view(request):
             comment.post = post
             comment.author = request.user
             comment.save()
-            return redirect('feed:feed')  # Redirect back to the same page
+            return redirect('feed:feed') 
 
     
     try:
         user_profile = Profile.objects.filter(user=request.user).first()
     except Profile.DoesNotExist:
-        # Handle the case where the profile does not exist, if needed
+        
         return redirect('accounts:profile',id)
 
     if user_profile:

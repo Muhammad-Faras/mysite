@@ -1,117 +1,46 @@
 {% extends 'base.html' %}
-
-{% block title %}
-    PyAcademia | Resources            
-{% endblock %}
-
 {% load static %}
 
-
-<!-- {% block extra_css %}
-
+{% block title %}
+PyAcademia | Feed
 {% endblock %}
- -->
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-6">
+ 
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Resources</h1>
+    <div class="flex justify-center mb-8 gap-2">
+        <!-- <a 
+        {% if request.user.profile.skill %} href="{% url 'feed:feed' %}" {% else %} href="https://youtu.be/wR5_RhxDZGI?si=YuSLsLe4U1oLwBo4" target="_blank" {% endif %} 
+        class="bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400">
+            related
+        </a> -->
+        
+        
+    </div>
 
-    <!-- Videos Section -->
-    <section class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl font-semibold mb-8">Featured Videos and Playlists</h2>
-        <!-- Video Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <!-- Video 1 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/videoseries?si=DsAXAqmFk3w6EqaJ&amp;list=PLjVLYmrlmjGfAw2UT5wTwHDRJvqFJu0Mi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 1</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
+    {% for book in books %}
+    <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mb-6">
+        <div class="md:flex">
+            <div class="md:flex-shrink-0">
+                <img class="h-full w-full object-cover md:w-60" src="{{ book.book_img.url }}" alt="Book Image">
+            </div>
+            <div class="p-8">
+                <h1 class="block mt-1 text-2xl leading-tight font-semibold text-gray-900">{{book.book_title}}</h1>
+                <p class="mt-2 text-gray-600">{{book.book_description}}</p>
+                <p class="mt-4 text-gray-600">{{book.created_at}}</p>
+                <div class="ml-4 mt-4">
+                    <a href="{{ book.bookpdf.url }}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Download</a>
                 </div>
             </div>
-            <!-- Video 2 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_2" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 2</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 3 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_3" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 3</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/videoseries?si=DsAXAqmFk3w6EqaJ&amp;list=PLjVLYmrlmjGfAw2UT5wTwHDRJvqFJu0Mi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- Video 4 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <iframe class="w-full h-64" src="https://www.youtube.com/embed/videoseries?si=DsAXAqmFk3w6EqaJ&amp;list=PLjVLYmrlmjGfAw2UT5wTwHDRJvqFJu0Mi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold mb-2">Video Title 4</h3>
-                    <p class="text-gray-600">Description of the video goes here.</p>
-                </div>
-            </div>
-            <!-- More videos and playlists can be added here -->
         </div>
-    </section>
+    </div>
+    {% endfor %}
+    
 
 </div>
 {% endblock %}

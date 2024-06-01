@@ -8,21 +8,6 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django import forms
 CustomUser = get_user_model()
-from .models import Skill, SubSkill
-
-class MainSkillForm(forms.ModelForm):
-    class Meta:
-        model = Skill
-        fields = ['skill_name']
-
-class SubSkillForm(forms.ModelForm):
-    class Meta:
-        model = SubSkill
-        fields = ['name', 'main_skill']
-        widgets = {
-            'main_skill': forms.HiddenInput()
-        }
-
 from django.core.validators import EmailValidator, RegexValidator, MinLengthValidator, MaxLengthValidator
 from django.core.exceptions import ValidationError
 import re
@@ -32,10 +17,6 @@ def validate_custom_username(value):
         raise ValidationError('Username must be alphanumeric')
     if len(value) < 4:
         raise ValidationError('Username must be at least 4 characters long')
-    if not re.search(r'[A-Za-z]', value):
-        raise ValidationError('Username must contain at least one letter')
-    if not re.search(r'\d', value):
-        raise ValidationError('Username must contain at least one number')
 # Custom validator for first and last name
 def validate_name(value):
     if not value.isalpha():
@@ -130,6 +111,18 @@ class SignupFormExtended(SignupForm):
             'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
         })
     
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        if len(password1) < 8 or len(password1) > 18:
+            raise ValidationError('Password must be between 8 and 18 characters long.')
+        return password1
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError("This email address is already in use.")
+        return email
+    
     def save(self, request):
         user = super(SignupFormExtended, self).save(request)
         user.first_name = self.cleaned_data['first_name']
@@ -137,41 +130,8 @@ class SignupFormExtended(SignupForm):
         user.save()
         return user
     
-# class SignupFormExtended(SignupForm):
-#     first_name = forms.CharField(
-#         max_length=25,
-#         label='First Name',
-#         widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-#         'placeholder': 'Enter your first name',   
-#         })
-#     )
-#     last_name = forms.CharField(
-#         max_length=25,
-#         label='Last Name',
-#         widget=forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-#         'placeholder': 'Enter your last name'                              
-#         })
-#     )
 
-#     class Meta:
-#         model = CustomUser
-#         fields = ('username', 'email', 'password1', 'password2')
-
-#     def __init__(self, *args, **kwargs):
-#         super(SignupFormExtended, self).__init__(*args, **kwargs)
-#         self.fields['username'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-#         self.fields['email'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-#         self.fields['password1'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
-#         self.fields['password2'].widget.attrs.update({'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'})
     
-    
-#     def save(self, request):
-#         user = super(SignupFormExtended, self).save(request)
-#         user.first_name = self.cleaned_data['first_name']
-#         user.last_name = self.cleaned_data['last_name']
-#         user.save()
-#         return user
-
 class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -212,38 +172,3 @@ class ProfileForm(forms.ModelForm):
             'birthday': forms.DateInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm', 'type': 'date'}),
             'bio': forms.Textarea(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}),
         }
-        
-        # widgets = {
-        #     'birthday': forms.DateInput(attrs={'type': 'date'}),
-        # }
-        
-    # def clean_age(self):
-    #     age = self.cleaned_data.get('age')
-    #     if age is not None and (age < 10 or age > 100):
-    #         raise forms.ValidationError("Age must be between 10 and 100.")
-    #     return age
-
-
-
-
-
-
-# class StudentProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = StudentSkill
-#         fields = ('skill',)
-#         widgets = {
-#             'skill': forms.RadioSelect(attrs={'class':'bcolor'}),
-#         }
-    
-
-# class SubSkillForm(forms.Form):
-#     def __init__(self, *args, **kwargs):
-#         student_skill_id = kwargs.pop('student_skill_id', None)
-#         super(SubSkillForm, self).__init__(*args, **kwargs)
-#         if student_skill_id:
-#             self.fields['sub_skills'] = forms.ModelMultipleChoiceField(
-#                 queryset=StudentSubSkill.objects.filter(main_skill=StudentSkill.objects.filter),
-#                 widget=forms.CheckboxSelectMultiple,
-#                 required=False
-#             )

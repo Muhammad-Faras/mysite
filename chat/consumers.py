@@ -15,7 +15,7 @@ class My_WebSocketConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope['user']    
         self.user_skill = self.scope['url_route']['kwargs']['userSkill']
-        self.group_name = re.sub(r'\W+', '_', self.user_skill)  # Replace non-alphanumeric characters with underscore
+        self.group_name = re.sub(r'\W+', '_', self.user_skill)  
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         if self.user.is_authenticated:    
@@ -25,46 +25,42 @@ class My_WebSocketConsumer(WebsocketConsumer):
             )
             self.accept()
             self.add_user_to_group()
-            # self.skill = Skill.objects.get(skill_name=self.user_skill)
-            # chat_group = ChatGroup.objects.create(skill=self.skill)
-            # chat_group.participants.add(self.user)
-            # chat_group.save()
+            
             
            
             
-            # for g in chat_group:
-            #     print(g)
+            
         else:
             self.close
 
     def add_user_to_group(self):
-        # Fetch or create the Skill object based on the skill name
+      
         skill, _ = Skill.objects.get_or_create(skill_name=self.user_skill)
         
-        # Check if the user is already in a group for a different skill
+        
         existing_group = self.user.chatgroup_set.first()
         if existing_group:
-            # Remove the user from the existing group
+           
             existing_group.participants.remove(self.user)
             existing_group.save()
         
-        # Fetch or create the ChatGroup object based on the skill
+   
         chat_group, _ = ChatGroup.objects.get_or_create(skill=skill)
         
-        # Add the user to the participants of the ChatGroup
+       
         chat_group.participants.add(self.user)
         chat_group.save()
         
         self.participants = chat_group.participants.all()
         
-        # Extract usernames from participants QuerySet
+       
         self.participant_usernames = [participant.username for participant in self.participants]
 
         self.send(json.dumps({
             'participants':self.participant_usernames
         }))
         
-        # Print the usernames of all participants
+      
         for participant in self.participants:
             print(participant.username)
 

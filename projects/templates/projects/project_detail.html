@@ -1,3 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}
+    PyAcademia | Article          
+{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'articles/css/article_detail.css' %}">
+
+<style>
+    .article > p {
+        font-size: 1.125rem; 
+        line-height: 1.75rem; 
+        margin-bottom: 4rem; 
+        
+    }
+
+   
+    .article h1 {
+        font-size: 1.5rem; 
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    
+    .article pre {
+        background-color: #f7fafc; 
+        padding: 1rem; 
+        border-radius: 0.5rem; 
+        overflow: auto; 
+        margin-bottom: 2rem; 
+        white-space: pre-wrap; 
+        word-break: break-word; 
+    }
+
+    
+    .article code {
+        background-color: #f7fafc; 
+        padding: 0.25rem; 
+        border-radius: 0.25rem; 
+    }
+
+   
+    .article img {
+        width: 100%; 
+        height: auto; 
+        border-radius: 0.5rem; 
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+        margin-bottom: 2rem; 
+    }
+
+    
+    .article a {
+        color: #3182ce; 
+        text-decoration: underline; 
+    }
+
+    
+    .article {
+        overflow-wrap: break-word; 
+        word-wrap: break-word; 
+        word-break: break-word; 
+        hyphens: auto; 
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+
+<div class="max-w-4xl mx-auto mb-8">
+    <img src="{{project.project_thumbnail_image.url}}" alt="project Thumbnail" class="w-full h-64 object-cover object-center rounded-lg shadow-md mb-4">
+    <h1 class="text-3xl font-semibold mb-4"> {{project.project_title}}</h1>
+    <div class="flex items-center text-gray-600 text-sm mb-4">
+        {% if project.author.profile.profile_img %}
+        <img src="{{article.author.profile.profile_img.url}}" alt="User Profile" class="h-8 w-8 rounded-full mr-2">  
+        {% else %}
+        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User Profile" class="h-8 w-8 rounded-full mr-2">
+        {% endif %}
+        <p>{{ project.author.username}} | {{ project.project_created }}</p>
+    </div>
+    {% if request.user == project.author %}
+    <div class="flex justify-end space-x-4">
+        <a href="{% url 'projects:project_update' project.id %}" class="block bg-indigo-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Update</a>
+        <a href="{% url 'projects:project_delete' project.id %}"  class="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-600">Remove</a>
+    </div>
+    {% endif %}
+</div>
+
+
+
+    <div class="  max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+                <div class="article">
+                    {{project.project_description|safe}}
+                </div>
+    </div>
+
+
+
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet"> -->
+<!-- Include Prism.js JavaScript -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-python.min.js"></script> -->
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

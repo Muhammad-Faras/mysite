@@ -9,66 +9,65 @@
 <link rel="stylesheet" href="{% static 'articles/css/article_detail.css' %}">
 
 <style>
-    /* Styling for paragraph elements within article */
     .article > p {
-        font-size: 1.125rem; /* text-lg */
-        line-height: 1.75rem; /* leading-relaxed */
-        margin-bottom: 4rem; /* mb-8 */
+        font-size: 1.125rem; 
+        line-height: 1.75rem; 
+        margin-bottom: 4rem; 
         
     }
 
-    /* Styling for h1 elements within article */
+   
     .article h1 {
-        font-size: 1.5rem; /* text-2xl */
-        font-weight: 600; /* font-semibold */
-        margin-bottom: 1rem; /* mb-4 */
+        font-size: 1.5rem; 
+        font-weight: 600;
+        margin-bottom: 1rem;
     }
 
-    /* Styling for pre elements within article */
+    
     .article pre {
-        background-color: #f7fafc; /* bg-gray-100 */
-        padding: 1rem; /* p-4 */
-        border-radius: 0.5rem; /* rounded-lg */
-        overflow: auto; /* overflow-auto */
-        margin-bottom: 2rem; /* mb-8 */
-        white-space: pre-wrap; /* Ensure preformatted text wraps */
-        word-break: break-word; /* Break long words */
+        background-color: #f7fafc; 
+        padding: 1rem; 
+        border-radius: 0.5rem; 
+        overflow: auto; 
+        margin-bottom: 2rem; 
+        white-space: pre-wrap; 
+        word-break: break-word; 
     }
 
-    /* Styling for code elements within article */
+    
     .article code {
-        background-color: #f7fafc; /* bg-gray-100 */
-        padding: 0.25rem; /* p-1 */
-        border-radius: 0.25rem; /* rounded-md */
+        background-color: #f7fafc; 
+        padding: 0.25rem; 
+        border-radius: 0.25rem; 
     }
 
-    /* Styling for img elements within article */
+   
     .article img {
-        width: 100%; /* w-full */
-        height: auto; /* h-auto */
-        border-radius: 0.5rem; /* rounded-lg */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-md */
-        margin-bottom: 2rem; /* mb-8 */
+        width: 100%; 
+        height: auto; 
+        border-radius: 0.5rem; 
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+        margin-bottom: 2rem; 
     }
 
-    /* Styling for a elements within article */
+    
     .article a {
-        color: #3182ce; /* text-blue-600 */
-        text-decoration: underline; /* underline */
+        color: #3182ce; 
+        text-decoration: underline; 
     }
 
-    /* Ensure text does not overflow the container */
+    
     .article {
-        overflow-wrap: break-word; /* Break long words */
-        word-wrap: break-word; /* Break long words */
-        word-break: break-word; /* Break long words */
-        hyphens: auto; /* Hyphenate words if needed */
+        overflow-wrap: break-word; 
+        word-wrap: break-word; 
+        word-break: break-word; 
+        hyphens: auto; 
     }
 </style>
 {% endblock %}
 {% block content %}
 
-<!-- Blog Header -->
+
 <div class="max-w-4xl mx-auto mb-8">
     <img src="{{article.article_thumbnail_image.url}}" alt="Blog Thumbnail" class="w-full h-64 object-cover object-center rounded-lg shadow-md mb-4">
     <h1 class="text-3xl font-semibold mb-4">{{article.article_title}}</h1>
@@ -82,8 +81,8 @@
     </div>
     {% if request.user == article.author %}
     <div class="flex justify-end space-x-4">
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Update</button>
-        <button class="bg-red-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-600">Remove</button>
+        <a href="{% url 'articles:article_update' article.id %}" class="block bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600">Update</a>
+        <a href="{% url 'articles:article_delete' article.id %}" class="block bg-red-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-600">Remove</a>
     </div>
     {% endif %}
 </div>
@@ -91,8 +90,8 @@
     <p class="font-medium"><i class="fa-solid fa-quote-left text-2xl mr-2"></i>{{article.article_description}}<i class="fa-solid fa-quote-right text-2xl ml-2"></i></p>
 </div>
 
-    <!-- Blog Content -->
-    <div class=" border border-black max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+
+    <div class="  max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
                 <div class="article">
                     {{ article.article_body|safe}}
                 </div>

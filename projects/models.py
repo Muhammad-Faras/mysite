@@ -10,6 +10,6 @@ class ProjcetShowcase(models.Model):
     project_title = models.CharField(max_length=255)
     project_description = RichTextUploadingField()
     project_thumbnail_image = models.ImageField(null=True)
-    
+    project_created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'{self.author}=======> {self.project_title}'

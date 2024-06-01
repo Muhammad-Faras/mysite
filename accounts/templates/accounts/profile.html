@@ -2,13 +2,11 @@
 
 {% load static %}
 {% block extra_css %}
-<!-- <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}"> -->
 {% endblock %}
 
 {% block content %}  
 
 
-    <!-- Cover Photo Section -->
     <div class="bg-white shadow">
         <div class="h-56 bg-cover bg-center bg-indigo-500" >
         </div>
@@ -22,7 +20,6 @@
         </div>
     </div>
 
-    <!-- User Info Section -->
     <div class="text-center mt-6 sm:mt-4 px-4">
         
 
@@ -40,8 +37,6 @@
             {% if is_following %}
             <form class="flex justify-center items-center" action="{% url 'accounts:unfollow' user_profile.user.id %}" method="post">
                 {% csrf_token %}
-                <!-- <div><a href="">><i class="fa-solid fa-bell  text-indigo-600 text-2xl mr-2"></i></a></div>
-                <div><a href="">><i class="fa-regular fa-bell-slash  text-indigo-600 text-2xl mr-2"></i></a></div> -->
                 <button class="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" type="submit">Unfollow</button>
             
             </form>
@@ -53,10 +48,6 @@
         {% endif %}
         {% endif %}
 
-<!-- {
-    name: "abc",
-    "toNotify": [1,2,3,4]
-} -->
 
             <a href="{% url 'chat:private_chatroom' user_profile.user.id %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">
                 {% if request.user == user_profile.user %} Yourself (Me) {% else %} Message {% endif %}
@@ -70,7 +61,6 @@
         </div>
     </div>
     
-    <!-- Navigation Tabs -->
     <div class="mt-6 bg-white shadow">
         <div class="flex justify-center space-x-2 sm:space-x-8">
             <a href="#" class="py-4 px-3 sm:px-6 block text-blue-500 border-b-2 border-blue-500 font-medium">posts</a>
@@ -78,10 +68,8 @@
         </div>
     </div>
 
-    <!-- Timeline Section -->
     <div class="mt-6 max-w-2xl mx-auto px-4 sm:px-0">
         <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md space-y-4">
-            <!-- Post 1 -->
             {% for post in user_posts %}
             <div class="border-b pb-4">
                 <div class="flex space-x-4">
@@ -105,11 +93,7 @@
                 {% if post.post_img %}
                 <img src="{{ post.post_img.url }}" alt="Post Image" class="mt-2 rounded-lg w-full object-cover">
                 {% endif %}
-                <!-- <div class="flex space-x-4 mt-2">
-                    <button class="text-blue-500 hover:underline">Like</button>
-                    <button class="text-blue-500 hover:underline">Comment</button>
-                    <button class="text-blue-500 hover:underline">Share</button>
-                </div> -->
+               
             </div>
             {% endfor %}
             

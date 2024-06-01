@@ -13,9 +13,9 @@ class Post(models.Model):
     description = models.TextField(null=True, blank=True)
     post_img = models.ImageField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField()
+
     likes = models.ManyToManyField(User, related_name='blogpost_like')
-    wishlist = models.BooleanField(default=False)
+
 
     def number_of_likes(self):
         return self.likes.count()
@@ -23,10 +23,7 @@ class Post(models.Model):
     def number_of_comments(self):
         return self.comments.count()
     
-    def save(self,*args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+    
     
     def __str__(self) -> str:
         return self.title
@@ -35,7 +32,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)  # Add this line to reference the User model
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  
     comment_body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

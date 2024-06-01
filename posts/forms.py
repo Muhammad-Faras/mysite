@@ -1,45 +1,22 @@
 from .models import Post, Comment,Report
 from django import forms
 
-
-class PostForm(forms.ModelForm):
+    
+class FeedPostForm(forms.ModelForm):
     
     class Meta:
         model = Post
         fields=('title','description', 'post_img')
         
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm',
-            'placeholder':f'whats in your mind?',
-            'id':'title',
-            'name':'title',
-            }),
-            'description': forms.Textarea(attrs={'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm','rows':'5',
-            'rows': '5',
-            'id': 'content',
-            'name': 'content',
-            
-            }),
-            'post_img': forms.ClearableFileInput(attrs={
-                'class': 'mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100',
-                'id':'image',
-                'name':'image'
-                
-            })
-            
-        }
-        
-        
-class FeedPostForm(forms.ModelForm):
-    
-    class Meta:
-        model = Post
-        fields=('title', 'post_img')
-        
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'w-full resize-none border rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300',
+            'title': forms.TextInput(attrs={'class': 'w-full mb-2   border rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300',
             'placeholder':f'whats in your mind?'
+            }),
+            'description': forms.Textarea(attrs={'class': 'w-full  mb-2  border rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300',
+            'rows': 2,
+            'cols': 2,
+            'placeholder':f'description'
             }),
             'post_img': forms.ClearableFileInput(attrs={
                 'class': 'hidden',

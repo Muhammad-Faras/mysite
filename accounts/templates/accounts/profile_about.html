@@ -2,13 +2,11 @@
 
 {% load static %}
 {% block extra_css %}
-<!-- <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}"> -->
 {% endblock %}
 
 {% block content %}  
 
 
-    <!-- Cover Photo Section -->
     <div class="bg-white shadow">
         <div class="h-56 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/1500x400');">
         </div>
@@ -22,7 +20,6 @@
         </div>
     </div>
 
-    <!-- User Info Section -->
     <div class="text-center mt-6 sm:mt-4 px-4">
         
 
@@ -58,7 +55,6 @@
         </div>
     </div>
     
-    <!-- Navigation Tabs -->
     <div class="mt-6 bg-white shadow">
         <div class="flex justify-center space-x-2 sm:space-x-8">
             <a href="{% url 'accounts:profile' user_profile.id %}" class="py-4 px-3 sm:px-6 block  font-medium">posts</a>
@@ -66,7 +62,6 @@
         </div>
     </div>
 
-    <!-- Timeline Section -->
     <div class="mt-6 max-w-2xl mx-auto px-4 sm:px-0">
         <div class="border-b pb-4 bg-white p-4 sm:p-6 rounded-lg shadow-md space-y-4">
             {% if user_profile.profile %}

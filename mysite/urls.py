@@ -35,7 +35,7 @@ urlpatterns = [
     path('ckeditor/upload/', login_required(ckeditor_views.upload), name='ckeditor_upload'),
     path('ckeditor/browse/', never_cache(login_required(ckeditor_views.browse)), name='ckeditor_browse'),
     path('accounts/', include('allauth.urls')),
-    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')), # app 
     path("__reload__/", include("django_browser_reload.urls")), # tailwind auto reload
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

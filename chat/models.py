@@ -7,7 +7,7 @@ User = get_user_model()
 # Create your models here. 
 
 class ChatGroup(models.Model):
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)  # Skill associated with the group
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)  # discussion group
     participants = models.ManyToManyField(User)
     timestamp = models.DateTimeField(auto_now_add=True)
     
@@ -15,7 +15,7 @@ class ChatGroup(models.Model):
         return self.skill.skill_name
     
 class ChatMessage(models.Model):
-    group = models.ForeignKey(ChatGroup, on_delete=models.CASCADE)  # Reference to the chat group
+    group = models.ForeignKey(ChatGroup, on_delete=models.CASCADE)  # discussion group messages
     message = models.CharField(max_length=1000)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)

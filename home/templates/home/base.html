@@ -45,7 +45,7 @@
             <a class="{% if request.path == '/network/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'network:network' %}">NETWORK</a> 
             <a class="{% if request.path == '/blogs/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
             <a class="{% if request.path == '/projects/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
-            <a class="{% if request.path == '/resources/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
+            <a class="{% if request.path == '/resources/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:resources' %}">RESOURCES</a>
             <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
         </nav>
         <div class="lg:flex items-center space-x-4">
@@ -69,7 +69,7 @@
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'network:network' %}">NETWORK</a> 
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
-        <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:videos' %}">RESOURCES</a>
+        <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:resources' %}">RESOURCES</a>
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">CHAT</a>
         
     </nav>

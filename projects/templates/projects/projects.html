@@ -43,11 +43,9 @@ PyAcademia | Projects
 {% endblock %}
 
 {% block content %}
-<!-- project navbar -->
 
 
 <div class="container mx-auto py-6">
-    <!-- Publish Blog Button -->
     <div class="flex justify-center items-center mb-8 border-b border-black pb-2">
         <a href="{% url 'projects:create_project' %}" class="text-3xl flex items-center text-gray-700 hover:text-black">
             <i class="far fa-edit mr-2 text-3xl"></i>
@@ -57,9 +55,7 @@ PyAcademia | Projects
     
 
     <h1 class="text-3xl font-semibold text-center mb-8">Latest Projects</h1>
-    <!-- Blog Grid -->
     <div class="sm:grid sm:grid-cols-1 md:grid md:grid-cols-3  gap-4">
-        <!-- Sample Blog -->
         {% for project in projects %}
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <img src="{{ project.project_thumbnail_image.url }}" alt="Blog Thumbnail" class="w-full h-64 object-cover object-center">
@@ -68,12 +64,11 @@ PyAcademia | Projects
                 <a href="{% url 'projects:project_detail' project.id %}" class="block text-xl font-semibold mt-2 mb-4">{{project.project_title}}</a>
                 <div class="flex items-center justify-between">
                     <p class="text-gray-700">{{ project.author.username}}</p>
-                    <a href="blog_detail.html" class="bg-primary text-white px-4 py-2 rounded-lg hover-bg-primary hover-text-white transition-colors duration-300">Read More</a>
+                    <a href="{% url 'projects:project_detail' project.id %}" class="bg-primary text-white px-4 py-2 rounded-lg hover-bg-primary hover-text-white transition-colors duration-300">Read More</a>
                 </div>
             </div>
         </div>
         {% endfor %}
-        <!-- Add more blogs here -->
     </div>
 </div>
 

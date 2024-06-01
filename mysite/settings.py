@@ -25,10 +25,8 @@ SECRET_KEY = 'django-insecure-r3fsi)#lzcs7l93sm-mxxxxp1h+-&95=!jqu-jyv3y1o4_rv+c
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = False
 
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.182.20', 'localhost', '127.0.0.1']
 # ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
@@ -37,7 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
-    'fontawesomefree',     # app for fontawasome
+    'fontawesomefree',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,8 +81,8 @@ CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default': {
-        'width': '707px',  # Set initial width
-        'toolbar': 'Custom',  # Use your custom toolbar name
+        'width': '707px', 
+        'toolbar': 'Custom', 
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'],
@@ -99,18 +97,18 @@ CKEDITOR_CONFIGS = {
         'allowedContent': True,
         'extraPlugins': 'image2,codesnippet,exportpdf',
         'removePlugins': 'image',  # Remove other unnecessary plugins
-        'filebrowserImageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
-        'imageUploadUrl': '/ckeditor/upload/',  # URL to handle image uploads
+        'filebrowserImageUploadUrl': '/ckeditor/upload/',  
+        'imageUploadUrl': '/ckeditor/upload/',  
         'image_prefillDimensions': True,
         'image_removeLinkByEmptyURL': True,
-        'removeDialogTabs': 'image:advanced;image:Link',  # Exclude all tabs except upload image
+        'removeDialogTabs': 'image:advanced;image:Link',  
         'image2_disableResizer': True,
         'image2_showAdvancedTab': False,  # Remove the Advanced tab
-        'image2_uploadUrl': '/ckeditor/upload/',  # Upload URL
+        'image2_uploadUrl': '/ckeditor/upload/', 
         'image2_maxFileSize': 1024 * 1024 * 10,  # Max file size (10MB)
         'image2_uploadAsync': True,  # Upload images asynchronously
-        'image2_defaultAlign': 'none',  # Default alignment
-        'image2_disableUploadImage': False,  # Enable image upload on selection
+        'image2_defaultAlign': 'none',  
+        'image2_disableUploadImage': False,  
         'image2_showUploadTab': True,  # Enable the Upload tab
         'removeDialogTabs': 'image:Link;image:advanced',  # Ensure only upload tab is shown
     }
@@ -164,11 +162,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware", # tailwind auto reload
-    # 'accounts.middlewares.ProfileCompletionMiddleware',
+   
     
 ]
 
-# Ensure you have the message storage backend set up
+
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 ROOT_URLCONF = 'mysite.urls'
@@ -267,8 +265,8 @@ AUTHENTICATION_BACKENDS = [
     # 'django.core.mail.backends.console.EmailBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' (for console notifications)
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'  
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -278,31 +276,30 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 RATE_LIMITS = {
     'login_failed': '5/m',  # Example rate limit for failed logins: 5 per minute
-    # Add more rate limits for other actions as needed
+
 }
 
 
 
-# ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-# settings.py
+
 
 LOGIN_REDIRECT_URL = 'accounts:custom_login_redirect'
 
-# LOGIN_REDIRECT_URL = 'feed:feed'
+
 ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
 
-# ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+
 
 ACCOUNT_SESSION_REMEMBER = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 432000   # 5 days session
+SESSION_COOKIE_AGE = 432000  
 
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
 ACCOUNT_FORMS = {
     'signup': 'accounts.forms.SignupFormExtended',
     'login': 'accounts.forms.CustomLoginForm',
-    # You can define other custom forms here if needed
+    
 }
 
 
@@ -313,12 +310,7 @@ CHANNEL_LAYERS = {
 }
 
 
-
-
 handler404 = 'home.views.custom_404_view_name'
-
-
-
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

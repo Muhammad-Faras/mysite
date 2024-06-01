@@ -11,7 +11,6 @@ PyAcademia | Feed
 
 {% block content %}
 <div class="container mx-auto py-6">
-    <!-- Parent Div -->
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
@@ -41,23 +40,23 @@ PyAcademia | Feed
 
         <!-- Middle Section - Posts -->
         <div class="middle-section-in-mobile md:w-3/4 lg:w-1/2">
-            <!-- Post Form -->
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
                 <form action="{% url 'feed:feed' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ feed_post_form.title }}
+                    {{ feed_post_form.description }}
                     <div class="flex justify-between mt-4">
                         <label for="image-upload" class="cursor-pointer flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                             <i class="fas fa-upload"></i>
                             <span>Upload Image</span>
                         </label>
                         {{ feed_post_form.post_img }}
+
                         <button type="submit" class="bg-indigo-600 text-white py-2 px-8 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-blue-600">Post</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Interest Dropdown -->
             <div class="mb-6 w-full">
                 <button id="interest-button" class="w-full bg-blue-600 text-white py-2 px-8 rounded hover:bg-blue-700 flex justify-between items-center">
                     Interest
@@ -70,7 +69,6 @@ PyAcademia | Feed
                 </div>
             </div>
 
-            <!-- Posts -->
             <div class="space-y-6">
                 {% for post in posts_list %}
                 <div class="post bg-white p-4 rounded-lg shadow-md" id="post-{{ post.id }}">
@@ -133,7 +131,6 @@ PyAcademia | Feed
             </div>
         </div>
 
-        <!-- Right Side - Other User Profiles Suggestions -->
         <div class="hide-on-small md:hidden lg:block lg:w-1/4 pl-4">
             <div class="bg-white p-4 rounded-lg shadow-md mb-6">
                 <h2 class="text-lg font-semibold mb-4">Suggestions</h2>

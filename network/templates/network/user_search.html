@@ -14,9 +14,9 @@
 
 <div class="container mx-auto py-6">
 
-    <!-- Grid Section - User Profiles -->
+
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- User Profile Card 1 -->
+
         {% if search_result %}
         {% for search_user in search_result %}
         <div class="bg-white p-4 rounded-lg shadow-md">
@@ -41,8 +41,7 @@
         {% else %}
         <a href="{% url 'network:network' %}">go back</a>
         {% endif %}
-        <!-- User Profile Card 2 -->
-        <!-- Add more user profile cards as needed -->
+       
     </div>
 
             

@@ -69,32 +69,3 @@ def search_users_view(request):
         return redirect('network:network')
     
     
-    
-    
-
-from django.shortcuts import render
-from django.http import HttpResponse
-from .forms import SearchForm
-
-def student_search(request):
-    context = {}
-    form = SearchForm(request.GET or None)
-    context['form'] = form
-
-    if form.is_valid():
-        university = form.cleaned_data.get('university')
-        skill = form.cleaned_data.get('skill')
-
-        # Start with all users
-        search_result = User.objects.all()
-
-        # Filter based on university
-        if university:
-            search_result = search_result.filter(profile__university__university_name__icontains=university)
-        # Filter based on skill
-        if skill:
-            search_result = search_result.filter(profile__skill__skill_name__icontains=skill)
-        context['search_result'] = search_result
-        return render(request,'network/user_search.html',context)
-    
-    return render(request, 'network/student_search.html',context)

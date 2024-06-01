@@ -17,40 +17,7 @@ User = get_user_model()
 
 from .models import Profile
 
-from .models import Skill, SubSkill, UserMainSkill, UserSubSkill
-from .forms import MainSkillForm, SubSkillForm
 
-@login_required
-def main_skill_view(request):
-    if request.method == 'POST':
-        main_skill_id = request.POST.get('main_skill')
-        main_skill =Skill.objects.get(id=main_skill_id)
-        UserMainSkill.objects.update_or_create(user=request.user, defaults={'main_skill': main_skill})
-        return redirect('accounts:sub_skill')
-
-    main_skills = Skill.objects.all()
-    selected_main_skill = None
-    try:
-        selected_main_skill = request.user.usermainskill.main_skill
-    except UserMainSkill.DoesNotExist:
-        pass
-    return render(request, 'accounts/main_skill.html', {'main_skills': main_skills, 'selected_main_skill': selected_main_skill})
-
-@login_required
-def sub_skill_view(request):
-    user_main_skill = request.user.usermainskill.main_skill
-    sub_skills = SubSkill.objects.filter(main_skill=user_main_skill)
-
-    if request.method == 'POST':
-        selected_sub_skills = request.POST.getlist('sub_skills')
-        UserSubSkill.objects.filter(user=request.user).delete()
-        for sub_skill_id in selected_sub_skills:
-            sub_skill = SubSkill.objects.get(id=sub_skill_id)
-            UserSubSkill.objects.create(user=request.user, sub_skill=sub_skill)
-        return redirect('feed:feed')
-
-    selected_sub_skills = UserSubSkill.objects.filter(user=request.user).values_list('sub_skill', flat=True)
-    return render(request, 'accounts/sub_skill.html', {'sub_skills': sub_skills, 'selected_sub_skills': selected_sub_skills})
 
 
 
@@ -60,10 +27,8 @@ def custom_login_redirect(request):
     user = request.user
     profile = Profile.objects.filter(user=user).first()
     if profile is not None and profile.is_complete():
-        # Redirect to feed page if profile is complete
         return redirect('feed:feed')
     else:
-        # Redirect to profile page if profile is not complete
         return redirect('accounts:create_profile')
     
 
@@ -75,7 +40,6 @@ def profile_view(request, id):
     users_you_are_following = User.objects.filter(followers__follower=request.user).count()
     print('------------------------------------------',users_you_are_following)
 
-    # Users who are following you
     users_following_you = User.objects.filter(following__following=request.user).count()
     print('****************************8',users_following_you)
     context = {
@@ -129,7 +93,6 @@ def create_profile_view(request):
     context = {}
     
     user=request.user
-    #Check if the profile already exists for the user
     try:
         user_profile = Profile.objects.filter(user=user).first()
     except:
@@ -149,7 +112,6 @@ def create_profile_view(request):
                 messages.error(request,'profile updation failed')
                 return redirect('accounts:create_profile')
         else:
-            # Prepopulate the form with existing profile data
             form = ProfileForm(instance=user_profile)
     else:
         if request.method == 'POST':
@@ -182,24 +144,24 @@ def other_user_profileview(request, id):
 
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
-    success_url = reverse_lazy('feed:feed')  # Corrected success URL
+    success_url = reverse_lazy('feed:feed')  
 
     def form_valid(self, form):
         messages.success(self.request, "Password changed successfully.")
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Custom logic for getting success URL if needed
+        
         success_url = self.success_url
-        print("Success URL:", success_url)  # Debug message
+        print("Success URL:", success_url)  
         return success_url
 
     def get(self, *args, **kwargs):
-        # Custom logic for handling GET requests
+       
         return super().get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
-        # Custom logic for handling POST requests
+        
         return super().post(*args, **kwargs)
 
 
@@ -229,85 +191,8 @@ def unfollow_view(request, id):
         follow = Follow.objects.filter(follower=request.user, following=other_user)
         if follow.exists():
             follow.delete()
-            # send_mail(
-            #     subject='Unfollow Notification',
-            #     message=f'Hi {other_user.username}, {request.user.username} has unfollowed you.',
-            #     from_email='your_email@example.com',
-            #     recipient_list=[other_user.email],
-            # )
+            
         return redirect('accounts:profile', id=id)
     except User.DoesNotExist:
         return redirect('accounts:profile', id=id)
     
-
-
-
-
-
-
-
-
-
-# def Student_profile_view(request):
-#     if request.method == 'POST':
-#         skill_form = StudentProfileForm(request.POST)
-#         if skill_form.is_valid():
-#             skill = skill_form.cleaned_data['skill']
-#             if StudentSkill.objects.filter(user_skill=request.user, skill=skill).exists():
-#                 messages.error(request, 'You have already selected this skill.')
-#             else:
-#                 try:
-#                     student_skill = skill_form.save(commit=False)
-#                     student_skill.user_skill = request.user
-#                     student_skill.save()
-#                     messages.success(request, 'Skill selected successfully.')
-#                     return redirect('accounts:student_profile_sub_skill')
-#                 except IntegrityError:
-#                     messages.error(request, 'This skill is already associated with your profile.')
-#         else:
-#             messages.error(request, 'Invalid form submission.')
-#     else:
-#         skill_form = StudentProfileForm()
-
-#     context = {
-#         'skill_form': skill_form,
-#     }
-#     return render(request, 'accounts/student_profile_skill.html', context)
-
-
-
-
-
-
-
-# def signup_view(request):
-#     if request.method == 'POST':
-#         form = UserCreationFormExtended(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             # Redirect to a success page or wherever you want
-#             return redirect('posts:posts')
-#         else:
-#             form = UserCreationFormExtended()
-#     else:
-#         form = UserCreationFormExtended()
-#     return render(request, 'accounts/signup.html', {'form': form})
-
-
-# def login_view(request):
-#     if request.method == 'POST':
-#         form = AuthenticationFormExtended(request, request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, email=email, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 # Redirect to a success page or wherever you want
-#                 return redirect('posts:posts')
-#             else:
-#                 # Return an 'invalid login' error message.
-#                 return redirect('home:home')
-#     else:
-#         form = AuthenticationFormExtended()
-# return render(request, 'accounts/login.html', {'form': form})
