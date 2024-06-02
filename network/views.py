@@ -28,7 +28,6 @@ def network_view(request):
     # Fetch other users excluding those with the same skill or university, and the current user
     other_users = User.objects.exclude(
         Q(profile__skill=user_profile.skill) |
-        Q(profile__university=user_profile.university) |
         Q(pk=request.user.id)
     )
 
@@ -60,11 +59,12 @@ def search_users_view(request):
             if search_result.exists():
                 context['search_result'] = search_result
                 messages.success(request, 'Users searched successfully.')
+                return render(request, 'network/user_search.html', context)
             else:
                 messages.info(request, 'No users found matching the search query.')
-            print("Network search results:", search_result)  # Debugging info
-            
-            return render(request, 'network/user_search.html', context)
+                return redirect('network:network')
+        else:
+            return redirect('network:network')  
     else:
         return redirect('network:network')
     

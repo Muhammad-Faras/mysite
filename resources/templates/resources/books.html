@@ -14,15 +14,8 @@ PyAcademia | Feed
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Resources</h1>
     <div class="flex justify-center mb-8 gap-2">
-        <!-- <a 
-        {% if request.user.profile.skill %} href="{% url 'feed:feed' %}" {% else %} href="https://youtu.be/wR5_RhxDZGI?si=YuSLsLe4U1oLwBo4" target="_blank" {% endif %} 
-        class="bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400">
-            related
-        </a> -->
-        
         
     </div>
-
     {% for book in books %}
     <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mb-6">
         <div class="md:flex">
@@ -40,7 +33,5 @@ PyAcademia | Feed
         </div>
     </div>
     {% endfor %}
-    
-
 </div>
 {% endblock %}

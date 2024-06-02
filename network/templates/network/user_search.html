@@ -38,9 +38,9 @@
             </div>
         </div>
         {% endfor %}
-        {% else %}
-        <a href="{% url 'network:network' %}">go back</a>
-        {% endif %}
+    {% else %}
+        <div><a href="{% url 'network:network' %}">go back</a></div>
+    {% endif %}
        
     </div>
 

@@ -126,7 +126,8 @@ class Private_chatroom_Consumer(AsyncWebsocketConsumer):
         self.user2_id = self.scope['url_route']['kwargs']['user2Id']
 
         self.user2 = await database_sync_to_async(User.objects.get)(id=self.user2_id)
-
+        self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
         if self.user.id < self.user2.id:
             self.room_name = f'privatechat_{self.user.id}_{self.user2.id}'
         else:
@@ -154,7 +155,8 @@ class Private_chatroom_Consumer(AsyncWebsocketConsumer):
                     {
                         'type': 'chat_message',
                         'private_message': private_message,
-                        'sender': self.user.username
+                        'sender': self.user.username,
+                        'timestamp':self.timestamp,
                     }
                 )
 
@@ -172,6 +174,7 @@ class Private_chatroom_Consumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'private_message': private_message,
             'sender': sender,
+            'timestamp':event['timestamp'],
         }))
 
     async def disconnect(self, close_code):
@@ -188,4 +191,4 @@ class Private_chatroom_Consumer(AsyncWebsocketConsumer):
         return chat_room
 
     def save_message(self, sender, chat_room, message):
-        PrivateMessage.objects.create(sender=sender, chat_room=chat_room, message=message)
+        PrivateMessage.objects.create(sender=sender, chat_room=chat_room, message=message, timestamp=self.timestamp)

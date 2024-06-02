@@ -5,10 +5,7 @@ from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 
 class CustomUserManager(BaseUserManager):
-    """Define a model manager for User model with no username field."""
-
     def _create_user(self, email, password=None, **extra_fields):
-        """Create and save a User with the given email and password."""
         if not email:
             raise ValueError('The given email must be set')
         email = self.normalize_email(email)
@@ -23,7 +20,6 @@ class CustomUserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
-        """Create and save a SuperUser with the given email and password."""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -31,45 +27,30 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
-
         return self._create_user(email, password, **extra_fields)
-
-
-class CustomUser(AbstractUser):
     
+class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     username = models.CharField(_('username'), max_length=16,unique=True, blank=True)
-    
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-
     objects = CustomUserManager()
-    
-
 
 class Skill(models.Model):
     skill_name = models.CharField(max_length=100,unique=True)
-
     def __str__(self):
         return self.skill_name
     
-    
-
-
-
-    
 class University(models.Model):
     university_name = models.CharField(max_length=150,unique=True)
-
     def __str__(self):
         return self.university_name
 
 class Gender(models.Model):
     gender_cateory = models.CharField(max_length=150,unique=True)
-
     def __str__(self):
         return self.gender_cateory
+    
 from datetime import date
 from django.core.exceptions import ValidationError
 def age_validator(value):
@@ -79,7 +60,6 @@ def age_validator(value):
         raise ValidationError('Age must be 13 or greater.')
     if age > 60:
         raise ValidationError('Age must be 60 or less.')
-
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     university = models.ForeignKey(University, on_delete=models.SET_NULL, null=True)
@@ -88,30 +68,24 @@ class Profile(models.Model):
     gender = models.ForeignKey(Gender, on_delete=models.SET_NULL, null=True)
     birthday = models.DateField(validators=[age_validator],null=True)
     profile_img = models.ImageField(null=True, blank=True)
-
     def is_complete(self):
-        # Check if all required fields are filled
         required_fields = [
             self.skill,
         ]
         if not all(required_fields):
             return False
         return True
-        
     def __str__(self):
         if self.user.is_superuser:
             return f'{self.user.username} (Superuser) profile'
         else:
             return f'({self.user.username}) profile  ({self.user.email})'
 
-
-
-
 class Follow(models.Model):
     follower = models.ForeignKey(CustomUser, related_name='following', on_delete=models.CASCADE)
     following = models.ForeignKey(CustomUser, related_name='followers', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    notify = models.BooleanField(default=False)  # New field for notifications
+    notify = models.BooleanField(default=False)  
     def __str__(self):
         return f'{self.follower.username} is following {self.following.username}'
 

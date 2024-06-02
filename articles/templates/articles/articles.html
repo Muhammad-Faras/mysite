@@ -43,17 +43,33 @@ PyAcademia | blogs
 {% endblock %}
 
 {% block content %}
-
-
 <div class="container mx-auto py-6">
-    <div class="flex justify-center items-center mb-8 border-b border-black pb-2">
+    {% if messages %}
+    <div class="messages mb-2">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            <p class="w-full bg-indigo-600 text-white py-2 px-4 text-center">{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="flex justify-around items-center mb-8 ">
+        <form class="flex justify-center items-center w-full " action="{% url 'articles:search_articles' %}" method="post" class="flex items-center mr-4">
+            {% csrf_token %}
+            <input type="text" id="search-query" name="search-query" placeholder="Search for blogs..." class=" w-3/4 rounded-md bg-gray-100 py-2.5 pr-10 shadow-sm sm:text-sm" />
+            <button type="submit" class="text-gray-600 hover:text-gray-700 ml-2">
+                <span class="sr-only">Search</span>
+                <svg xmlns="http://www.w3.org/2000/svg"fill="none"viewBox="0 0 24 24"stroke-width="1.5"stroke="currentColor"class="h-4 w-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+                </svg>
+            </button>
+        </form>
         <a href="{% url 'articles:publish_article' %}" class="text-3xl flex items-center text-gray-700 hover:text-black">
             <i class="far fa-edit mr-2 text-3xl"></i>
             <span class="font-bold">Write</span>
         </a>
     </div>
-    
-
     <h1 class="text-3xl font-semibold text-center mb-8">Latest Blogs</h1>
     <div class="sm:grid sm:grid-cols-1 md:grid md:grid-cols-3  gap-4">
         {% for article in articles %}
@@ -71,8 +87,4 @@ PyAcademia | blogs
         {% endfor %}
     </div>
 </div>
-
-
-
-
 {% endblock %}

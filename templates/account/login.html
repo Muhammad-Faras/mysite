@@ -6,13 +6,10 @@
 {% block head_title %}
     {% trans "Sign In" %}
 {% endblock head_title %}
-
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'account/css/login.css' %}">
 {% endblock extra_head %}
 {% block content %}
-    
-    
 <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full space-y-6">
     <h2 class="text-2xl font-bold text-center">Login to Your Account</h2>
     {% if messages %}
@@ -24,7 +21,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
     {% if form.non_field_errors %}
     <div class="alert alert-danger">
         {% for error in form.non_field_errors %}
@@ -66,12 +62,10 @@
             </button>
         </div>
     </form>
-    
     <div class="text-center text-sm text-gray-500">
         New here? 
         <a href="{{ signup_url }}" class="font-medium text-indigo-600 hover:text-indigo-500">Join now</a>
     </div>
-
     <div class="relative">
         <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300"></div>
@@ -80,18 +74,10 @@
             <span class="px-2 bg-white text-gray-500">or</span>
         </div>
     </div>
-    
     <div>
-
         <a href="{% provider_login_url 'google' %}"
                 class="w-full inline-flex justify-center py-2 px-4 items-center gap-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <img src="{% static 'account/images/google-icon40.png' %}" alt="">
-                <!-- <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
-                <path d="M24 22V26H34C33.47 29.67 30.78 32 26 32C21.02 32 18 28.53 18 24C18 19.47 21.02 16 26 16C28.17 16 29.9 16.82 31 18.07L34.13 15C31.93 12.56 28.96 11 26 11C19.97 11 15 16.02 15 22C15 28.02 19.97 33 26 33C31.54 33 36 29 36 24.5H24Z" fill="#4285F4"/>
-                <path d="M15.27 15.9L18.35 12.8C20.03 10.56 23.03 9 26 9C30.42 9 34.43 12.07 35.57 15.72L31.13 19.4C30.35 17.61 28.47 16 26 16C23.54 16 21.64 17.35 21.04 19.3L15.27 15.9Z" fill="#34A853"/>
-                <path d="M15 22C15 24.67 16.19 26.85 17.97 28.1L15.3 31.53C13.58 29.75 12 26.99 12 22.99C12 18.99 13.58 16.23 15.3 14.45L18.03 17.88C16.23 19.13 15 21.31 15 22Z" fill="#FBBC05"/>
-                <path d="M26 33C29.96 33 32.47 31.57 33.68 30.53L36.67 33.62C34.35 35.97 31.47 37 26 37C21.03 37 17 33.53 17 28C17 26.36 17.56 24.86 18.5 23.64L21.79 27.56C21.26 28.47 20.48 29.02 19.85 29.02C19.22 29.02 18.6 28.89 18.02 28.62C18.5 31.19 21.02 33 26 33Z" fill="#EA4335"/>
-            </svg> -->
             Continue with Google
         </a>
     </div>

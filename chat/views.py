@@ -9,8 +9,50 @@ User = get_user_model()
 
 @login_required(login_url='/accounts/login/')
 
+@login_required(login_url='/accounts/login/')
+def leave_group_view(request):
+    user = request.user
+    user_profile = Profile.objects.get(user=user)
+    try:
+        user_skill = user_profile.skill.skill_name
+    except:
+        return redirect('accounts:create_profile')
+    skill_group = ChatGroup.objects.filter(skill__skill_name=user_skill).first()
+    
+    if skill_group:
+        if user in skill_group.participants.all():
+            skill_group.participants.remove(user)
+            messages.info(request, 'You have left the group.')
+            remaining_participants = skill_group.participants.all()
+            for participant in remaining_participants:
+                print('-------------', participant, '------------------')
+            
+        else:
+            skill_group.participants.add(user)
+            return redirect('chat:chat')
+    # else:
+    #     messages.warning(request, 'No group found for your skill.')
+    
+    # Redirect to a suitable URL after leaving the group
+    return redirect('feed:feed')  # Replace 'some_view_name' with the name of the view you want to redirect to.
+
+@login_required
+def join_group_view(request):
+    user = request.user
+    user_profile = Profile.objects.get(user=user)
+    user_skill = user_profile.skill.skill_name
+    skill_group = get_object_or_404(ChatGroup, skill__skill_name=user_skill)
+    
+    if user not in skill_group.participants.all():
+        skill_group.participants.add(user)
+        
+        return redirect('chat:chat')
+
 def chat_view(request):
     context = {}
+    
+    
+    
     user = request.user
     user_profile, created = Profile.objects.get_or_create(user=user)
     if created:
@@ -45,6 +87,8 @@ def chat_view(request):
     print('--------------------')
         
     context['chat_messages'] = chat_messages
+    for message in chat_messages:
+        print('-------------',message,'---------------')
     context['participants'] = participants
         
         

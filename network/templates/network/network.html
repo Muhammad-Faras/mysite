@@ -1,17 +1,19 @@
 {% extends 'network/base.html' %}
-{% block title %}
-    PyAcademia | Network            
-{% endblock %}
-
+{% block title %}PyAcademia | Network {% endblock %}
 {% block content %}
-
-
 <div class="container mx-auto py-6">
-
-    <!-- Carousel/Slider - Top Section -->
+    {% if messages %}
+    <div class="messages mb-2">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            <p class="w-full bg-indigo-600 text-white py-2 px-4 text-center">{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
     <div class="carousel-container mb-6">
         <div class="carousel-track flex gap-4">
-            <!-- User Profile 1 -->
             {% for skill_user in related_skill_users %}
             <div class="carousel-item bg-white p-4 rounded-lg shadow-md flex justify-center items-center">
                 <div class="text-center">
@@ -25,18 +27,13 @@
                 </div>
             </div>
             {% endfor %}
-            
-            
         </div>
         <div class="carousel-buttons">
             <button id="prev" class="bg-indigo-600 text-white px-4 py-2 rounded-l-lg">Prev</button>
             <button id="next" class="bg-indigo-600 text-white px-4 py-2 rounded-r-lg">Next</button>
         </div>
     </div>
-
-    <!-- Grid Section - User Profiles -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- User Profile Card 1 -->
         {% for other_user in other_users %}
         <div class="bg-white p-4 rounded-lg shadow-md">
             <div class="text-center">
@@ -45,68 +42,20 @@
                     {% else %}
                         <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" class="h-20 w-20 rounded-full mx-auto mb-4" style="height: 80px; width: 80px;">
                     {% endif %}
-
-                <h2 class="text-lg font-semibold">{{other_user.username}}</h2>
-                {% if other_user.user.profile.skill %}
-                    <p class="text-sm text-gray-600">{{other_user.user.profile.skill}}</p>
-                {% else %}
-                <p class="text-sm text-gray-600">profile undefined</p>
+                <a href="{% url 'accounts:profile' other_user.id %}" class="text-lg font-semibold">{{other_user.username}}</a>
+                {% if other_user.profile.skill %}
+                    <p class="text-sm text-gray-600">{{other_user.profile.skill}}</p>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
-        <!-- User Profile Card 2 -->
-        <!-- Add more user profile cards as needed -->
     </div>
 </div>
-
-
-
-
-
-
-<!-- <div>
-    <h2>User Profile</h2>
-    <p>Name: {{ user_profile.user.username }}</p>
-    <p>Skill: {{ user_profile.skill }}</p>
-    <hr>
-</div>
-
-<div>
-    <h1>Users with the same skill</h1>
-        <ul>
-            {% for skill_user in related_skill_users %}
-            {{skill_user}}
-                <li>{{ skill_user.user.email }}</li>
-                <li>{{ skill_user.user.profile.age }}</li>
-                <li>{{ skill_user.user.username }}</li>
-            {% endfor %}
-        </ul>
-        <hr>
-    <h1>Users with the same university</h1>
-
-        <ul>
-            {% for usera in related_uni_users %}
-                <li>{{ usera.user.email }}</li>
-            {% endfor %}
-        </ul>
-        <hr>
-
-        <h2>Other Users</h2>
-        <ul>
-            {% for user in other_users %}
-                <li>{{ user.username }}</li>
-            {% empty %}
-                <li>No other users found.</li>
-            {% endfor %}
-        </ul>
-</div> -->
 {% endblock %}
 
 
 {% block extra_js %}
 
-<!-- Carousel Functionality -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const track = document.querySelector('.carousel-track');
@@ -115,19 +64,16 @@
         const nextButton = document.getElementById('next');
         const slideWidth = slides[0].getBoundingClientRect().width;
 
-        // Arrange slides next to one another
         slides.forEach((slide, index) => {
             slide.style.left = slideWidth * index + 'px';
         });
 
-        // Move to the next set of slides
         const moveToSlide = (track, currentSlide, targetSlide) => {
             track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
             currentSlide.classList.remove('current-slide');
             targetSlide.classList.add('current-slide');
         };
 
-        // Click right, move slides to the right
         nextButton.addEventListener('click', e => {
             const currentSlide = track.querySelector('.current-slide');
             const nextSlide = currentSlide.nextElementSibling;
@@ -140,20 +86,17 @@
             }
         });
 
-        // Click left, move slides to the left
         prevButton.addEventListener('click', e => {
             const currentSlide = track.querySelector('.current-slide');
             const prevSlide = currentSlide.previousElementSibling;
             if (prevSlide) {
                 moveToSlide(track, currentSlide, prevSlide);
             } else {
-                // Loop to the end
                 const lastSlide = track.lastElementChild;
                 moveToSlide(track, currentSlide, lastSlide);
             }
         });
 
-        // Set initial slide as current slide
         slides[0].classList.add('current-slide');
     });
 </script>

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}
+PyAcademia | blogs
+{% endblock %}
+
+{% block custom_styles %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    .bg-primary {
+        background-color: #4a90e2;
+    }
+    .text-primary {
+        color: #4a90e2;
+    }
+    .hover-bg-primary:hover {
+        background-color: #357bd8;
+    }
+    .hover-text-primary:hover {
+        color: #357bd8;
+    }
+    .border-primary {
+        border-color: #4a90e2;
+    }
+    .hover-border-primary:hover {
+        border-color: #357bd8;
+    }
+    .btn-publish {
+        background-color: #1abc9c;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 18px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-publish:hover {
+        background-color: #16a085;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container mx-auto py-6">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            <p class="w-full bg-indigo-600 text-white py-2 px-4 text-center">{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+
+    <h1 class="text-3xl font-semibold text-center mb-8">searched Blogs</h1>
+    <div class="sm:grid sm:grid-cols-1 md:grid md:grid-cols-3  gap-4">
+        {% if article_search_result %}
+            {% for article in article_search_result %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="{{ article.article_thumbnail_image.url }}" alt="Blog Thumbnail" class="w-full h-64 object-cover object-center">
+                <div class="p-4">
+                    <p class="text-gray-600 text-sm">{{ article.article_created|date:"M d, Y" }}</p>
+                    <h2 class="text-xl font-semibold mt-2 mb-4">{{article.article_title}}</h2>
+                    <div class="flex items-center justify-between">
+                        <p class="text-gray-700">{{ article.author.username}}</p>
+                        <a href="{% url 'articles:article_detail' article.id %}" class="bg-primary text-white px-4 py-2 rounded-lg hover-bg-primary hover-text-white transition-colors duration-300">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <a href="{% url 'articles:articles'  %}">go back</a>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

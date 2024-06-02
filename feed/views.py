@@ -8,7 +8,7 @@ from django.contrib import messages
 from accounts.models import Follow
 from django.core.mail import send_mail
 from django.urls import reverse
-
+from chat.models import ChatGroup
 User = get_user_model()
 # Create your views here.
 from posts.models import Post,Comment,Report
@@ -17,6 +17,23 @@ from posts.forms import CommentForm
 @login_required(login_url='/accounts/login/')
 def feed_view(request):
     context = {}
+    
+    user = request.user
+    try:
+        user_profile = Profile.objects.get(user=user)
+    except:
+        return redirect('accounts:create_profile')
+    try:
+        user_skill = user_profile.skill.skill_name
+    except:
+        return redirect('accounts:create_profile')
+    skill_group = ChatGroup.objects.filter(skill__skill_name=user_skill).first()
+    is_participant = skill_group.participants.filter(id=user.id).exists() if skill_group else False
+    
+    context = {
+        'is_participant': is_participant,
+    }
+    
     reported_posts = Report.objects.filter(reported_by=request.user).values_list('post_ref_id', flat=True)
     context['reported_posts'] = reported_posts
     posts_list = Post.objects.all()

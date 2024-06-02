@@ -17,8 +17,8 @@
             {% user_display confirmation.email_address.user as user_display %}
             {% if can_confirm %}
                 <p class="text-center text-gray-600">
-                    {% blocktrans with confirmation.email_address.email as email %}
-                        {% trans "Please confirm that" %} <a href="mailto:{{ email }}" class="text-blue-500 hover:underline">{{ email }}</a> {% trans "is an email address for user" %} {{ user_display }}.
+                    {% blocktrans with email=confirmation.email_address.email user_display=user_display %}
+                        Please confirm that <a href="mailto:{{ email }}" class="text-blue-500 hover:underline">{{ email }}</a> is an email address for user {{ user_display }}.
                     {% endblocktrans %}
                 </p>
                 {% url 'account_confirm_email' confirmation.key as action_url %}
@@ -31,7 +31,7 @@
             {% else %}
                 <p class="text-center text-gray-600">
                     {% blocktrans %}
-                        {% trans "Unable to confirm" %} {{ email }} {% trans "because it is already confirmed by a different account." %}
+                        Unable to confirm {{ email }} because it is already confirmed by a different account.
                     {% endblocktrans %}
                 </p>
             {% endif %}
@@ -39,7 +39,7 @@
             {% url 'account_email' as email_url %}
             <p class="text-center text-gray-600">
                 {% blocktrans %}
-                    {% trans "This email confirmation link expired or is invalid. Please" %} <a href="{{ email_url }}" class="text-blue-500 hover:underline">{% trans "issue a new email confirmation request" %}</a>.
+                    This email confirmation link expired or is invalid. Please <a href="{{ email_url }}" class="text-blue-500 hover:underline">issue a new email confirmation request</a>.
                 {% endblocktrans %}
             </p>
         {% endif %}

@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
-
-{% block title %}
-PyAcademia | Projects 
-{% endblock %}
-
+{% block title %}PyAcademia | Projects {% endblock %}
 {% block custom_styles %}
 <style>
     body {
@@ -41,19 +37,13 @@ PyAcademia | Projects
     }
 </style>
 {% endblock %}
-
 {% block content %}
-
-
 <div class="container mx-auto py-6">
     <div class="flex justify-center items-center mb-8 border-b border-black pb-2">
         <a href="{% url 'projects:create_project' %}" class="text-3xl flex items-center text-gray-700 hover:text-black">
-            <i class="far fa-edit mr-2 text-3xl"></i>
-            <span class="font-bold">Share Project</span>
+            <i class="far fa-edit mr-2 text-3xl"></i><span class="font-bold">Share Project</span>
         </a>
     </div>
-    
-
     <h1 class="text-3xl font-semibold text-center mb-8">Latest Projects</h1>
     <div class="sm:grid sm:grid-cols-1 md:grid md:grid-cols-3  gap-4">
         {% for project in projects %}
@@ -71,10 +61,6 @@ PyAcademia | Projects
         {% endfor %}
     </div>
 </div>
-
-
-
-
 {% endblock %}
 
 
