@@ -43,15 +43,13 @@ class CommentForm(forms.ModelForm):
 }   
         
 
-
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = ['reason', 'description', 'image']  # Include the 'image' field
+        fields = ['reason', 'description', 'image']
         widgets = {
-            'reason': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})  # Add widget for image field
+            'reason': forms.Select(attrs={'class': 'form-select mt-1 block w-full'}),
+            'description': forms.Textarea(attrs={'class': 'form-textarea mt-1 block w-full'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-file-input mt-1 block w-full'})
         }
-        
         

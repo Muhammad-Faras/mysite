@@ -6,12 +6,23 @@ from accounts.models import Profile
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 User = get_user_model()
-
+from chat.models import ChatGroup
 @login_required(login_url='/accounts/login/')
 def network_view(request):
     context = {}
     user = request.user
-
+    try:
+        user_profile = Profile.objects.get(user=user)
+    except:
+        return redirect('accounts:create_profile')
+    try:
+        user_skill = user_profile.skill.skill_name
+    except:
+        return redirect('accounts:create_profile')
+    skill_group = ChatGroup.objects.filter(skill__skill_name=user_skill).first()
+    is_participant = skill_group.participants.filter(id=user.id).exists() if skill_group else False
+    
+    context['is_participant'] = is_participant
     # Fetch the user's profile
     user_profile = Profile.objects.filter(user=user).first()
     if not user_profile:
@@ -46,7 +57,8 @@ def network_view(request):
 @login_required(login_url='/accounts/login/')
 def search_users_view(request):
     context = {}
-
+    
+    
     if request.method == 'POST':
         search_query = request.POST.get('search-query')
         if search_query:

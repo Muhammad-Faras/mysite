@@ -85,7 +85,10 @@
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'articles:articles' %}">BLOGS</a> 
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'projects:projects' %}">PROJECTS</a>
         <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'resources:resources' %}">RESOURCES</a>
-        <a class="block text-gray-600 font-medium cursor-pointer hover:text-indigo-600" href="{% url 'chat:chat' %}">Discussion</a>
+        <a class="{% if request.path == '/chat/' %}text-indigo-600 {% else %} text-gray-600 {% endif %} font-medium cursor-pointer hover:text-indigo-600"
+        href="{% if is_participant %}{% url 'chat:chat' %}{% else %}{% url 'chat:join_group' %}{% endif %}">
+        {% if is_participant %}Discussion{% else %}Join{% endif %}
+     </a>
         
     </nav>
 </header>
