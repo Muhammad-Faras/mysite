@@ -131,10 +131,11 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type':'online',
         },
          'APP': {
-            'client_id': '50230916815-vmvmecg0i8gu6vtb4ng03vj6hb39dgpe.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': 'here client id',
+            'secret': 'here secret key ',
             'key': ''
         }
+# I'd remove for security purpose 
     },
     'github': {
         'SCOPE' : [
@@ -145,9 +146,10 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type':'online',
         },
          'APP': {
-            'client_id': 'bf149d46d4e934221c8b',
-            'secret': '4e187906abc77106d54e4c7ed04f0a9162017558',
+            'client_id': 'client I'd here',
+            'secret': 'secret key here',
             'key': ''
+# client I'd and secret I'd remove for security #purpose
         }
     }
 }
@@ -317,7 +319,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'noorfaras809@gmail.com'
-EMAIL_HOST_PASSWORD = 'jysxyoztqlxhajdz'
-DEFAULT_FROM_EMAIL = 'noorfaras809@gmail.com'
+# remove appid and email for security purpose,currently I am not using environ
+EMAIL_HOST_USER = 'email'
+EMAIL_HOST_PASSWORD = 'app id'
+DEFAULT_FROM_EMAIL = 'email'
 
